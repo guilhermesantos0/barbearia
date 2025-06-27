@@ -1,0 +1,119 @@
+@use "@assets/scss/variables" as *;
+@use "@assets/scss/mixins" as *;
+
+.Container {
+    width: 100vw;
+    height: 100vh;
+
+    // background: url('@assets/background.png');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('@assets/background.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    .Logo {
+        position: absolute;
+        right: 1vw;
+        top: 1vw;
+    }
+
+    .LeftBar {
+        position: absolute;
+        left: 0;
+        top: 0;
+
+        height: 100%;
+        width: 30vw;
+
+        background: $dark-blue;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        .Title {
+            color: $white;
+        }
+
+        .FormContainer {
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2vh;
+
+            width: 80%;
+            height: 40%;
+
+            .InputContainer {
+                display: flex;
+                flex-direction: column;
+                gap: 1vh;
+
+                width: 100%;
+
+                .Label {
+                    color: $white;
+                    font-weight: 600;
+                }
+
+                .Input {
+                    width: 100%;
+                    height: 6vh;
+
+                    padding: 0 .8vw;
+
+                    background: $gray;
+
+                    border: 0;
+                    border-radius: 10px;
+
+                    color: $white;
+
+                    outline: none;
+
+                    box-shadow: 0 0 0px transparent;
+                    transition: box-shadow 0.3s ease-in-out; 
+
+                    &:focus {
+                        border: 1px solid $light-blue;
+                        box-shadow: 0 0 3px $light-blue;
+                    }
+
+                    &:autofill {
+                        background: $gray !important;
+                    }
+                }
+
+                .Recovery {
+                    text-align: right;
+                    color: $light-gray;
+
+                    transition: color .3s ease-in-out;
+
+                    &:hover {
+                        color: darken($white, 5);
+                        cursor: pointer ;
+                    }
+                }
+            }
+
+            .Login {
+                @include button-primary;
+                width: 100%;
+                height: 6vh;
+            }
+        }
+
+        .Create {
+            color: $light-gray;
+            font-weight: 600;
+
+            .Link {
+                color: $light-blue;
+            }
+        }
+    }
+}

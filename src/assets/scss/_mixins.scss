@@ -1,0 +1,20 @@
+@use './variables' as *;
+
+@mixin button-primary {
+    background: $light-blue;
+    color: $white;
+    border-radius: 10px;
+
+    border: 0;
+    
+    font-size: larger;
+    font-weight: 600;
+
+    transition: background-color .3s ease-in-out;
+
+    &:hover {
+        cursor: pointer;
+        background: darken($light-blue, 10);
+
+    }
+}

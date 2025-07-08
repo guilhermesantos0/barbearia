@@ -1,6 +1,8 @@
 @use "@assets/scss/variables" as *;
 @use "@assets/scss/mixins" as *;
 
+@use 'sass:color';
+
 .Container {
     width: 100vw;
     height: 100vh;
@@ -11,19 +13,41 @@
     background-position: center;
     background-repeat: no-repeat;
 
+    overflow: hidden;
+
+    
     .Logo {
         position: absolute;
-        right: 1vw;
-        top: 1vw;
+        top: 1rem;
+        
+        &.Login {
+            right: 1rem;
+        }
+        
+        &.Signup {
+            left: 1rem;
+        }
     }
-
-    .LeftBar {
+    
+    .Bar {
+        transition: transform .6s ease-in-out, width .6s ease-in-out;
         position: absolute;
-        left: 0;
         top: 0;
 
         height: 100%;
-        width: 30vw;
+        width: 35rem;
+
+        &.Login {
+            left: 0;
+        }
+
+        &.SignUp {
+            right: 0;
+            transform: translateX(100%);
+            opacity: 0;
+        }
+
+        
 
         background: $dark-blue;
 
@@ -34,36 +58,37 @@
 
         .Title {
             color: $white;
+            font-size: 2.3rem;
         }
 
         .FormContainer {
-
+            margin-top: 2rem;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 2vh;
+            gap: 1.8rem;
 
             width: 80%;
-            height: 40%;
-
+            
             .InputContainer {
                 display: flex;
                 flex-direction: column;
-                gap: 1vh;
+                gap: 1rem;
 
                 width: 100%;
 
                 .Label {
                     color: $white;
                     font-weight: 600;
+                    font-size: 1.1rem;
                 }
 
                 .Input {
                     width: 100%;
-                    height: 6vh;
+                    height: 4rem;
 
-                    padding: 0 .8vw;
+                    padding: 0 .8rem;
 
                     background: $gray;
 
@@ -76,6 +101,8 @@
 
                     box-shadow: 0 0 0px transparent;
                     transition: box-shadow 0.3s ease-in-out; 
+
+                    font-size: 1.2rem;
 
                     &:focus {
                         border: 1px solid $light-blue;
@@ -93,27 +120,151 @@
 
                     transition: color .3s ease-in-out;
 
+                    font-size: 1.2rem;
+
                     &:hover {
-                        color: darken($white, 5);
+                        color: color.adjust($white, $lightness: -5%);
                         cursor: pointer ;
                     }
                 }
             }
 
-            .Login {
+            .Button {
                 @include button-primary;
                 width: 100%;
-                height: 6vh;
+                height: 4rem;
+
+                font-size: 2rem;
+
+                transition: opacity .3s ease-in-out;
+
+                .Icon {
+
+                    height: 2rem;
+                    width: 2rem;
+
+                    margin-top: .5rem;
+                }
+
+                &.Short {
+                    width: 40%;
+                }
+
+                &.Disabled {
+                    opacity: .5;
+                    cursor: not-allowed;
+                }
+            }
+
+            .InputsArea {
+                width: 100%;
+
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                grid-template-areas: 
+                    'name phone'
+                    'bornDate gender'
+                    'checkbox checkbox';
+                place-items: center;
+                gap: 2rem;
+
+                .InputContainer {
+                    width: 95%;
+
+                    .Description {
+                        font-size: .7rem
+                    }
+                }
+
+                .Checkbox {
+                    width: 100%;
+
+                    padding: 0 .8rem;
+
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+
+                    .CheckboxRoot {
+                        all: unset;
+                        width: 20px;
+                        height: 20px;
+                        background-color: #111C44;
+                        border: 2px solid #2F80ED;
+                        border-radius: 4px;
+                        cursor: pointer;
+                        transition: box-shadow 0.3s;
+                    }
+
+                    .CheckboxIndicator {
+                        color: #2F80ED;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+
+                        width: 20px;
+                        height: 20px;
+                    }
+
+                    .Label {
+                        font-size: 1.3rem;
+                        color: $light-gray;
+
+                        a {
+                            color: $white;
+                            text-decoration: none
+                        }
+                    }
+                    
+                }
+
+                // .Checkbox {
+                //     width: 100%;
+                //     font-size: 1.3rem;
+                //     color: $light-gray;
+
+                //     a {
+                //         color: $white;
+                //         text-decoration: none
+                //     }
+                // }
             }
         }
 
-        .Create {
+        .AuxiliarText {
             color: $light-gray;
             font-weight: 600;
+            font-size: 1.3rem;
+            margin-top: .8rem;
 
             .Link {
                 color: $light-blue;
+
+                &:hover {
+                    color: color.adjust($light-blue, $lightness: -5%);
+                    cursor: pointer;
+                }
             }
+            
+            &.AlignLeft {
+                width: 100%;
+                text-align: left;
+
+                &:hover {
+                    color: color.adjust($light-gray, $lightness: -5%);
+                    cursor: pointer;
+                }
+            }
+        }
+
+        &.ThrirdStageSignup {
+            width: 70rem;
         }
     }
 }
+
+.NameInput { grid-area: name; };
+.Phone { grid-area: phone; }
+.BornDate { grid-area: bornDate; };
+.Gender { grid-area: gender; };
+.Checkbox { grid-area: checkbox;}

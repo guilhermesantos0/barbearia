@@ -74,3 +74,7 @@ button:focus-visible {
 
     font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
+
+html, body {
+  overflow-x: hidden;
+}

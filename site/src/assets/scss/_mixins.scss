@@ -19,7 +19,12 @@
 
     gap: 1rem;
 
-    &:not(.Disabled):hover {
+    &:disabled {
+        opacity: .5;
+        cursor: not-allowed;
+    }
+
+    &:not(:disabled):hover {
         cursor: pointer;
         background: color.adjust($light-blue, $lightness: -10%);
     }

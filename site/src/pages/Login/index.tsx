@@ -1,10 +1,12 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import style from './Login.module.scss';
 import { ArrowRightIcon, ArrowLeftIcon, CheckIcon } from '@radix-ui/react-icons';
 import * as Checkbox from '@radix-ui/react-checkbox';
 
+import OTPInput from '../../components/OTPInput';
+
 const Login = () => {
-    const [currentState, setCurrentState] = useState<'login' | 'signup'>('signup')
+    const [currentState, setCurrentState] = useState<'login' | 'signup'>('login')
     const [signupStage, setSignupStage] = useState<1 | 2 | 3 | 4>(1);
     const [isTermsAccepted, setIsTermsAccepted] = useState<boolean>(false);
 
@@ -65,6 +67,23 @@ const Login = () => {
         }, 600)
     }
 
+    const handleOTPComplete = async (code: string) => {
+        const isValid = true // FAZER A FUNÇÃO NO BACKEND
+        if (isValid) {
+            setTimeout(() => {
+                nextStage();
+            }, 1000)
+            return true
+        } else {
+            return false
+        };
+
+    }
+
+    const resendCode = async () => {
+        // REENVIAR O EMAIL
+    }
+
     const handleCheckEmail = () => {
         // IMPLEMENTAR A LOGICA DO BACKEND
 
@@ -101,7 +120,7 @@ const Login = () => {
                 <p className={style.AuxiliarText}>Ainda não possui conta? <span className={style.Link} onClick={handleOpenSignUp}>cadastre-se</span></p>
             </div>
 
-            <div className={`${style.Bar} ${style.SignUp} ${signupStage === 3 ? style.ThrirdStageSignup : ''}`} ref={signupBarRef}>
+            <div className={`${style.Bar} ${style.SignUp} ${signupStage === 4 ? style.FourthStageSignup : ''}`} ref={signupBarRef}>
                 <form action="login" className={style.FormContainer}>
                     {
                         signupStage === 1 && (
@@ -126,9 +145,7 @@ const Login = () => {
                                 <h2 className={style.Subtitle}>Insira o código de 6 dígitos enviado para o seu email:</h2>
                                 <h2 className={style.Subtitle}>e****@t***e.com.br</h2>
 
-                                <div className={style.CodeArea}>
-                                    <input type="text" className={style.CodeInput} />
-                                </div>
+                                <OTPInput length={6} resendTimeout={5} onOTPComplete={handleOTPComplete} resendCode={resendCode} alterReciever={prevStage} />
                                 
                             </>
                         )

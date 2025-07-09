@@ -61,6 +61,11 @@
             font-size: 2.3rem;
         }
 
+        .Subtitle {
+            color: $light-gray;
+            font-size: 1.1rem;
+        }
+
         .FormContainer {
             margin-top: 2rem;
             display: flex;
@@ -148,11 +153,6 @@
 
                 &.Short {
                     width: 40%;
-                }
-
-                &.Disabled {
-                    opacity: .5;
-                    cursor: not-allowed;
                 }
             }
 
@@ -257,7 +257,7 @@
             }
         }
 
-        &.ThrirdStageSignup {
+        &.FourthStageSignup {
             width: 70rem;
         }
     }

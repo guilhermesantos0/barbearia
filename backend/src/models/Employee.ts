@@ -1,15 +1,46 @@
-const mongoose = require('mongoose');
-const { v4: uuidv4 } = requir('uuid');
+import { Document, Schema, model } from 'mongoose';
+import { v4 as uuidv4 } from 'uuid';
 
-const employeeSchema = new mongoose.Schema({
+
+interface Interval {
+    name: string,
+    start: string,
+    end: string
+}
+
+export interface IEmployee extends Document {
+    _id: string,
+    role: number,
+    name: string,
+    email: string,
+    password: string,
+    phone: string,
+    cpf: string,
+    profilePic: string,
+    nextServices: string[],
+    lastServices: string[],
+    work: {
+        days: string[],
+        time: {
+            start: string,
+            end: string,
+            intervals: Interval[]
+        }
+    },
+    services: string[],
+    createdAt: string | Date,
+    editedAt: string | Date
+}
+
+const employeeSchema = new Schema<IEmployee>({
     _id: {
-        type: mongoose.SchemaTypes.UUID,
+        type: String,
         default: () => uuidv4()
     },
     role: {
         type: Number,
         required: true,
-        ref: 'Roles'
+        ref: 'Role'
     },
     name: {
         type: String,
@@ -83,4 +114,5 @@ const employeeSchema = new mongoose.Schema({
 
 })
 
-module.exports = mongoose.model('Employee', employeeSchema);
+const Employee = model<IEmployee>('Employee', employeeSchema);
+export default Employee;

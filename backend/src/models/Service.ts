@@ -1,9 +1,17 @@
-const mongoose = require('mongoose');
-const { v4: uuidv4 } = require('uuid');
+import { Document, Schema, model } from 'mongoose';
+import { v4 as uuidv4 } from 'uuid';
 
-const serviceSchema = new mongoose.Schema({
+export interface IService extends Document {
+    _id: String,
+    name: string,
+    description: string,
+    price: number,
+    duration: number
+}
+
+const serviceSchema = new Schema<IService>({
     _id: {
-        type: mongoose.SchemaTypes.UUID,
+        type: String,
         default: () => uuidv4()
     },
     name: {
@@ -32,4 +40,6 @@ const serviceSchema = new mongoose.Schema({
 
 });
 
-module.exports = mongoose.model('Service', serviceSchema);
+
+const Service = model<IService>('Service', serviceSchema);
+export default Service;

@@ -90,6 +90,10 @@ const Login = () => {
 
     }
 
+    const handleCreateAccount = () => {
+
+    }
+
     const nextStage = () => {
         setSignupStage(prev => (prev + 1) as 1 | 2 | 3 | 4);
     }
@@ -217,7 +221,7 @@ const Login = () => {
                                     </div>
                                 </div>
 
-                                <button disabled={!isTermsAccepted} className={`${style.Button} ${style.Short} ${!isTermsAccepted ? style.Disabled : ''}`}>Criar Conta</button>
+                                <button disabled={!isTermsAccepted} className={`${style.Button} ${style.Short} ${!isTermsAccepted ? style.Disabled : ''}`} onClick={handleCreateAccount}>Criar Conta</button>
                                 <p className={`${style.AuxiliarText} ${style.AlignLeft}`} onClick={prevStage}><ArrowLeftIcon /> Voltar</p>
                             </>
                         )

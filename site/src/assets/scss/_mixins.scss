@@ -1,0 +1,31 @@
+@use './variables' as *;
+@use 'sass:color';
+
+@mixin button-primary {
+    background: $light-blue;
+    color: $white;
+    border-radius: 10px;
+
+    border: 0;
+    
+    font-size: larger;
+    font-weight: 600;
+
+    transition: background-color .3s ease-in-out;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 1rem;
+
+    &:disabled {
+        opacity: .5;
+        cursor: not-allowed;
+    }
+
+    &:not(:disabled):hover {
+        cursor: pointer;
+        background: color.adjust($light-blue, $lightness: -10%);
+    }
+}

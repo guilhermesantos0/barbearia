@@ -2,13 +2,15 @@ import { Controller, Get, Post, Body, Param, Put, Delete } from '@nestjs/common'
 import { CostumerService } from './costumer.service';
 import { Costumer } from './schemas/costumer.schema';
 
-@Controller('costumer')
+import { CreateCostumerDto } from './dto/create-costumer.dto';
+
+@Controller('/costumers')
 export class CostumerController {
     constructor(private readonly costumerService: CostumerService) {}
 
     @Post()
-    async create(@Body() data: Partial<Costumer>) {
-        return this.costumerService.create(data);
+    async create(@Body() createCostumerDto: CreateCostumerDto) {
+        return this.costumerService.create(createCostumerDto);
     }
 
     @Get()

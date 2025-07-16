@@ -10,25 +10,29 @@ import { CounterService } from '../counter/counter.service';
 
 @Module({
     imports: [
+        CounterModule,
+
         MongooseModule.forFeatureAsync([
             {
                 name: Premium.name,
-                useFactory: (counterService: CounterService) => {
+                imports: [CounterModule],
+                inject: [CounterService],
+                useFactory: async (counterService: CounterService) => {
                     const schema = PremiumSchema;
 
                     schema.pre('save', async function (next) {
                         if (!this.isNew || this._id) return next();
+
                         const nextId = await counterService.getNextSequence('premium');
                         this._id = nextId;
+
                         next();
                     });
 
                     return schema;
-                },
-                inject: [CounterService],
-            },
+                }
+            }
         ]),
-        CounterModule,
     ],
     providers: [PremiumService],
     controllers: [PremiumController],

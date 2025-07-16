@@ -5,11 +5,15 @@ import { CostumerController } from './costumer.controller';
 import { CostumerService } from './costumer.service';
 import { Costumer, CostumerSchema } from './schemas/costumer.schema';
 
+import { CommonModule } from 'src/common/common.module';
+
 @Module({
     imports: [
-        MongooseModule.forFeature([{ name: Costumer.name, schema: CostumerSchema }])
+        MongooseModule.forFeature([{ name: Costumer.name, schema: CostumerSchema }]),
+        CommonModule
     ],
     controllers: [CostumerController],
     providers: [CostumerService],
+    exports: [CostumerService]
 })
 export class CostumerModule {}

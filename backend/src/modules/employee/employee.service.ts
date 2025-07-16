@@ -6,27 +6,31 @@ import { Model } from 'mongoose';
 @Injectable()
 export class EmployeeService {
     constructor(
-        @InjectModel(Employee.name) private emplyeeModel: Model<EmployeeDocument>
+        @InjectModel(Employee.name) private employeeModel: Model<EmployeeDocument>
     ) {}
 
     async create(data: Partial<Employee>): Promise<Employee> {
-        const newEmployee = new this.emplyeeModel(data);
+        const newEmployee = new this.employeeModel(data);
         return newEmployee.save();
     }
 
     async findAll(): Promise<Employee[]> {
-        return this.emplyeeModel.find().exec();
+        return this.employeeModel.find().exec();
     }
 
     async findById(id: string): Promise<Employee | null> {
-        return this.emplyeeModel.findById(id).exec();
+        return this.employeeModel.findById(id).exec();
+    }
+
+    async findByEmail(email: string): Promise<Employee | null> {
+        return this.employeeModel.findOne({ email: email }).select('-pasword').exec();
     }
 
     async update(id: string, data: Partial<Employee>): Promise<Employee | null> {
-        return this.emplyeeModel.findByIdAndUpdate(id, data, { new: true }).exec();
+        return this.employeeModel.findByIdAndUpdate(id, data, { new: true }).exec();
     }
 
     async delete(id: string): Promise<Employee | null> {
-        return this.emplyeeModel.findByIdAndDelete(id).exec();
+        return this.employeeModel.findByIdAndDelete(id).exec();
     }
 }

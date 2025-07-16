@@ -4,7 +4,7 @@ import { Premium } from './schemas/premium.schema';
 
 import { CreatePremiumDto } from './dto/create-premium.dto';
 
-@Controller('/premium')
+@Controller('/premiumtiers')
 export class PremiumController {
     constructor(private readonly premiumService: PremiumService) {}
 

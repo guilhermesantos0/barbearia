@@ -1,15 +1,39 @@
-import { IsArray, IsNotEmpty, IsNumber, IsString } from "class-validator";
+import {
+    IsBoolean,
+    IsDefined,
+    IsObject,
+    IsOptional,
+    IsString,
+    ValidateNested,
+} from 'class-validator';
+import { Type } from 'class-transformer';
+
+export class PermissionDto {
+    @IsBoolean()
+    @IsDefined()
+    create: boolean;
+
+    @IsBoolean()
+    @IsDefined()
+    read: boolean;
+
+    @IsBoolean()
+    @IsDefined()
+    update: boolean;
+
+    @IsBoolean()
+    @IsDefined()
+    delete: boolean;
+}
 
 export class CreateRoleDto {
-    @IsNotEmpty()
-    @IsNumber()
-    _id: number;
+    @IsOptional()
+    _id?: number;
 
-    @IsNotEmpty()
     @IsString()
-    name: string
+    @IsDefined()
+    name: string;
 
-    @IsNotEmpty()
-    @IsArray()
-    permissions: string[]
+    @IsObject()
+    permissions: Record<string, PermissionDto>;
 }

@@ -8,7 +8,7 @@ interface IBenefit {
     description: string;
 }
 
-@Schema()
+@Schema({ timestamps: true, versionKey: false })
 export class Premium {
     @Prop({ type: Number, unique: true })
     _id: number;

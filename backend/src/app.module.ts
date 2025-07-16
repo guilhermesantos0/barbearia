@@ -7,7 +7,11 @@ import { MongooseModule } from '@nestjs/mongoose';
 
 import { CostumerModule } from './modules/costumer/costumer.module';
 import { ServiceModule } from './modules/service/service.module';
-import { EmployeeModule } from './employee/employee.module';
+import { EmployeeModule } from './modules/employee/employee.module';
+import { RoleModule } from './modules/role/role.module';
+import { ScheduledserviceModule } from './modules/scheduledservice/scheduledservice.module';
+import { PremiumModule } from './modules/premium/premium.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
     imports: [
@@ -23,7 +27,11 @@ import { EmployeeModule } from './employee/employee.module';
         }),
         CostumerModule,
         ServiceModule,
-        EmployeeModule
+        EmployeeModule,
+        RoleModule,
+        ScheduledserviceModule,
+        PremiumModule,
+        AuthModule
     ],
     controllers: [AppController],
     providers: [AppService],

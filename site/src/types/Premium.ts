@@ -3,7 +3,7 @@ interface Benefit {
     description: string
 }
 
-export interface Premium {
+export interface IPremium {
     _id: number,
     position: number,
     name: string,

@@ -4,6 +4,7 @@ import { Model } from 'mongoose';
 
 import { Costumer, CostumerDocument } from './schemas/costumer.schema';
 import { PasswordService } from 'src/common/services/password.service';
+import { CreateCostumerDto } from './dto/create-costumer.dto';
 
 @Injectable()
 export class CostumerService {
@@ -13,7 +14,7 @@ export class CostumerService {
         private passwordService: PasswordService
     ) {}
 
-    async create(data: Partial<Costumer>): Promise<Costumer> {
+    async create(data: CreateCostumerDto): Promise<Costumer> {
         const hashedPassword = await this.passwordService.hash(data.password!)
         const newCostumer = new this.costumerModel({
             ...data,

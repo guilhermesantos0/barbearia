@@ -94,6 +94,37 @@ const Login = () => {
 
     }
 
+    const handleLoginSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        try {
+            const response = await fetch('http://localhost:3000/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: loginFormData.mailOrPhone,
+                    password: loginFormData.password,
+                }),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                alert(`Erro: ${errorData.message}`);
+                return;
+            }
+
+            const data = await response.json();
+
+            localStorage.setItem('access_token', data.access_token);
+
+        } catch (err) {
+            console.error('Erro ao fazer login:', err);
+            alert('Erro ao conectar com o servidor 😓');
+        }
+    };
+
     const nextStage = () => {
         setSignupStage(prev => (prev + 1) as 1 | 2 | 3 | 4);
     }
@@ -119,7 +150,7 @@ const Login = () => {
                         <h5 className={style.Recovery}>Esqueci minha senha</h5>
                     </div>
 
-                    <button className={style.Button}>Login</button>
+                    <button className={style.Button} onClick={handleLoginSubmit}>Login</button>
                 </form>
                 <p className={style.AuxiliarText}>Ainda não possui conta? <span className={style.Link} onClick={handleOpenSignUp}>cadastre-se</span></p>
             </div>

@@ -1,6 +1,6 @@
-import { Role } from "./Role"
-import { ScheduledService } from "./ScheduledService"
-import { Service } from "./Service"
+import { IRole } from "./Role"
+import { IScheduledService } from "./ScheduledService"
+import { IService } from "./Service"
 
 interface Interval {
     name: string,
@@ -8,16 +8,16 @@ interface Interval {
     end: string
 }
 
-export interface Employee {
+export interface IEmployee {
     _id: string,
-    role: Role,
+    role: IRole,
     name: string,
     email: string,
     phone: string,
     cpf: string,
     profilePic: string,
-    nextServices: ScheduledService[],
-    lastServices: ScheduledService[],
+    nextServices: IScheduledService[],
+    lastServices: IScheduledService[],
     work: {
         days: string[],
         time: {
@@ -26,7 +26,7 @@ export interface Employee {
             intervals: Interval[]
         }
     },
-    services: Service[],
+    services: IService[],
     createdAt: string | Date,
     editedAt: string | Date
 }

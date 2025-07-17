@@ -1,14 +1,15 @@
-import { ScheduledService } from "./ScheduledService"
+import { IScheduledService } from "./ScheduledService"
 
-export interface Costumer {
+export interface ICostumer {
     _id: string,
     name: string,
+    role: number,
     email: string,
     phone: string,
     cpf: string,
     profilePic: string,
     premiumTier: number,
-    history: ScheduledService[],
+    history: IScheduledService[],
     createdAt: string | Date,
     editedAt: string | Date
 }

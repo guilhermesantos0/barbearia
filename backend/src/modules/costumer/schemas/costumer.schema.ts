@@ -15,6 +15,9 @@ export class Costumer {
     @Prop({ required: true, trim: true })
     name: string;
 
+    @Prop({ default: 0 })
+    role: number;
+
     @Prop({ required: true, unique: true, lowercase: true })
     email: string;
 

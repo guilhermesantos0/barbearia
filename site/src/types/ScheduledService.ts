@@ -1,12 +1,12 @@
-import { Costumer } from "./Costumer"
-import { Employee } from "./Empoyee"
-import { Service } from "./Service"
+import { ICostumer } from "./Costumer"
+import { IEmployee } from "./Empoyee"
+import { IService } from "./Service"
 
-export interface ScheduledService {
+export interface IScheduledService {
     _id: string,
-    costumer: Costumer,
-    barber: Employee,
-    service: Service,
+    costumer: ICostumer,
+    barber: IEmployee,
+    service: IService,
     date: Date,
     complete: boolean,
     completedAt?: Date,

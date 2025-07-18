@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
 import { PasswordService } from 'src/common/services/password.service';
@@ -43,20 +43,17 @@ export class AuthService {
         };
     }
 
-    // async validateLogin(email: string, password: string) {
-    //     const user = await this.costumerModel.findOne({ email });
-    //     if (!user) throw new UnauthorizedException('Usuário não encontrado');
+    async validateEmailAvailability(email: string): Promise<{ message: string }> {
+        let user: Costumer | Employee | null = await this.costumerService.findByEmail(email);
+        if (!user) user = await this.employeeService.findByEmail(email);
 
-    //     const isValid = await this.passwordService.compare(password, user.password);
-    //     if (!isValid) throw new UnauthorizedException('Senha incorreta');
+        if (user) {
+            throw new BadRequestException('Email já existente');
+        }
 
-    //     return {
-    //         message: 'Login realizado com sucesso ✅',
-    //         user: {
-    //             _id: user._id,
-    //             name: user.name,
-    //             email: user.email
-    //         }
-    //     };
-    // }
+        // Enviar email para validar
+        // await this.mailService.sendVerificationEmail(email);
+
+        return { message: 'Email disponível. Verificação enviada.' };
+    }
 }

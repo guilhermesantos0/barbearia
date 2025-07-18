@@ -19,4 +19,9 @@ export class AuthController {
     getProfile(@Request() req) {
         return req.user;
     }
+
+    @Post('/check-email')
+    async checkEmail(@Body('email') email: string) {
+        return await this.authService.validateEmailAvailability(email)
+    }
 }

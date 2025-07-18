@@ -2,13 +2,16 @@ import { useRef, useState } from 'react';
 import style from './Login.module.scss';
 import { ArrowRightIcon, ArrowLeftIcon, CheckIcon } from '@radix-ui/react-icons';
 import * as Checkbox from '@radix-ui/react-checkbox';
+import api from '../../services/api';
 
 import OTPInput from '../../components/OTPInput';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
     const [currentState, setCurrentState] = useState<'login' | 'signup'>('login')
     const [signupStage, setSignupStage] = useState<1 | 2 | 3 | 4>(1);
     const [isTermsAccepted, setIsTermsAccepted] = useState<boolean>(false);
+    const navigate = useNavigate();
 
     const formatDate = (date: Date) => {
         return date.toLocaleDateString('pt-BR');
@@ -30,6 +33,7 @@ const Login = () => {
 
     const [confirmPassword, setConfirmPassword] = useState('');
 
+    
     const handleLoginChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setLoginFormData(prev => ({ ...prev, [name]: value }));
@@ -67,8 +71,9 @@ const Login = () => {
         }, 600)
     }
 
+
     const handleOTPComplete = async (code: string) => {
-        const isValid = true // FAZER A FUNÇÃO NO BACKEND
+        const isValid = true 
         if (isValid) {
             setTimeout(() => {
                 nextStage();
@@ -85,9 +90,7 @@ const Login = () => {
     }
 
     const handleCheckEmail = () => {
-        // IMPLEMENTAR A LOGICA DO BACKEND
-
-
+        
     }
 
     const handleCreateAccount = () => {
@@ -98,30 +101,23 @@ const Login = () => {
         e.preventDefault();
 
         try {
-            const response = await fetch('http://localhost:3000/auth/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    email: loginFormData.mailOrPhone,
-                    password: loginFormData.password,
-                }),
+            const response = await api.post('/auth/login', {
+                email: loginFormData.mailOrPhone,
+                password: loginFormData.password,
             });
 
-            if (!response.ok) {
-                const errorData = await response.json();
-                alert(`Erro: ${errorData.message}`);
-                return;
+            const {access_token} = response.data;
+
+            localStorage.setItem('access_token', access_token);
+            navigate('/')
+
+        } catch (error: any) {
+            if (error.response) {
+                alert(`Erro: ${error.response.data.message}`);
+            } else {
+                console.error('Erro ao fazer login:', error);
+                alert('Erro ao conectar com o servidor');
             }
-
-            const data = await response.json();
-
-            localStorage.setItem('access_token', data.access_token);
-
-        } catch (err) {
-            console.error('Erro ao fazer login:', err);
-            alert('Erro ao conectar com o servidor 😓');
         }
     };
 

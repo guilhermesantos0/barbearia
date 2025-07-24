@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, forwardRef, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
 import { PasswordService } from 'src/common/services/password.service';
@@ -12,6 +12,7 @@ import { Employee } from '../employee/schemas/employee.schema';
 @Injectable()
 export class AuthService {
     constructor(
+        @Inject(forwardRef(() => CostumerService))
         private costumerService: CostumerService,
         private employeeService: EmployeeService,
         private passwordService: PasswordService,
@@ -51,9 +52,19 @@ export class AuthService {
             throw new BadRequestException('Email já existente');
         }
 
-        // Enviar email para validar
-        // await this.mailService.sendVerificationEmail(email);
-
         return { message: 'Email disponível. Verificação enviada.' };
+    }
+
+    async generateToken(user: Costumer | Employee | null) {
+
+        if(!user) {
+            throw new Error('Envie o objeto do usuário');
+        }
+
+        const userObj = JSON.parse(JSON.stringify(user))
+        const { password, ...payload } = userObj;
+        console.log('USER NO PASSWORD: ', userObj)
+
+        return this.jwtService.sign(payload);
     }
 }

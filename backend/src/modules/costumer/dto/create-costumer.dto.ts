@@ -6,7 +6,7 @@ export class CreateCostumerDto {
     name: string;
 
     @IsOptional()
-    role: string;
+    role: number;
 
     @IsEmail()
     email: string;

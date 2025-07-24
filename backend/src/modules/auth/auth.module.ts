@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { JwtModule } from '@nestjs/jwt';
 
@@ -26,7 +26,8 @@ import { CostumerModule } from '../costumer/costumer.module';
         }),
         CommonModule,
         EmployeeModule,
-        CostumerModule
+        forwardRef(() => CostumerModule),
+        
     ],
     controllers: [AuthController],
     providers: [AuthService, JwtStrategy],

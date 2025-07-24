@@ -17,6 +17,11 @@ async function bootstrap() {
     })
   )
 
+  app.use((req, res, next) => {
+    console.log('Headers recebidos:', req.headers);
+    next();
+  })
+
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();

@@ -34,6 +34,10 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+
+            .ToggleIcon {
+                transform: rotate(180deg);
+            }
         }
 
         .Option {
@@ -75,6 +79,16 @@
 
         font-weight: 800;
 
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .ToggleIcon {
+            transition-delay: .5s;
+            transition: all .5s ease-in-out;
+            transform: rotate(0deg);
+        }
+
         &:hover {
             cursor: pointer;
         }
@@ -110,7 +124,6 @@
 
                 &:hover {
                     color: color.adjust($color: $light_blue, $lightness: -10%);
-                    background: rgba(0, 0, 0, 0.05);
                     border-radius: 5px;
                     cursor: pointer;
 

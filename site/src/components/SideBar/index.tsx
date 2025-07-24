@@ -27,18 +27,12 @@ const Sidebar: React.FC<Props> = ({ setOpenedTab }) => {
         >
 
             <Collapsible.Trigger asChild>
-                <button className={style.ToggleButton}>
-                    {
-                        isExpanded ? (
-                            <>
-                                <span className={style.Label}>BarberPrime</span>
-                                <ChevronLeftIcon className={style.Icon} />
-                            </>
-                        ) : (
-                            <ChevronRightIcon className={style.Icon} />
-                        )
-                    }
-                </button>
+                <div className={style.ToggleButton}>
+                    <Collapsible.Content>
+                        <span className={style.Label}>BarberPrime</span>
+                    </Collapsible.Content>
+                    <ChevronRightIcon className={`${style.Icon} ${style.ToggleIcon}`} />
+                </div>
             </Collapsible.Trigger>
 
             <nav className={style.NavMenu}>

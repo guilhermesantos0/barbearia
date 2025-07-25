@@ -17,6 +17,7 @@ const Home = () => {
         setOpenedTab(`${userType}_${page}`)
     },[ userType, page ])
 
+    
     return (
         <div className={style.Container}>
             <Sidebar setOpenedTab={setOpenedTab} />

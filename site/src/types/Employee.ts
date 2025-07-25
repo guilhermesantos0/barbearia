@@ -15,7 +15,6 @@ export interface IEmployee {
     email: string,
     phone: string,
     cpf: string,
-    profilePic: string,
     nextServices: IScheduledService[],
     lastServices: IScheduledService[],
     work: {

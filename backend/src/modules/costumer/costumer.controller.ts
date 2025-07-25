@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Put, Delete, Patch, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Put, Delete, Patch, UseGuards, Request } from '@nestjs/common';
 import { CostumerService } from './costumer.service';
 import { Costumer } from './schemas/costumer.schema';
 
@@ -22,10 +22,23 @@ export class CostumerController {
         return this.costumerService.findAll();
     }
 
+    @UseGuards(JwtAuthGuard)
+    @Get('/me')
+    async getProfile(@Request() req) {
+        return this.costumerService.findById(req.user.sub);
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Get('/me/history')
+    async getHistory(@Request() req) {
+        return
+    }
+
     @Get(':id')
     async findOne(@Param('id') id: string) {
         return this.costumerService.findById(id);
     }
+
 
     @Put(':id')
     async update(@Param('id') id: string, @Body() data: Partial<Costumer>) {

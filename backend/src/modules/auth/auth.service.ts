@@ -19,6 +19,27 @@ export class AuthService {
         private jwtService: JwtService
     ) {}
 
+    async generateToken(user: Costumer | Employee | null) {
+
+        if(!user) {
+            throw new Error('Envie o objeto do usuário');
+        }
+
+        delete (user as any).password;
+
+        const payload = {
+            sub: user._id,
+            role: user.role,
+            email: user.email,
+            premium: user.role === 0 ? (user as Costumer).premiumTier : undefined
+        };
+
+        return {
+            access_token: this.jwtService.sign(payload),
+            user: user
+        };
+    }
+
     async validateUser(email: string, password: string) {
         let user: Costumer | Employee | null = await this.costumerService.findByEmail(email);
 
@@ -36,12 +57,9 @@ export class AuthService {
         const user = await this.validateUser(email, password);
         delete (user as any).password;
 
-        const token = await this.jwtService.signAsync(user);
+        const response = await this.generateToken(user);
 
-        return {
-            access_token: token,
-            user: user
-        };
+        return response;
     }
 
     async validateEmailAvailability(email: string): Promise<{ message: string }> {
@@ -53,18 +71,5 @@ export class AuthService {
         }
 
         return { message: 'Email disponível. Verificação enviada.' };
-    }
-
-    async generateToken(user: Costumer | Employee | null) {
-
-        if(!user) {
-            throw new Error('Envie o objeto do usuário');
-        }
-
-        const userObj = JSON.parse(JSON.stringify(user))
-        const { password, ...payload } = userObj;
-        console.log('USER NO PASSWORD: ', userObj)
-
-        return this.jwtService.sign(payload);
     }
 }

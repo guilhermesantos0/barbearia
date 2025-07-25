@@ -18,7 +18,7 @@ async function bootstrap() {
   )
 
   app.use((req, res, next) => {
-    console.log('Headers recebidos:', req.headers);
+    console.log('Req path:', req.path);
     next();
   })
 

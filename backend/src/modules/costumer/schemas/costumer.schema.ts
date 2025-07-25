@@ -30,8 +30,8 @@ export class Costumer {
     @Prop({ unique: true, sparse: true })
     cpf: string;
 
-    @Prop({ default: '' })
-    profilePic: string;
+    @Prop({ default: false })
+    profilePic: boolean;
 
     @Prop({ default: 0, ref: 'Premium' })
     premiumTier: number;

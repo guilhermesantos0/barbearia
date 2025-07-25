@@ -63,9 +63,6 @@ export class Employee {
     @Prop({ required: true, unique: true, sparse: true })
     cpf: string;
 
-    @Prop({ default: '' })
-    profilePic: string;
-
     @Prop({ type: [String], ref: 'ScheduledService', default: [] })
     nextServices: string[];
 

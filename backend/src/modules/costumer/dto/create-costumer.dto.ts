@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsOptional, IsString, IsNumber, IsArray, ArrayNotEmpty } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsOptional, IsString, IsNumber, IsArray, ArrayNotEmpty, IsBoolean } from 'class-validator';
 
 export class CreateCostumerDto {
     @IsNotEmpty()
@@ -23,8 +23,8 @@ export class CreateCostumerDto {
     cpf?: string;
 
     @IsOptional()
-    @IsString()
-    profilePic?: string;
+    @IsBoolean()
+    profilePic?: boolean;
 
     @IsOptional()
     @IsNumber()

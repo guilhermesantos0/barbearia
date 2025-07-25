@@ -74,10 +74,6 @@ export class CreateEmployeeDto {
     cpf?: string;
 
     @IsOptional()
-    @IsString()
-    profilePic?: string;
-
-    @IsOptional()
     @IsArray()
     @IsString({ each: true })
     nextServices?: string[];

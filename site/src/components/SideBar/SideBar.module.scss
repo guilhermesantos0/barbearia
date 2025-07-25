@@ -24,6 +24,23 @@
 
     &.Collapsed {
         width:  5vw;
+
+        .Option {
+            height: 3rem;
+            width: 3rem;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 100%;
+            // padding: .5rem;
+            
+            &:hover {
+                border-radius: 100% !important;
+                background: #00000020;
+            }
+        }
     }
 
     &.Expanded {
@@ -58,7 +75,6 @@
 
             &:hover {
                 border-radius: 5px;
-                cursor: pointer;
                 background-color: color.adjust($red, $lightness: -5%);
             }
         }
@@ -156,6 +172,10 @@
                 height: 2rem;
 
                 color: $red;
+            }
+
+            &:hover {
+                cursor: pointer;
             }
         }
     }

@@ -7,7 +7,7 @@ export interface ICostumer {
     email: string,
     phone: string,
     cpf: string,
-    profilePic: string,
+    profilePic: boolean,
     premiumTier: number,
     history: IScheduledService[],
     createdAt: string | Date,

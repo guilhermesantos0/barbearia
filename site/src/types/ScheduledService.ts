@@ -1,5 +1,5 @@
 import { ICostumer } from "./Costumer"
-import { IEmployee } from "./Empoyee"
+import { IEmployee } from "./Employee"
 import { IService } from "./Service"
 
 export interface IScheduledService {

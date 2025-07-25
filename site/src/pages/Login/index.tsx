@@ -106,10 +106,11 @@ const Login = () => {
                 password: loginFormData.password,
             });
 
-            const {access_token} = response.data;
+            const { access_token, user } = response.data;
 
             localStorage.setItem('access_token', access_token);
-            navigate('/')
+            
+            navigate(user.role === 0 ? `/home/cliente/agendamentos` : `/home/funcionario/agendamentos`)
 
         } catch (error: any) {
             if (error.response) {

@@ -14,6 +14,10 @@ export class EmployeeService {
         return newEmployee.save();
     }
 
+    async addScheduledService(employeeId: string, serviceId: string): Promise<void> {
+        await this.employeeModel.findByIdAndUpdate(employeeId, { $push: { nextServices: serviceId } }, { new: true }).exec()
+    }
+
     async findAll(): Promise<Employee[]> {
         return this.employeeModel.find().exec();
     }

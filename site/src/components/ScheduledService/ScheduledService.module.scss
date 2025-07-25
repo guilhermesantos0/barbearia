@@ -1,0 +1,32 @@
+@use '@assets/scss/variables' as *;
+
+.Container {
+    width: 20rem;
+    height: 10rem;
+    background: $dark_blue;
+    border-radius: 20px;
+    padding: .5rem 1rem;
+    padding-bottom: 1rem;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .TopSection {
+        width: 100%;
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .Icon {
+            width: 2rem;
+            height: 2rem;
+
+            &.Trash {
+                color: $red;
+            }
+        }
+
+    }
+}

@@ -28,16 +28,53 @@ export class CostumerService {
         return newCostumer.save();
     }
 
+    async addScheduledService(clientId: string, serviceId: string): Promise<void> {
+        await this.costumerModel.findByIdAndUpdate(clientId, { $push: { history: serviceId }}, { new: true }).exec();
+    }
+
     async findAll(): Promise<Costumer[]> {
         return this.costumerModel.find().exec();
     }
 
     async findById(id: string): Promise<Costumer | null> {
-        return this.costumerModel.findById(id).exec();
+        return this.costumerModel.findById(id)
+            .populate({
+                path: 'history',
+                populate: [
+                    {
+                        path: 'costumer',
+                    },
+                    {
+                        path: 'barber',
+                        select: 'name profilePic'
+                    },
+                    {
+                        path: 'service'
+                    }
+                ]
+            })
+            .exec();
     }
 
     async findByEmail(email: string): Promise<Costumer | null> {
-        return this.costumerModel.findOne({ email: email }).lean().exec();
+        return this.costumerModel.findOne({ email: email })
+            .lean()
+            .populate({
+                path: 'history',
+                populate: [
+                    {
+                        path: 'costumer',
+                    },
+                    {
+                        path: 'barber',
+                        select: 'name profilePic'
+                    },
+                    {
+                        path: 'service'
+                    }
+                ]
+            })
+            .exec();
     }
 
     async update(id: string, data: Partial<Costumer>): Promise<Costumer | null> {
@@ -49,18 +86,32 @@ export class CostumerService {
             data.password = await this.passwordService.hash(data.password)
         }
 
-        const updatedUser = await this.costumerModel.findByIdAndUpdate(id, data, { new: true }).lean().exec();
+        const updatedUser = await this.costumerModel.findByIdAndUpdate(id, data, { new: true })
+            .lean()
+            .populate({
+                path: 'history',
+                populate: [
+                    {
+                        path: 'costumer',
+                    },
+                    {
+                        path: 'barber',
+                        select: 'name profilePic'
+                    },
+                    {
+                        path: 'service'
+                    }
+                ]
+            })
+            .exec();
 
         if(!updatedUser) throw new BadRequestException('Usuário não encontrado');
 
-        const newToken = await this.authService.generateToken(updatedUser);
+        const reponse = await this.authService.generateToken(updatedUser);
 
         console.log('UPDATED USER: ', updatedUser)
 
-        return {
-            access_token: newToken,
-            user: updatedUser
-        }
+        return reponse;
     }
 
     async delete(id: string): Promise<Costumer | null> {

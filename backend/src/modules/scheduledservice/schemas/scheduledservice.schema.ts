@@ -35,8 +35,8 @@ export class ScheduledService {
     @Prop({ type: Date, required: true })
     date: Date;
 
-    @Prop({ default: false })
-    complete: boolean;
+    @Prop({ default: 'Pendente' })
+    status: string;
 
     @Prop()
     completedAt: Date;

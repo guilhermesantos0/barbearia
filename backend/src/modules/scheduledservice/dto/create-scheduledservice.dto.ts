@@ -40,9 +40,8 @@ export class CreateScheduledServiceDto {
     @IsNotEmpty()
     date: string;
 
-    @IsBoolean()
-    @IsOptional()
-    complete?: boolean;
+    @IsString()
+    status?: string;
 
     @IsDateString()
     @IsOptional()

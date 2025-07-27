@@ -1,0 +1,50 @@
+@use '@assets/scss/variables' as *;
+@use '@assets/scss/mixins' as *;
+
+.Container {
+    margin-top: .5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+
+    .Welcome {
+        color: $light-blue;       
+    }
+
+    .Subtitle {
+        color: $light-gray;
+    }
+
+    .InlineElements {
+        display: flex;
+        justify-content: space-between;
+
+        .ScheduleNew {
+            margin-right: calc(7.5% + .5rem);
+            @include button-primary;
+            padding: .5rem 1rem;
+
+            .Icon {
+                height: 1.5rem;
+                width: 1.5rem;
+            }
+        }
+    }
+
+    .PageContent {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        
+        .UserServices {
+
+            width: 85%;
+            margin-left: 3rem;
+
+            gap: 3rem;
+            display: flex;
+            flex-wrap: wrap;
+        }
+    }
+
+}

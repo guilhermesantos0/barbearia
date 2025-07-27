@@ -1,11 +1,13 @@
 // src/contexts/UserContext.tsx
 import { createContext, useContext, useEffect, useState } from 'react';
 import { jwtDecode } from 'jwt-decode';
+import { isTokenExpired } from '../utils/auth';
 
 import { ICostumer } from '../types/Costumer';
 import { IEmployee } from '../types/Employee';
 
 import api from '../services/api';
+import { useNavigate } from 'react-router-dom';
 
 type UserContextType = {
     user: ICostumer | IEmployee | null;
@@ -16,12 +18,22 @@ type UserContextType = {
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
+    const navigate = useNavigate();
+
     const [user, setUser] = useState<ICostumer | IEmployee | null>(null);
 
     useEffect(() => {
         const setUserData = async () => {
             const token = localStorage.getItem('access_token');
             if (token) {
+
+                if(isTokenExpired(token)) {
+                    console.log('Token expirado');
+                    localStorage.removeItem('access_token');
+                    navigate('/login');
+                    return
+                }
+
                 try {
                     const decoded = jwtDecode<ICostumer | IEmployee>(token);
                     if (decoded.role === 0) {

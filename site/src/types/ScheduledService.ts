@@ -8,7 +8,7 @@ export interface IScheduledService {
     barber: IEmployee,
     service: IService,
     date: Date,
-    complete: boolean,
+    status: string,
     completedAt?: Date,
     rated: boolean,
     rate: {

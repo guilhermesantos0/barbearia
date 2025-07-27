@@ -1,32 +1,105 @@
 @use '@assets/scss/variables' as *;
+@use 'sass:color';
 
 .Container {
     width: 20rem;
     height: 10rem;
     background: $dark_blue;
-    border-radius: 20px;
-    padding: .5rem 1rem;
-    padding-bottom: 1rem;
+    border-radius: 5px;
+    padding: 0 .5rem;
 
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
 
-    .TopSection {
-        width: 100%;
+    position: relative;
 
+    box-shadow: 0 0 3px color.adjust($light-blue, $lightness: 20%);
+    
+    transition: box-shadow .3s ease-in-out, transform .3s ease-in-out;
+    
+    &:hover {
+        box-shadow: 0 0 8px color.adjust($light-blue, $lightness: 20%);
+        transform: scale(1.01);
+    }
+    
+    .Icon {
+        position: absolute;
+        width: 1.3rem;
+        height: 1.3rem;
+        
+        right: 1rem;
+        top: 1.5rem;
+
+        color: $light-gray;
+
+        transition: color .2s ease-in-out;
+
+        &:hover {
+            cursor: pointer;
+            color: $red;
+        }
+    }
+    
+    .ServiceInfos {
+        
         display: flex;
-        justify-content: space-between;
-        align-items: center;
-
-        .Icon {
-            width: 2rem;
-            height: 2rem;
-
-            &.Trash {
-                color: $red;
-            }
+        flex-direction: column;
+        justify-content: center;
+        gap: .5rem;
+        
+        .Title {
+            font-size: 1.2rem;
+            font-weight: 600;
         }
 
+        .Details {
+
+            p {
+                margin-top: .3rem;
+            }
+
+            font-weight: 500;
+            color: $light-gray;
+        }
+
+        .Status {
+            margin-top: .2rem;
+            width: fit-content;
+            padding: .2rem .5rem;
+            border-radius: 100vw;
+            font-size: 0.8rem;
+            font-weight: 600;
+            
+            &.Pending {
+                background: $yellow;
+                color: darken($yellow, 40%);
+            }
+            
+            &.Confirmed {
+                background: $green;
+                color: darken($green, 40%);
+            }
+            
+            &.Canceld {
+                background: $red;
+                color: white;
+            }
+            
+            &.Delayed {
+                background: $orange;
+                color: white;
+            }
+            
+            &.Running {
+                background: $light-blue;
+                color: white;
+            }
+            
+            &.Complete {
+                background: $purple;
+                color: white;
+            }
+        }
     }
 }

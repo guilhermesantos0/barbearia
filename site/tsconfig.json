@@ -4,12 +4,4 @@
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }
   ],
-  "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@contexts/*": ["src/contexts/*"],
-      "@components/*": ["src/components/*"],
-      "@types/*": ["src/types/*"]
-    }
-  }
 }

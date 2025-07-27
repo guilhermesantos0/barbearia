@@ -1,12 +1,16 @@
 import style from './CostumerSchedules.module.scss'
 
 import { useUser } from '@contexts/UserContext'
-
 import ScheduledService from '@components/ScheduledService';
 
+// @ts-ignore
 import { ICostumer } from '@types/Costumer';
+// @ts-ignore
 import { IEmployee } from '@types/Employee';
+// @ts-ignore
 import { IScheduledService } from '@types/ScheduledService';
+
+import { PlusIcon } from '@radix-ui/react-icons';
 
 const CostumerSchedules = () => {
 
@@ -21,21 +25,26 @@ const CostumerSchedules = () => {
             {
                 user && isCostumer(user) && (
                     <>
-                        <h1>Olá, {user.name.split(' ')[0]}</h1>
-                        <h3>Confira seus agendamentos</h3>
-                        {
-                            user.history.length > 0 ? (
-                                <>
-                                    {
-                                        user.history.map((service: IScheduledService, idx: number) => (
-                                            <ScheduledService service={service} view="Costumer" key={idx} />
-                                        ))
-                                    }
-                                </>
-                            ) : (
-                                <></>
-                            )                       
-                        }
+                        <h1 className={style.Welcome}>Olá, {user.name.split(' ')[0]}</h1>
+                        <div className={style.InlineElements}>
+                            <h3 className={style.Subtitle}>Confira seus agendamentos</h3>
+                            <button className={style.ScheduleNew}><PlusIcon className={style.Icon} /> Agendar Serviço</button>
+                        </div>
+                        <div className={style.PageContent}>
+                            {
+                                user.history.length > 0 ? (
+                                    <div className={style.UserServices}>
+                                        {
+                                            user.history.map((service: IScheduledService, idx: number) => (
+                                                <ScheduledService service={service} view="Costumer" key={idx} />
+                                            ))
+                                        }
+                                    </div>
+                                ) : (
+                                    <></>
+                                )                       
+                            }
+                        </div>
                     </>
                 )
             }

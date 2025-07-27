@@ -21,6 +21,7 @@
     &:hover {
         box-shadow: 0 0 8px color.adjust($light-blue, $lightness: 20%);
         transform: scale(1.01);
+        cursor: pointer;
     }
     
     .Icon {
@@ -61,6 +62,16 @@
 
             font-weight: 500;
             color: $light-gray;
+
+            .AditionalInfo {
+                display: flex;
+                align-items: center;
+                gap: .5rem;
+
+                .DetailsIcon {
+                    margin-top: .2rem;
+                }
+            }
         }
 
         .Status {

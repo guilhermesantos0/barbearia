@@ -28,8 +28,9 @@
       "@contexts/*": ["src/contexts/*"],
       "@components/*": ["src/components/*"],
       "@types/*": ["src/types/*"],
+      "@assets/": ["src/assets/*"],
       "@types/": ["src/types"],
     }
   },
-  "include": ["src"]
+  "include": ["src", "types.d.ts"]
 }

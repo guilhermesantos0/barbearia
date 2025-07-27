@@ -8,6 +8,11 @@ import { useState } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+import Pencil from '../../assets/icons/pencil.svg?react';
+import Badge from '../../assets/icons/badge.svg?react'
+
 interface Props {
     setOpenedTab: (tab: string) => void;
 }
@@ -40,35 +45,38 @@ const Sidebar: React.FC<Props> = ({ setOpenedTab }) => {
                     user && user.role === 0 && (
                         <ul className={style.NavList}>
                             <li className={style.Option} onClick={() => navigate('/home/cliente/agendamentos')}>
-                                <CalendarIcon className={style.Icon} />
+                                <FontAwesomeIcon icon={['far', 'calendar']} className={style.Icon} />
                                 <Collapsible.Content asChild>
                                     <span className={style.Label}>Agendamentos</span>
                                 </Collapsible.Content>
                             </li>
 
                             <li className={style.Option} onClick={() => navigate('/home/cliente/barbeiros-favoritos')}>
-                                <AvatarIcon className={style.Icon} />
+                                <FontAwesomeIcon icon={['far', 'user']} className={style.Icon} />
                                 <Collapsible.Content asChild>
                                     <span className={style.Label}>Barbeiros Favoritos</span>
                                 </Collapsible.Content>
                             </li>
 
                             <li className={style.Option} onClick={() => navigate('/home/cliente/historico')}>
-                                <ClockIcon className={style.Icon} />
+                                <FontAwesomeIcon icon={['far', 'clock']} className={style.Icon} />
                                 <Collapsible.Content asChild>
                                     <span className={style.Label}>Histórico</span>
                                 </Collapsible.Content>
                             </li>
 
                             <li className={style.Option} onClick={() => navigate('/home/cliente/editar-perfil')}>
-                                <Pencil1Icon className={style.Icon} />
+                                {/* <Pencil1Icon className={style.Icon} />
+                                <FontAwesomeIcon icon="pencil-alt" /> */}
+                                <Pencil className={`${style.Icon} ${style.Pencil}`} />
                                 <Collapsible.Content asChild>
                                     <span className={style.Label}>Editar Perfil</span>
                                 </Collapsible.Content>
                             </li>
 
                             <li className={style.Option} onClick={() => navigate('/home/cliente/assinaturas')}>
-                                <BadgeIcon className={style.Icon} />
+                                {/* <BadgeIcon className={style.Icon} /> */}
+                                <Badge className={style.Icon} />
                                 <Collapsible.Content asChild>
                                     <span className={style.Label}>Assinaturas</span>
                                 </Collapsible.Content>

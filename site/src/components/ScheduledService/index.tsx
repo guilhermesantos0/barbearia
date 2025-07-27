@@ -51,33 +51,46 @@ const ScheduledService:React.FC<Props> = ({ service, view }) => {
         <div className={style.Container}>
             {
                 view === 'Costumer' ? (
-                    <FontAwesomeIcon icon="trash" className={`${style.Icon} ${style.Trash}`} />
+                    <>
+                        {
+                            service.status !== "Em andamento" && service.status !== "Cancelado" && (
+                                <FontAwesomeIcon icon="trash" className={`${style.Icon} ${style.Trash}`} />       
+                            )
+                        }
+                        {
+                            service.status === "Cancelado" && (
+                                <FontAwesomeIcon icon="xmark" className={`${style.Icon} ${style.Trash}`} />
+                            )
+                        }
+                        <div className={style.ServiceInfos}>
+                            <p className={style.Title}>{service.service.name}</p>
+                            <div className={style.Details}>
+                                <p className={style.AditionalInfo}><FontAwesomeIcon className={style.DetailsIcon} icon="user" /> {service.barber.name}</p>
+                                <p className={style.AditionalInfo}><FontAwesomeIcon className={style.DetailsIcon} icon="calendar" />{serviceDate || 'Carregando data...'}</p>
+                            </div>
+                            <p className={`${style.Status} ${serviceStatusStyle}`}>
+                                <FontAwesomeIcon 
+                                    
+                                    icon={{
+                                        'Pendente': 'clock' as IconProp,
+                                        'Confirmado': 'check' as IconProp,
+                                        'Cancelado': 'times' as IconProp,
+                                        'Atrasado': 'running' as IconProp,
+                                        'Em andamento': 'spinner' as IconProp,
+                                        'Finalizado': 'calendar-check' as IconProp
+                                    }[service.status] || 'question'} 
+
+                                    spin={service.status === 'Em andamento'}
+                                /> {service.status}
+                            </p>
+                        </div>
+                    </>
+                    
                 ) : (
                     <Pencil1Icon className={`${style.Icon} ${style.Pencil}`} />
                 )
             }
-            <div className={style.ServiceInfos}>
-                <p className={style.Title}>{service.service.name}</p>
-                <div className={style.Details}>
-                    <p><FontAwesomeIcon icon="user" /> {service.barber.name}</p>
-                    <p className={style.Pending}><FontAwesomeIcon icon="calendar" />{serviceDate || 'Carregando data...'}</p>
-                </div>
-                <p className={`${style.Status} ${serviceStatusStyle}`}>
-                    <FontAwesomeIcon 
-                        
-                        icon={{
-                            'Pendente': 'clock' as IconProp,
-                            'Confirmado': 'check' as IconProp,
-                            'Cancelado': 'times' as IconProp,
-                            'Atrasado': 'running' as IconProp,
-                            'Em andamento': 'spinner' as IconProp,
-                            'Finalizado': 'calendar-check' as IconProp
-                        }[service.status] || 'question'} 
-
-                        spin={service.status === 'Em andamento'}
-                    /> {service.status}
-                </p>
-            </div>
+            
         </div>
     )
 }

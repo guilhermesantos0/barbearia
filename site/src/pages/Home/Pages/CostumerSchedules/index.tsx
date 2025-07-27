@@ -36,7 +36,13 @@ const CostumerSchedules = () => {
                                     <div className={style.UserServices}>
                                         {
                                             user.history.map((service: IScheduledService, idx: number) => (
-                                                <ScheduledService service={service} view="Costumer" key={idx} />
+                                                <>
+                                                    {
+                                                        service.status !== 'Finalizado' && (
+                                                            <ScheduledService service={service} view="Costumer" key={idx} />
+                                                        )
+                                                    }
+                                                </>
                                             ))
                                         }
                                     </div>

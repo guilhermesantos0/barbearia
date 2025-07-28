@@ -13,6 +13,7 @@ export interface IEmployee {
     role: IRole,
     name: string,
     email: string,
+    profilePic: string,
     phone: string,
     cpf: string,
     nextServices: IScheduledService[],

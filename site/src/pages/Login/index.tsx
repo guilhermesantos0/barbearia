@@ -11,6 +11,8 @@ const Login = () => {
     const [currentState, setCurrentState] = useState<'login' | 'signup'>('login')
     const [signupStage, setSignupStage] = useState<1 | 2 | 3 | 4>(1);
     const [isTermsAccepted, setIsTermsAccepted] = useState<boolean>(false);
+    const [rememberUser, setRememberUser] = useState<boolean>(false);
+
     const navigate = useNavigate();
 
     const formatDate = (date: Date) => {
@@ -104,6 +106,7 @@ const Login = () => {
             const response = await api.post('/auth/login', {
                 email: loginFormData.mailOrPhone,
                 password: loginFormData.password,
+                remember: rememberUser
             });
 
             const { access_token, user } = response.data;
@@ -144,7 +147,24 @@ const Login = () => {
                     <div className={style.InputContainer}>
                         <label className={style.Label} htmlFor="password">Senha</label>
                         <input autoComplete='off' className={style.Input} type="password" name='password' placeholder='••••••••' value={loginFormData.password} onChange={handleLoginChange} />
-                        <h5 className={style.Recovery}>Esqueci minha senha</h5>
+                        <div className={style.BottomPassword}>
+                            <div className={style.Checkbox}>
+                                <Checkbox.Root
+                                    className={style.CheckboxRoot}
+                                    id="remember"
+                                    name="remember"
+                                    checked={rememberUser}
+                                    onCheckedChange={(checked) => setRememberUser(!!checked)}
+                                >
+                                    <Checkbox.Indicator className={style.CheckboxIndicator}>
+                                        <CheckIcon width={16} height={16} />
+                                    </Checkbox.Indicator>
+                                </Checkbox.Root>
+
+                                <label htmlFor="remember" className={style.Label}> Lembrar por 7 dias</label>
+                            </div>
+                            <h5 className={style.Recovery}>Esqueci minha senha</h5>
+                        </div>
                     </div>
 
                     <button className={style.Button} onClick={handleLoginSubmit}>Login</button>

@@ -84,12 +84,12 @@
             
             &.Pending {
                 background: $yellow;
-                color: darken($yellow, 40%);
+                color: color.adjust($yellow, $lightness: 40%);
             }
             
             &.Confirmed {
                 background: $green;
-                color: darken($green, 40%);
+                color: color.adjust($green, $lightness: 40%);
             }
             
             &.Canceld {

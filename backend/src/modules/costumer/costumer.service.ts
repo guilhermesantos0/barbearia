@@ -107,7 +107,7 @@ export class CostumerService {
 
         if(!updatedUser) throw new BadRequestException('Usuário não encontrado');
 
-        const reponse = await this.authService.generateToken(updatedUser);
+        const reponse = await this.authService.generateToken(updatedUser, '7d');
 
         console.log('UPDATED USER: ', updatedUser)
 

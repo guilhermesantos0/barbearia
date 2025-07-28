@@ -57,6 +57,9 @@ export class Employee {
     @Prop({ required: true })
     password: string;
 
+    @Prop({ required: true, default: '.' })
+    profilePic: string;
+
     @Prop({ required: true, unique: true })
     phone: string;
 

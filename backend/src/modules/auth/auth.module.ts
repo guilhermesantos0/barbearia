@@ -13,6 +13,7 @@ import { JwtStrategy } from './jwt.strategy';
 
 import { EmployeeModule } from '../employee/employee.module';
 import { CostumerModule } from '../costumer/costumer.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
     imports: [
@@ -20,9 +21,16 @@ import { CostumerModule } from '../costumer/costumer.module';
             { name: Costumer.name, schema: CostumerSchema },
             { name: Employee.name, schema: EmployeeSchema },
         ]),
-        JwtModule.register({
-            secret: process.env.JWT_SECRET || 'GuilhermeSantosProgramacao2025',
-            signOptions: { expiresIn: '1d' },
+        ConfigModule.forRoot(),
+        JwtModule.registerAsync({
+            imports: [ConfigModule],
+            inject: [ConfigService],
+            useFactory: async (configService: ConfigService) => ({
+                secret: configService.get<string>('JWT_SECRET') || 'GuilhermeSantosProgramacao2025',
+                signOptions: {
+                    expiresIn: configService.get<string>('JWT_EXPIRES_IN') || '7d'
+                }
+            })
         }),
         CommonModule,
         EmployeeModule,

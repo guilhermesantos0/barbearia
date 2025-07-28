@@ -19,7 +19,7 @@ export class AuthService {
         private jwtService: JwtService
     ) {}
 
-    async generateToken(user: Costumer | Employee | null) {
+    async generateToken(user: Costumer | Employee | null, expiresIn: string) {
 
         if(!user) {
             throw new Error('Envie o objeto do usuário');
@@ -35,7 +35,9 @@ export class AuthService {
         };
 
         return {
-            access_token: this.jwtService.sign(payload),
+            access_token: this.jwtService.sign(payload, { 
+                expiresIn
+            }),
             user: user
         };
     }
@@ -53,11 +55,11 @@ export class AuthService {
         return user;
     }
 
-    async login(email: string, password: string) {
+    async login(email: string, password: string, expiresIn7d: boolean) {
         const user = await this.validateUser(email, password);
         delete (user as any).password;
 
-        const response = await this.generateToken(user);
+        const response = await this.generateToken(user, expiresIn7d ? '7d' : '1d');
 
         return response;
     }

@@ -1,0 +1,80 @@
+@use '@assets/scss/variables' as *;
+
+.Container {
+    margin-top: .5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    
+    .Table {
+        width: 100%;
+        border-collapse: collapse;
+        position: relative;
+
+        tbody::before {
+            content: '';
+            display: block;
+            height: 1rem;
+            background: transparent;
+        }
+
+        tr {
+            height: 3rem;
+            
+            .DataFirstCol {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 1rem;
+            }
+            
+            th {
+                color: $light-blue;
+                text-align: center;
+                padding: 0 1rem;
+                font-size: 1.2rem;
+            }
+            
+            td {
+                margin-top: 1.5rem;
+                text-align: center;
+                padding: 0 1rem;
+                font-weight: 500;
+                font-size: 1.5rem;
+
+                a {
+                    color: $white;
+                    text-decoration: none;
+                }
+            }
+
+            .FirstCol {
+                width: 10vw;
+                min-width: 10vw;
+                max-width: 10vw;
+            }
+
+            th:first-child, td:first-child {
+                text-align: center;
+                width: 10vw;
+            }
+
+            .ProfilePic {
+                height: 3rem;
+                width: 3rem;
+                border-radius: 100%;
+                border: 2px solid $light-blue;
+                object-fit: cover;
+
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+
+    .NoResults {
+        text-align: center;
+        color: $light-blue;
+    }
+}

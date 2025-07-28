@@ -67,6 +67,9 @@ export class CreateEmployeeDto {
     password: string;
 
     @IsString()
+    profilePic: string;
+
+    @IsString()
     phone: string;
 
     @IsOptional()

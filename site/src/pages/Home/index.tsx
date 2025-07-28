@@ -7,6 +7,7 @@ import Sidebar from "../../components/SideBar";
 import { useUser } from "../../contexts/UserContext";
 
 import CostumerSchedules from "./Pages/CostumerSchedules";
+import CostumerFavouriteBarbers from "./Pages/CostumerFavouriteBarbers";
 
 const Home = () => {
     const { user } = useUser();
@@ -29,6 +30,11 @@ const Home = () => {
                                 {
                                     openedTab === "cliente_agendamentos" && (
                                         <CostumerSchedules />
+                                    )
+                                }
+                                {
+                                    openedTab === "cliente_barbeiros-favoritos" && (
+                                        <CostumerFavouriteBarbers />
                                     )
                                 }
                             </>

@@ -116,17 +116,57 @@
 
                 }
 
-                .Recovery {
-                    text-align: right;
-                    color: $light-gray;
+                .BottomPassword {
 
-                    transition: color .3s ease-in-out;
+                    display: flex;
+                    justify-content: space-between;
 
-                    font-size: 1.2rem;
+                    .Recovery {
+                        text-align: right;
+                        color: $light-gray;
+    
+                        transition: color .3s ease-in-out;
+    
+                        font-size: 1.2rem;
+    
+                        &:hover {
+                            color: color.adjust($white, $lightness: -5%);
+                            cursor: pointer ;
+                        }
+                    }
 
-                    &:hover {
-                        color: color.adjust($white, $lightness: -5%);
-                        cursor: pointer ;
+                    .Checkbox {
+
+                        display: flex;
+                        align-items: center;
+                        gap: 0.5rem;
+
+                        .CheckboxRoot {
+                            all: unset;
+                            width: 20px;
+                            height: 20px;
+                            background-color: #111C44;
+                            border: 2px solid #2F80ED;
+                            border-radius: 4px;
+                            cursor: pointer;
+                            transition: box-shadow 0.3s;
+                        }
+
+                        .CheckboxIndicator {
+                            color: #2F80ED;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+
+                            width: 20px;
+                            height: 20px;
+                        }
+
+                        .Label {
+                            font-size: 1.2rem;
+                            color: $white;
+                        }
+                        
                     }
                 }
             }

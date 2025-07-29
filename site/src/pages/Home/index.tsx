@@ -6,8 +6,10 @@ import Sidebar from "../../components/SideBar";
 
 import { useUser } from "../../contexts/UserContext";
 
+// COSTUMER
 import CostumerSchedules from "./Pages/CostumerSchedules";
 import CostumerFavouriteBarbers from "./Pages/CostumerFavouriteBarbers";
+import CostumerHistory from "./Pages/CostumerHistory";
 
 const Home = () => {
     const { user } = useUser();
@@ -35,6 +37,11 @@ const Home = () => {
                                 {
                                     openedTab === "cliente_barbeiros-favoritos" && (
                                         <CostumerFavouriteBarbers />
+                                    )
+                                }
+                                {
+                                    openedTab === "cliente_historico" && (
+                                        <CostumerHistory />
                                     )
                                 }
                             </>

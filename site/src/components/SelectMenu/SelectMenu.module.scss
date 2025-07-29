@@ -1,0 +1,61 @@
+/* SelectMenu.css */
+
+@use '@assets/scss/variables' as *;
+@use 'sass:color';
+
+.SelectTrigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: .5rem 1rem;
+    width: 10vw;
+    border-radius: 5px;
+    background: $gray;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    border: none;
+    outline: none;
+}
+
+.Icon {
+    height: 1.5rem;
+    width: 1.5rem;
+}
+
+.SelectContent {
+    background: #1f2a40;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    overflow: hidden;
+    z-index: 50;
+}
+
+.SelectViewport {
+    padding: 8px;
+    width: 10vw;
+}
+
+.SelectItem {
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    color: white;
+    outline: none;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.SelectItem:hover {
+    background-color: color.adjust($gray, $lightness: 10%);
+}
+
+.SelectItemIndicator {
+    margin-right: 0;
+    color: #c5c6cc;
+
+    height: 1.5rem;
+    width: 1.5rem;
+}

@@ -2,7 +2,7 @@ import style from './ScheduledService.module.scss';
 
 import { IScheduledService } from '../../types/ScheduledService';
 import { useEffect, useState } from 'react';
-import { Pencil1Icon, TrashIcon } from '@radix-ui/react-icons';
+import { Pencil1Icon } from '@radix-ui/react-icons';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';

@@ -1,0 +1,77 @@
+@use '@assets/scss/variables' as *;
+@use 'sass:color';
+
+.Container {
+    width: 20rem;
+    height: 10rem;
+    background: $dark_blue;
+    border-radius: 5px;
+    padding: 0 .5rem;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    position: relative;
+
+    box-shadow: 0 0 3px color.adjust($light-blue, $lightness: 20%);
+    
+    transition: box-shadow .3s ease-in-out, transform .3s ease-in-out;
+
+    &:hover {
+        box-shadow: 0 0 8px color.adjust($light-blue, $lightness: 20%);
+        transform: scale(1.01);
+        cursor: pointer;
+    }
+
+    .Title {
+        font-size: 1.2rem;
+        font-weight: 600;
+    }
+
+    .Details {
+
+        p {
+            margin-top: .3rem;
+        }
+
+        font-weight: 500;
+        color: $light-gray;
+
+        .AditionalInfo {
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+
+            .DetailsIcon {
+                margin-top: .2rem;
+            }
+        }
+    }
+
+    .BottomInfos {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 1rem;
+
+        .ActionButtons {
+            display: flex;
+            gap: .5rem;
+            
+            .Icon {
+                height: 1.5rem;
+                width: 1.5rem;
+    
+                fill: $light-blue;
+                color: $red;
+
+                transition: color .3s ease-in-out, fill .3s ease-in-out;
+
+                &:hover {
+                    fill: color.adjust($light-blue, $lightness: -10%);;
+                    color: color.adjust($red, $lightness: -5%);
+                }
+            }
+        }
+    }
+}

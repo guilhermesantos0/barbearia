@@ -2,6 +2,8 @@ import * as Select from '@radix-ui/react-select';
 import { CheckIcon, ChevronDownIcon } from '@radix-ui/react-icons';
 import style from './SelectMenu.module.scss';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 type Option = {
     value: string;
     label: string;
@@ -10,8 +12,8 @@ type Option = {
 interface SelectMenuProps {
     options: Option[];
     placeholder?: string;
-    onChange: (value: string) => void;
-    value?: string;
+    onChange: (value: string | undefined) => void;
+    value?: string | undefined;
 }
 
 export const SelectMenu: React.FC<SelectMenuProps> = ({
@@ -21,7 +23,7 @@ export const SelectMenu: React.FC<SelectMenuProps> = ({
     value,
 }) => {
     return (
-        <Select.Root value={value} onValueChange={onChange}>
+        <Select.Root value={value} onValueChange={(val) => { onChange(val === '' ? undefined : val) }}>
             <Select.Trigger className={style.SelectTrigger}>
                 <Select.Value placeholder={placeholder} />
                 <Select.Icon>
@@ -38,6 +40,16 @@ export const SelectMenu: React.FC<SelectMenuProps> = ({
                 avoidCollisions={false}
                 sideOffset={4}>
                     <Select.Viewport className={style.SelectViewport}>
+                        {
+                            value && (
+                                // @ts-ignore
+                                <Select.Item value={undefined} className={`${style.SelectItem} ${style.ClearSelection}`}>
+                                    <Select.ItemText>Limpar Seleção</Select.ItemText>
+                                    <FontAwesomeIcon icon="trash"  />
+                                </Select.Item>
+                            )
+                        }
+
                         {options.map((option) => (
                             <Select.Item
                                 key={option.value}

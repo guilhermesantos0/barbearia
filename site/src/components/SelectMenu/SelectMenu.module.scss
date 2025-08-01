@@ -8,7 +8,7 @@
     align-items: center;
     justify-content: space-between;
     padding: .5rem 1rem;
-    width: 10vw;
+    width: 15vw;
     border-radius: 5px;
     background: $gray;
     color: white;
@@ -16,12 +16,19 @@
     cursor: pointer;
     border: none;
     outline: none;
+
+    .Icon {
+        height: 1.5rem;
+        width: 1.5rem;
+
+        transition: all .3s ease-in-out;
+    }
+
+    &[data-state="open"] .Icon {
+        transform: rotate(180deg);
+    }
 }
 
-.Icon {
-    height: 1.5rem;
-    width: 1.5rem;
-}
 
 .SelectContent {
     background: #1f2a40;
@@ -29,11 +36,15 @@
     border-bottom-right-radius: 5px;
     overflow: hidden;
     z-index: 50;
+
+    transition: all .3s ease-in-out;
+
+    box-shadow: 0 5px 10px black;
 }
 
 .SelectViewport {
     padding: 8px;
-    width: 10vw;
+    width: 15vw;
 }
 
 .SelectItem {
@@ -46,6 +57,10 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+
+.ClearSelection {
+    color: $red;
 }
 
 .SelectItem:hover {

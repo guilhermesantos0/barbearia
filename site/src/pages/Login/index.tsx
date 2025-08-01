@@ -110,9 +110,8 @@ const Login = () => {
             });
 
             const { access_token, user } = response.data;
-
-            localStorage.setItem('access_token', access_token);
             
+            localStorage.setItem('access_token', access_token);
             navigate(user.role === 0 ? `/home/cliente/agendamentos` : `/home/funcionario/agendamentos`)
 
         } catch (error: any) {

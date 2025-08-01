@@ -30,6 +30,7 @@
       "@types/*": ["src/types/*"],
       "@assets/": ["src/assets/*"],
       "@types/": ["src/types"],
+      "@utils/": ["src/utils"],
     }
   },
   "include": ["src", "types.d.ts"]

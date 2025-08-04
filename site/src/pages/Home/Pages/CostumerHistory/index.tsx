@@ -10,10 +10,20 @@ import { ICostumer } from '@types/Costumer';
 // @ts-ignore
 import { IEmployee } from '@types/Employee';
 import HistoryService from '@components/HistoryService';
+import api from '../../../../services/api';
 
 const CostumerHistory = () => {
-    const { user } = useUser();
-    
+    const [user, setUser] = useState<ICostumer | IEmployee | null>();
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const result = await api.get('/costumers/me')
+            setUser(result.data);
+        }
+
+        fetchData();
+    }, [])
+
     const [period, setPeriod] = useState<string | undefined>('');
     const [barber, setBarber] = useState<string | undefined>('');
     const [filteredService, setFilteredService] = useState<string | undefined>('');

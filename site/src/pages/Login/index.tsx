@@ -103,16 +103,26 @@ const Login = () => {
         e.preventDefault();
 
         try {
-            const response = await api.post('/auth/login', {
-                email: loginFormData.mailOrPhone,
-                password: loginFormData.password,
-                remember: rememberUser
+            await api.post(
+                '/auth/login',
+                {
+                    email: loginFormData.mailOrPhone,
+                    password: loginFormData.password,
+                    remember: rememberUser
+                },
+                {
+                    withCredentials: true
+                }
+            );
+
+            const response = await api.get('/auth/profile', {
+                withCredentials: true
             });
 
-            const { access_token, user } = response.data;
-            
-            localStorage.setItem('access_token', access_token);
-            navigate(user.role === 0 ? `/home/cliente/agendamentos` : `/home/funcionario/agendamentos`)
+            console.log(response.data)
+
+            const user = response.data;
+            navigate(user.role === 0 ? `/home/cliente/agendamentos` : `/home/funcionario/agendamentos`);
 
         } catch (error: any) {
             if (error.response) {
@@ -123,6 +133,7 @@ const Login = () => {
             }
         }
     };
+
 
     const nextStage = () => {
         setSignupStage(prev => (prev + 1) as 1 | 2 | 3 | 4);

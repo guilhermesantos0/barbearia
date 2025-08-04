@@ -11,10 +11,21 @@ import { IEmployee } from '@types/Employee';
 import { IScheduledService } from '@types/ScheduledService';
 
 import { PlusIcon } from '@radix-ui/react-icons';
+import { useEffect, useState } from 'react';
+import api from '../../../../services/api';
 
 const CostumerSchedules = () => {
 
-    const { user } = useUser();
+    const [user, setUser] = useState<ICostumer | IEmployee | null>();
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const result = await api.get('/costumers/me')
+            setUser(result.data);
+        }
+
+        fetchData();
+    }, [])
 
     const isCostumer = (user: ICostumer | IEmployee): user is ICostumer => {
         return user.role === 0

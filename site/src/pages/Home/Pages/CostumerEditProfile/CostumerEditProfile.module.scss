@@ -1,0 +1,92 @@
+@use '@assets/scss/mixins' as *;
+@use '@assets/scss/variables' as *;
+
+.Container {
+    margin-top: .5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+
+    .PageContent {
+        display: flex;
+
+        .LeftContent {
+            width: 35vh;
+            height: 65vh;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 2rem;
+
+            padding: 1rem;
+
+            .ProfilePicArea {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+                padding: 1rem 0;
+
+                border-radius: 5px;
+
+                background: $dark-blue;
+
+                .Title {
+                    width: 90%;
+                    font-size: 1.2rem;
+                }
+
+                .ProfilePic {
+                    width: 10rem;
+                    height: 10rem;
+
+                    border-radius: 50%;
+                }
+
+                .UploadPhoto {
+                    width: 10rem;
+                    height: 2.3rem;
+
+                    @include button-tertiary;
+                    border-radius: 5px;
+                }
+            }
+
+            .PrivacyArea {
+                display: flex;
+                flex-direction: column;
+                gap: .5rem;
+
+                button {
+                    height: 2.7rem;
+                }
+
+                .ChangePassword, .ChangeEmail {
+                    @include button-tertiary;
+                    border-radius: 5px;
+                }
+
+                .DeleteAccount {
+                    background: $red;
+
+                    border-radius: 5px;
+
+                    font-size: larger;
+                    font-weight: 600;
+
+                    transition: background-color .3s ease-in-out;
+
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 1rem;
+
+                    color: $white;
+
+                    border: 0;
+                }
+            }
+        }
+    }
+}

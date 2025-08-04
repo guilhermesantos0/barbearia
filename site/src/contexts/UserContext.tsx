@@ -1,7 +1,5 @@
 // src/contexts/UserContext.tsx
 import { createContext, useContext, useEffect, useState } from 'react';
-import { jwtDecode } from 'jwt-decode';
-import { isTokenExpired } from '../utils/auth';
 import { ICostumer } from '../types/Costumer';
 import { IEmployee } from '../types/Employee';
 import api from '../services/api';
@@ -19,37 +17,26 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     const navigate = useNavigate();
     const [user, setUser] = useState<ICostumer | IEmployee | null>(null);
 
-    const logout = () => {
+    const logout = async () => {
         setUser(null);
-        localStorage.removeItem('access_token');
+        try {
+            await api.post('/auth/logout');
+        } catch (err) {
+            console.error('Erro ao fazer logout:', err);
+        }
         navigate('/login');
     };
 
     useEffect(() => {
         const fetchUserData = async () => {
-            const token = localStorage.getItem('access_token');
-            if (!token) {
-                logout();
-                return;
-            }
-
-            // if (isTokenExpired(token)) {
-            //     console.log('Token expirado');
-            //     logout();
-            //     return;
-            // }
-
             try {
-                const decoded = jwtDecode<ICostumer | IEmployee>(token);
-                const endpoint = decoded.role === 0 ? '/costumers/me' : '/employees/me';
-                
-                const response = await api.get(endpoint, {
-                    headers: { 'Authorization': `Bearer ${token}` }
+                const response = await api.get('/auth/profile', {
+                    withCredentials: true, 
                 });
 
                 setUser(response.data);
             } catch (err) {
-                console.error('Erro ao buscar dados do usuário:', err);
+                console.error('Usuário não autenticado:', err);
                 logout();
             }
         };

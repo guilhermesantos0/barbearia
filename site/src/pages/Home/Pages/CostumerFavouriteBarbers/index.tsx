@@ -6,6 +6,7 @@ import { useUser } from '@contexts/UserContext';
 import { IEmployee } from '@types/Employee';
 // @ts-ignore
 import { ICostumer } from '@types/Costumer';
+import api from '../../../../services/api';
 
 interface IServiceCount {
     [serviceName: string]: number;
@@ -24,7 +25,17 @@ interface IBarberHistory {
 }
 
 const CostumerFavouriteBarbers = () => {
-    const { user } = useUser();
+    const [user, setUser] = useState<ICostumer | IEmployee | null>();
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const result = await api.get('/costumers/me')
+            setUser(result.data);
+        }
+
+        fetchData();
+    }, [])
+
     const [favouriteBarbers, setFavouriteBarbers] = useState<IBarberHistory[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 

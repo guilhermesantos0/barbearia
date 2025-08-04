@@ -10,6 +10,7 @@ import { useUser } from "../../contexts/UserContext";
 import CostumerSchedules from "./Pages/CostumerSchedules";
 import CostumerFavouriteBarbers from "./Pages/CostumerFavouriteBarbers";
 import CostumerHistory from "./Pages/CostumerHistory";
+import CostumerEditProfile from "./Pages/CostumerEditProfile";
 
 const Home = () => {
     const { user } = useUser();
@@ -42,6 +43,11 @@ const Home = () => {
                                 {
                                     openedTab === "cliente_historico" && (
                                         <CostumerHistory />
+                                    )
+                                }
+                                {
+                                    openedTab === "cliente_editar-perfil" && (
+                                        <CostumerEditProfile />
                                     )
                                 }
                             </>

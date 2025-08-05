@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsOptional, IsString, IsNumber, IsArray, ArrayNotEmpty, IsBoolean } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsOptional, IsString, IsNumber, IsArray, ArrayNotEmpty, IsBoolean, IsDate } from 'class-validator';
 
 export class CreateCostumerDto {
     @IsNotEmpty()
@@ -21,6 +21,14 @@ export class CreateCostumerDto {
     @IsOptional()
     @IsString()
     cpf?: string;
+
+    @IsOptional()
+    @IsString()
+    gender: string;
+
+    @IsOptional()
+    @IsDate()
+    bornDate: Date
 
     @IsOptional()
     @IsBoolean()

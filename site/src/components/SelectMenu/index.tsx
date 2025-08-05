@@ -14,6 +14,7 @@ interface SelectMenuProps {
     placeholder?: string;
     onChange: (value: string | undefined) => void;
     value?: string | undefined;
+    className?: string
 }
 
 export const SelectMenu: React.FC<SelectMenuProps> = ({
@@ -21,10 +22,11 @@ export const SelectMenu: React.FC<SelectMenuProps> = ({
     placeholder = 'Selecione uma opção',
     onChange,
     value,
+    className
 }) => {
     return (
         <Select.Root value={value} onValueChange={(val) => { onChange(val === '' ? undefined : val) }}>
-            <Select.Trigger className={style.SelectTrigger}>
+            <Select.Trigger className={`${style.SelectTrigger} ${className ? className : ''}`}>
                 <Select.Value placeholder={placeholder} />
                 <Select.Icon>
                     <ChevronDownIcon className={style.Icon} />

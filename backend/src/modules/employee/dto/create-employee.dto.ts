@@ -7,6 +7,7 @@ import {
     IsUUID,
     IsNumber,
     ValidateNested,
+    IsDate,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 
@@ -75,6 +76,14 @@ export class CreateEmployeeDto {
     @IsOptional()
     @IsString()
     cpf?: string;
+
+    @IsOptional()
+    @IsString()
+    gender: string;
+
+    @IsOptional()
+    @IsDate()
+    bornDate: Date
 
     @IsOptional()
     @IsArray()

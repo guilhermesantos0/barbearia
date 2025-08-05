@@ -13,18 +13,46 @@ import { LockClosedIcon } from '@radix-ui/react-icons';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+import DatePickerComponent from '@components/DatePicker';
+import { SelectMenu } from '@components/SelectMenu';
+
 const CostumerEditProfile = () => {
 
     const [user, setUser] = useState<ICostumer | IEmployee | null>();
+
+    const [formData, setFormData] = useState({
+        name: null,
+        phone: null,
+        cpf: null,
+        bornDate: null,
+        gender: null
+    })
 
     useEffect(() => {
         const fetchData = async () => {
             const result = await api.get('/costumers/me')
             setUser(result.data);
+    
+            setFormData({
+                name: result.data.name,
+                phone: result.data.phone,
+                cpf: result.data.cpf,
+                bornDate: result.data.bornDate,
+                gender: result.data.gender
+            })
         }
 
         fetchData();
     }, [])
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
+    };
+
+    const handleGenderChange = (value: string | undefined) => {
+        setFormData(prev => ({ ...prev, 'gender': value }));
+    }
 
     return (
         <div className={style.Container}>
@@ -52,28 +80,42 @@ const CostumerEditProfile = () => {
                             </div>
                         </div>
                         <div className={style.RightContent}>
-                            <h2>Informações Pessoais</h2>
-                            <form action="updatePersonalInfos">
+                            <h2 className={style.Title}>Informações Pessoais</h2>
+                            <form className={style.InputForm}>
                                     <div className={`${style.InputArea} ${style.Name}`}>
                                         <label htmlFor="name">Nome Completo</label>
-                                        <input type="text" />
+                                        <input className={style.Input} type="text" value={formData.name} />
                                     </div>
                                     <div className={`${style.InputArea} ${style.PhoneNumber}`}>
                                         <label htmlFor="phone">Telefone</label>
-                                        <input type="phone" />
+                                        <input className={style.Input} type="phone" value={formData.phone} />
                                     </div>
                                     <div className={`${style.InputArea} ${style.Cpf}`}>
                                         <label htmlFor="cpf">CPF</label>
-                                        <input type="text" />
+                                        <input className={style.Input} type="text" value={formData.cpf} />
                                     </div>
                                     <div className={`${style.InputArea} ${style.BirthDate}`}>
                                         <label htmlFor="birthdate">Data de Nascimento</label>
-                                        <input type="date" />
+                                        <DatePickerComponent />
+                                    </div>
+                                    <div className={`${style.InputArea} ${style.Gender}`}>
+                                        <label htmlFor="gender">Gênero</label>
+                                        <SelectMenu className={style.Input} value={formData.gender || undefined} options={
+                                            [
+                                                { value: 'Masculino', label: 'Masculino'}, 
+                                                { value: 'Feminino', label: 'Feminino' },
+                                                { value: 'Outro', label: 'Outro' },
+                                                { value: 'Prefiro não informar', label: 'Prefiro não informar' }
+                                            ]}
+                                            onChange={handleGenderChange}
+                                            placeholder={formData.gender}
+                                        />
+                                        {/* <input type="text" name='gender' value={formData.gender} /> */}
                                     </div>
                             </form>
                             <div className={style.ButtonsArea}>
-                                <button className={style.SaveChanges}><FontAwesomeIcon icon={['far','floppy-disk']} /> Salvar Alterações</button>
-                                <button className={style.DiscardChanges}><FontAwesomeIcon icon='xmark' /> Cancelar</button>
+                                <button className={`${style.Button} ${style.SaveChanges}`}><FontAwesomeIcon icon={['far','floppy-disk']} /> Salvar Alterações</button>
+                                <button className={`${style.Button} ${style.DiscardChanges}`}><FontAwesomeIcon icon='xmark' /> Cancelar</button>
                             </div>
                         </div>
                     </div>

@@ -176,6 +176,7 @@ const CostumerHistory = () => {
                                             value={filter.value}
                                             onChange={filter.onChange}
                                             options={filter.options}
+                                            className={style.SelectMenu}
                                         />
                                     </li>
                                 ))}

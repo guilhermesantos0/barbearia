@@ -9,6 +9,7 @@
 
     .PageContent {
         display: flex;
+        justify-content: center;
 
         .LeftContent {
             width: 35vh;
@@ -88,5 +89,103 @@
                 }
             }
         }
+
+        .RightContent {
+            width: 60vw;
+            height: calc(65vh - 1rem);
+            margin-top: .5rem;
+
+            border-radius: 5px;
+
+            padding: 1.5rem 1rem;
+
+            background: $dark-blue;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+
+            .Title {
+                width: 95%;
+                font-size: 1.2rem;
+            }
+
+            .InputForm {
+                margin-top: 2rem;
+                width: 90%;
+
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                grid-template-areas: 
+                    'name name'
+                    'phone cpf'
+                    'birthdate gender';
+                gap: 1rem;
+
+                .InputArea {
+                    display: flex;
+                    flex-direction: column;
+
+                    label {
+                        color: $white;
+                        font-weight: 600;
+                        font-size: 1.1rem;
+                    }
+
+                    .Input {
+                        width: 100%;
+                        height: 3rem;
+
+                        padding: 0 .8rem;
+
+                        background: $gray;
+
+                        border: 0;
+                        border-radius: 10px;
+
+                        color: $white;
+
+                        outline: none;
+
+                        box-shadow: 0 0 0px transparent;
+                        transition: box-shadow 0.3s ease-in-out; 
+
+                        font-size: 1.2rem;
+
+                        &:focus {
+                            border: 1px solid $light-blue;
+                            box-shadow: 0 0 3px $light-blue;
+                        }
+                    }
+                }
+            }
+
+            .ButtonsArea {
+                display: flex;
+                width: 100%;
+                padding-left: 2.5rem;
+                gap: 1rem;
+                
+                .Button {
+                    width: 15rem;
+                    height: 2.5rem;
+
+                    &.SaveChanges {
+                        @include button-primary
+                    }
+
+                    &.DiscardChanges {
+                        @include button-secondary
+                    }
+                }
+            }
+        }
     }
 }
+
+.Name { grid-area: name; }
+.PhoneNumber { grid-area: phone; }
+.Cpf { grid-area: cpf; }
+.BirthDate { grid-area: birthdate; }
+.Gender { grid-area: gender; }

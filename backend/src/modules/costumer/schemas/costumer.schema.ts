@@ -30,6 +30,12 @@ export class Costumer {
     @Prop({ unique: true, sparse: true })
     cpf: string;
 
+    @Prop({ default: 'Prefiro não informar' })
+    gender: string;
+
+    @Prop()
+    bornDate: Date;
+
     @Prop({ default: false })
     profilePic: boolean;
 

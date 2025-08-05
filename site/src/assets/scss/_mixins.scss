@@ -28,6 +28,11 @@
         cursor: pointer;
         background: color.adjust($light-blue, $lightness: -10%);
     }
+
+    .Icon {
+        width: 1.5rem;
+        height: 1.5rem;
+    }
 }
 
 @mixin button-secondary {
@@ -35,7 +40,7 @@
     color: $light-blue;
     border-radius: 10px;
 
-    border: 0;
+    border: 1px solid $light-blue;
 
     font-size: larger;
     font-weight: 600;
@@ -55,7 +60,15 @@
 
     &:not(:disabled):hover {
         cursor: pointer;
-        background: color.adjust($color: $gray, $lightness: 5%);
+        background: color.adjust($color: $gray, $lightness: -5%);
+    }
+
+    .Icon {
+        color: $light-blue;
+        fill: $light-blue;
+
+        width: 1.5rem;
+        height: 1.5rem;
     }
 }
 

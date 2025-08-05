@@ -66,6 +66,12 @@ export class Employee {
     @Prop({ required: true, unique: true, sparse: true })
     cpf: string;
 
+    @Prop({ default: 'Prefiro não informar' })
+    gender: string;
+
+    @Prop()
+    bornDate: Date;
+
     @Prop({ type: [String], ref: 'ScheduledService', default: [] })
     nextServices: string[];
 

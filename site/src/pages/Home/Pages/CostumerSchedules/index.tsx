@@ -4,9 +4,7 @@ import { useUser } from '@contexts/UserContext'
 import ScheduledService from '@components/ScheduledService';
 
 // @ts-ignore
-import { ICostumer } from '@types/Costumer';
-// @ts-ignore
-import { IEmployee } from '@types/Employee';
+import { IUser } from '@types/User';
 // @ts-ignore
 import { IScheduledService } from '@types/ScheduledService';
 
@@ -16,18 +14,18 @@ import api from '../../../../services/api';
 
 const CostumerSchedules = () => {
 
-    const [user, setUser] = useState<ICostumer | IEmployee | null>();
+    const [user, setUser] = useState<IUser | null>();
 
     useEffect(() => {
         const fetchData = async () => {
-            const result = await api.get('/costumers/me')
+            const result = await api.get('/users/me')
             setUser(result.data);
         }
 
         fetchData();
     }, [])
 
-    const isCostumer = (user: ICostumer | IEmployee): user is ICostumer => {
+    const isCostumer = (user: IUser) => {
         return user.role === 0
     }
 

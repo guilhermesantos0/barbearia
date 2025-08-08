@@ -32,6 +32,10 @@ export class ScheduledServiceService {
         return this.scheduledServiceModel.findByIdAndUpdate(id, data, { new: true }).exec();
     }
 
+    async updatePatch(id: string, data: Partial<ScheduledService>): Promise<ScheduledService | null> {
+        return this.scheduledServiceModel.findByIdAndUpdate(id, data, { new: true })
+    }
+
     async delete(id: string): Promise<ScheduledService | null> {
         return this.scheduledServiceModel.findByIdAndDelete(id).exec();
     }

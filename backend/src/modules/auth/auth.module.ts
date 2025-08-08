@@ -5,21 +5,18 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 
-import { Costumer, CostumerSchema } from '../costumer/schemas/costumer.schema';
-import { Employee, EmployeeSchema } from '../employee/schemas/employee.schema';
-
 import { CommonModule } from 'src/common/common.module';
 import { JwtStrategy } from './jwt.strategy';
 
-import { EmployeeModule } from '../employee/employee.module';
-import { CostumerModule } from '../costumer/costumer.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+
+import { User, UserSchema } from '../user/schemas/user.schema';
+import { UserModule } from '../user/user.module';
 
 @Module({
     imports: [
         MongooseModule.forFeature([
-            { name: Costumer.name, schema: CostumerSchema },
-            { name: Employee.name, schema: EmployeeSchema },
+            { name: User.name, schema: UserSchema },
         ]),
         ConfigModule.forRoot(),
         JwtModule.registerAsync({
@@ -33,12 +30,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
             })
         }),
         CommonModule,
-        EmployeeModule,
-        forwardRef(() => CostumerModule),
-        
+        forwardRef(() => UserModule),
     ],
     controllers: [AuthController],
     providers: [AuthService, JwtStrategy],
-    exports: [AuthService],
+    exports: [AuthService, JwtModule, CommonModule],
 })
 export class AuthModule {}
+

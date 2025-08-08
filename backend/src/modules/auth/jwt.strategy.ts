@@ -10,7 +10,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
             jwtFromRequest: ExtractJwt.fromExtractors([
                 (req: Request) => {
                     const token = req?.cookies?.access_token;
-                    console.log('🍪 Token extraído do cookie:', token);
                     return token;
                 }
             ]),
@@ -20,7 +19,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     }
 
     async validate(payload: any) {
-        console.log('✅ Payload validado:', payload);
         return payload;
     }
 }

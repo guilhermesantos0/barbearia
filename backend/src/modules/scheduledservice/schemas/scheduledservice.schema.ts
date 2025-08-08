@@ -23,10 +23,10 @@ export class ScheduledService {
     })
     _id: string;
 
-    @Prop({ type: String, ref: 'Costumer', required: true })
+    @Prop({ type: String, ref: 'User', required: true })
     costumer: string;
 
-    @Prop({ type: String, ref: 'Employee', required: true })
+    @Prop({ type: String, ref: 'User', required: true })
     barber: string;
 
     @Prop({ type: String, ref: 'Service', required: true })

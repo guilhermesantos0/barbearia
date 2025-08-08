@@ -5,13 +5,13 @@ import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 
-import { CostumerModule } from './modules/costumer/costumer.module';
 import { ServiceModule } from './modules/service/service.module';
-import { EmployeeModule } from './modules/employee/employee.module';
 import { RoleModule } from './modules/role/role.module';
 import { ScheduledserviceModule } from './modules/scheduledservice/scheduledservice.module';
 import { PremiumModule } from './modules/premium/premium.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { UserModule } from './modules/user/user.module';
+import { LogsModule } from './modules/logs/logs.module';
 
 @Module({
     imports: [
@@ -25,13 +25,13 @@ import { AuthModule } from './modules/auth/auth.module';
             }),
             inject: [ConfigService]
         }),
-        CostumerModule,
         ServiceModule,
-        EmployeeModule,
         RoleModule,
         ScheduledserviceModule,
         PremiumModule,
-        AuthModule
+        AuthModule,
+        UserModule,
+        LogsModule
     ],
     controllers: [AppController],
     providers: [AppService],

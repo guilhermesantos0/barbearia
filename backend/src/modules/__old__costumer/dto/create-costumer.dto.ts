@@ -31,8 +31,8 @@ export class CreateCostumerDto {
     bornDate: Date
 
     @IsOptional()
-    @IsBoolean()
-    profilePic?: boolean;
+    @IsString()
+    profilePic?: string;
 
     @IsOptional()
     @IsNumber()

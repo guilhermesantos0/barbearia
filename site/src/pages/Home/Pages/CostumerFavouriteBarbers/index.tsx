@@ -3,9 +3,7 @@ import style from './CostumerFavouriteBarbers.module.scss';
 import { useUser } from '@contexts/UserContext';
 
 // @ts-ignore
-import { IEmployee } from '@types/Employee';
-// @ts-ignore
-import { ICostumer } from '@types/Costumer';
+import { IUser } from '@types/User';
 import api from '../../../../services/api';
 
 interface IServiceCount {
@@ -25,11 +23,11 @@ interface IBarberHistory {
 }
 
 const CostumerFavouriteBarbers = () => {
-    const [user, setUser] = useState<ICostumer | IEmployee | null>();
+    const [user, setUser] = useState<IUser | null>();
 
     useEffect(() => {
         const fetchData = async () => {
-            const result = await api.get('/costumers/me')
+            const result = await api.get('/users/me')
             setUser(result.data);
         }
 
@@ -48,16 +46,15 @@ const CostumerFavouriteBarbers = () => {
 
         const processBarberHistory = () => {
             try {
-                const costumerUser = user as ICostumer;
                 
-                if (!costumerUser.history || !Array.isArray(costumerUser.history)) {
+                if (!user.history || !Array.isArray(user.history)) {
                     setFavouriteBarbers([]);
                     return;
                 }
 
                 const barberHistorys: Record<string, IBarberHistory> = {};
 
-                costumerUser.history.forEach((service) => {
+                user.history.forEach((service) => {
                     if (!service?.barber || !service?.service) return;
 
                     const barberId = service.barber._id;

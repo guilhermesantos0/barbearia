@@ -13,14 +13,13 @@
 
         .LeftContent {
             width: 35vh;
-            height: 65vh;
 
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-start;
             gap: 2rem;
 
-            padding: 1rem;
+            padding: .5rem 1rem;
 
             .ProfilePicArea {
                 display: flex;
@@ -92,7 +91,7 @@
 
         .RightContent {
             width: 60vw;
-            height: calc(65vh - 1rem);
+            height: fit-content;
             margin-top: .5rem;
 
             border-radius: 5px;
@@ -104,7 +103,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 2rem;
+            gap: 2.5rem;
 
             .Title {
                 width: 95%;
@@ -112,7 +111,6 @@
             }
 
             .InputForm {
-                margin-top: 2rem;
                 width: 90%;
 
                 display: grid;
@@ -126,6 +124,7 @@
                 .InputArea {
                     display: flex;
                     flex-direction: column;
+                    gap: .5rem;
 
                     label {
                         color: $white;
@@ -170,15 +169,92 @@
                 .Button {
                     width: 15rem;
                     height: 2.5rem;
-
+                    
                     &.SaveChanges {
-                        @include button-primary
+                        @include button-primary;
+                        border-radius: 5px;
+                    }
+                    
+                    &.DiscardChanges {
+                        @include button-secondary;
+                        border-radius: 5px;
                     }
 
-                    &.DiscardChanges {
-                        @include button-secondary
+                }
+            }
+        }
+    }
+
+    .PersonalDashboard {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+
+        .Infos {
+            margin-top: 1rem;
+            
+            width: calc((0.9 * 35vw) + (46vw));
+            
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 2rem;
+
+            .Card {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+
+                height: 8rem;
+
+                border-radius: 10px;
+                padding: 1rem;
+
+                background: $dark-blue;
+                
+                .TopArea {
+                    display: flex;
+                    justify-content: space-between;
+
+                    .Icon {
+                        width: 2rem;
+                        height: 2rem;
+
+                        color: $light-blue;
+                    }
+
+                    .PremiumStatus {
+                        background: $light-blue;
+                        margin-top: .2rem;
+                        width: fit-content;
+                        padding: .2rem .5rem;
+                        border-radius: 100vw;
+                        font-size: 0.8rem;
+                        font-weight: 600;
                     }
                 }
+
+                .CardDetails {
+                    display: flex;
+                    flex-direction: column;
+                    gap: .3rem;
+
+                    .CardTitle {
+                        color: $white;
+                    }
+
+                    .CardText {
+                        color: $light-gray;
+                    }
+                }
+            }
+
+            .Logs {
+                height: 8rem;
+                grid-column: span 2;
+                border-radius: 5px;
+
+                background: $dark-blue;
             }
         }
     }

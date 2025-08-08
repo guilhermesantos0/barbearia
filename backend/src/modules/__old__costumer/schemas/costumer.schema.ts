@@ -37,7 +37,7 @@ export class Costumer {
     bornDate: Date;
 
     @Prop({ default: false })
-    profilePic: boolean;
+    profilePic: string;
 
     @Prop({ default: 0, ref: 'Premium' })
     premiumTier: number;

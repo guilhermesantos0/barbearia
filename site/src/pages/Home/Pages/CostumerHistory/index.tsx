@@ -6,18 +6,17 @@ import { useEffect, useMemo, useState } from 'react';
 import { SelectMenu } from '@components/SelectMenu';
 
 // @ts-ignore
-import { ICostumer } from '@types/Costumer';
-// @ts-ignore
-import { IEmployee } from '@types/Employee';
+import { IUser } from '@types/User';
+
 import HistoryService from '@components/HistoryService';
 import api from '../../../../services/api';
 
 const CostumerHistory = () => {
-    const [user, setUser] = useState<ICostumer | IEmployee | null>();
+    const [user, setUser] = useState<IUser | null>();
 
     useEffect(() => {
         const fetchData = async () => {
-            const result = await api.get('/costumers/me')
+            const result = await api.get('/users/me')
             setUser(result.data);
         }
 
@@ -35,11 +34,10 @@ const CostumerHistory = () => {
     useEffect(() => {
         if (!user || user.role !== 0) return;
 
-        const costumerUser = user as ICostumer;
         const uniqueBarbers = new Map<string, string>();
         const uniqueServices = new Map<string, string>();
 
-        costumerUser.history.forEach((service) => {
+        user.history.forEach((service) => {
             if (!uniqueBarbers.has(service.barber._id)) {
                 uniqueBarbers.set(service.barber._id, service.barber.name);
             }
@@ -93,14 +91,14 @@ const CostumerHistory = () => {
         }
     ];
 
-    const isCostumer = (user: ICostumer | IEmployee): user is ICostumer => {
+    const isCostumer = (user: IUser) => {
         return user.role === 0
     }
 
     const filteredHistory = useMemo(() => {
         if(!user || user.role !== 0) return []
 
-        let updatedHistory = [...(user as ICostumer).history];
+        let updatedHistory = [...(user).history];
 
         if(barber) {
             updatedHistory = updatedHistory.filter(

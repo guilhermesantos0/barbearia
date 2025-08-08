@@ -1,11 +1,10 @@
-import { ICostumer } from "./Costumer"
-import { IEmployee } from "./Employee"
 import { IService } from "./Service"
+import { IUser } from "./User"
 
 export interface IScheduledService {
     _id: string,
-    costumer: ICostumer,
-    barber: IEmployee,
+    costumer: IUser,
+    barber: IUser,
     service: IService,
     date: Date,
     status: string,

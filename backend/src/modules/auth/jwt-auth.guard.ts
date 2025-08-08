@@ -10,7 +10,6 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
 
         const req = context.switchToHttp().getRequest();
         const token = req.cookies['access_token'];
-        console.log('[JWT Guard] - Token no Cookie: ', token)
 
         if (!token) throw new UnauthorizedException('Token não encontrado');
 

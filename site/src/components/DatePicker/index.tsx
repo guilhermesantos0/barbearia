@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "@radix-ui/react-popover";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import { ChevronLeftIcon, ChevronRightIcon, CalendarIcon, ChevronDownIcon } from "@radix-ui/react-icons";
@@ -6,19 +6,36 @@ import { format, addMonths, subMonths, startOfMonth, endOfMonth, startOfWeek, en
 import { ptBR } from "date-fns/locale/pt-BR";
 import style from './DatePicker.module.scss';
 
-const DatePicker = () => {
-    const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-    const [currentMonth, setCurrentMonth] = useState(new Date());
+interface DatePickerProps {
+    defaultValue?: Date;
+    onChange?: (date: Date) => void; 
+}
+
+const DatePicker:React.FC<DatePickerProps> = ({ defaultValue, onChange }) => {
+    const [selectedDate, setSelectedDate] = useState<Date | null>(defaultValue ?? null);
+    const [currentMonth, setCurrentMonth] = useState(defaultValue ?? new Date());
     const [showYearSelector, setShowYearSelector] = useState(false);
 
     const selectedYear = new Date().getFullYear();
     const currentYear = currentMonth.getFullYear();
     const years = Array.from({ length: 101 }, (_, i) => selectedYear - 100 + i).reverse();
 
+    useEffect(() => {
+        if(defaultValue) {
+            setSelectedDate(defaultValue)
+            setCurrentMonth(defaultValue)
+        }
+    }, [defaultValue])
+
     const handleYearChange = (year: number) => {
         setCurrentMonth(setYear(currentMonth, year));
         setShowYearSelector(false);
     };
+
+    const handleDateSelect = (date: Date) => {
+        setSelectedDate(date);
+        onChange?.(date);
+    }
 
     const renderHeader = () => (
         <div className={style.CalendarHeader}>
@@ -65,7 +82,7 @@ const DatePicker = () => {
                 days.push(
                     <div
                         className={`${style.Day} ${!isSameMonth(day, currentMonth) ? `${style.Disabled}` : ""} ${selectedDate && isSameDay(day, selectedDate) ? `${style.Selected}` : ""}`}
-                        onClick={() => setSelectedDate(cloneDay)}
+                        onClick={() => handleDateSelect(cloneDay)}
                         key={day.toString()}
                     >
                         <span>{formattedDate}</span>

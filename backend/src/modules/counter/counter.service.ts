@@ -17,4 +17,14 @@ export class CounterService {
         );
         return updated.seq;
     }
+
+    async reset(id: string): Promise<string> {
+        await this.counterModel.findOneAndUpdate(
+            { _id: 'Role' },
+            { $set: { sequence_value: 0 } },
+            { upsert: true }
+        );
+
+        return 'Sucesso';
+    }
 }

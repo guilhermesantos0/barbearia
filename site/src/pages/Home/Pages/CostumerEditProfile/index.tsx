@@ -174,7 +174,7 @@ const CostumerEditProfile = () => {
                                             <>
                                                 {
                                                     user.logs.map((log) => (
-                                                        <p>{log.userId}</p>
+                                                        <p>{log.target.name}</p>
                                                     ))
                                                 }
                                             </>

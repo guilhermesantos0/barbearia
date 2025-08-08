@@ -2,6 +2,7 @@ import { ChevronDownIcon } from '@radix-ui/react-icons';
 
 import * as Accordion from '@radix-ui/react-accordion';
 
+// @ts-ignore
 import { ILog } from "@types/Log"
 
 import style from './Log.module.scss';

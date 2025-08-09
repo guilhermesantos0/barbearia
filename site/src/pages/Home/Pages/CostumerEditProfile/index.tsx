@@ -13,6 +13,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import DatePickerComponent from '@components/DatePicker';
 import { SelectMenu } from '@components/SelectMenu';
+import Log from '@components/Log';
 
 const CostumerEditProfile = () => {
 
@@ -135,7 +136,6 @@ const CostumerEditProfile = () => {
                         </div>
                         <div className={style.PersonalDashboard}>
                             <h2>Painel Pessoal</h2>
-                            <h3>Visualize outras informações</h3>
                             <div className={style.Infos}>
                                 <div className={style.Card}>
                                     <div className={style.TopArea}>
@@ -174,7 +174,7 @@ const CostumerEditProfile = () => {
                                             <>
                                                 {
                                                     user.logs.map((log) => (
-                                                        <p>{log.target.name}</p>
+                                                        <Log data={log} />
                                                     ))
                                                 }
                                             </>

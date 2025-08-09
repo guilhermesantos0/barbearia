@@ -4,7 +4,16 @@ import { Log, LogDocument } from './schemas/logs.schema';
 import { Model, Connection } from 'mongoose';
 import { InjectConnection } from '@nestjs/mongoose';
 
-import { TargetType } from './schemas/target-type.enum';
+const formatDate = (date: Date | string) => {
+    const d = typeof date === 'string' ? new Date(date) : date;
+    
+    if (isNaN(d.getTime())) return 'Data inválida';
+    
+    const day = d.getDate().toString().padStart(2, '0');
+    const month = (d.getMonth() + 1).toString().padStart(2, '0');
+    
+    return `${day}/${month}`;
+};
 
 @Injectable()
 export class LogsService {
@@ -28,7 +37,14 @@ export class LogsService {
     }
 
     async getLogsByUser(userId: string): Promise<Log[]> {
-        return this.logModel.find({ userId }).lean().exec();
+        return this.logModel
+            .find({ userId })
+            .populate({
+                path: 'userId',
+                select: 'name profilePic'
+            })
+            .lean()
+            .exec();
     }
 
     async deleteLog(id: string) {
@@ -56,8 +72,10 @@ export class LogsService {
                             .lean()
                             .exec()
 
+                        const formattedDate = formatDate(target.date);                            
+
                         if(target && target.service && typeof target.service === 'object') {
-                            target.name = target.service.name
+                            target.name = `${target.service.name} - ${formattedDate} `
                         }
 
                         delete target.service
@@ -68,7 +86,6 @@ export class LogsService {
                             .lean()
                             .exec();
                     }
-
 
                     return { ...log, target };
                     

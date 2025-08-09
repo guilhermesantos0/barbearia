@@ -1,0 +1,129 @@
+@use '@assets/scss/variables' as *;
+@use 'sass:color';
+
+.Container {
+    width: 100%;
+    min-height: 2.5rem;
+    // transition: height .3s ease-in-out;
+
+    .Title {
+        padding: .5rem;
+        padding-right: 1rem;
+        width: 100%;
+        text-align: left;
+        background: transparent;
+        border: 0;
+
+        font-size: .95rem;
+        font-weight: 600;
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        color: $white;
+
+        .ActiveUser, .Target {
+            color: $light-blue;
+        }
+        
+        .Icon {
+            color: $light-blue;
+            font-size: 2rem;
+            transition: transform .3s ease-in-out;
+            transform-origin: center;
+        }
+
+        &[data-state='open'] {
+            background: rgba(0, 0, 0, 0.2);
+
+            .Icon {
+                transform: rotate(180deg);
+            }
+        }
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    .Content {
+        background: $dark-blue;
+        overflow: hidden;
+        padding: 0 1rem;
+        transform-origin: top center;
+        will-change: transform, opacity;
+
+        opacity: 0;
+        transform: translateY(-6px) scaleY(0.98);
+
+        padding-top: 0;
+        padding-bottom: 0;
+
+        transition:
+            opacity .3s ease-in-out,
+            transform .3s ease-in-out,
+            padding-top .3s ease-in-out,
+            padding-bottom .3s ease-in-out;
+
+        p {
+            margin: 0;
+            color: $white;
+            font-size: .9rem;
+            line-height: 1.4;
+        }
+
+        .actions {
+            list-style: decimal;
+            list-style-type: decimal-leading-zero;
+            margin: 0;
+            padding-left: 1.25rem;
+
+            .Action {
+                margin-bottom: .4rem;
+                color: $white;
+                font-size: .9rem;
+                line-height: 1.3;
+
+                .Highlight {
+                    color: $light-blue;
+                    font-weight: 600;
+                }
+            }
+        }
+
+        &[data-state='open'] {
+            animation: accordionSlideDown .3s ease-in-out both;
+            padding-top: .75rem;
+            padding-bottom: .75rem;
+        }
+
+        &[data-state='closed'] {
+            animation: accordionSlideUp .3s ease-in-out both;
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+    }
+}
+
+@keyframes accordionSlideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-6px) scaleY(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scaleY(1);
+    }
+}
+
+@keyframes accordionSlideUp {
+    from {
+        opacity: 1;
+        transform: translateY(0) scaleY(1);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-6px) scaleY(0.98);
+    }
+}

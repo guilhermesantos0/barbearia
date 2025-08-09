@@ -11,6 +11,7 @@ import CostumerSchedules from "./Pages/CostumerSchedules";
 import CostumerFavouriteBarbers from "./Pages/CostumerFavouriteBarbers";
 import CostumerHistory from "./Pages/CostumerHistory";
 import CostumerEditProfile from "./Pages/CostumerEditProfile";
+import CostumerPremium from "./Pages/CostumerPremium";
 
 const Home = () => {
     const { user } = useUser();
@@ -48,6 +49,11 @@ const Home = () => {
                                 {
                                     openedTab === "cliente_editar-perfil" && (
                                         <CostumerEditProfile />
+                                    )
+                                }
+                                {
+                                    openedTab === "cliente_assinaturas" && (
+                                        <CostumerPremium />
                                     )
                                 }
                             </>

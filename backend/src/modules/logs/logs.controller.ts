@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Patch } from '@nestjs/common';
 import { LogsService } from './logs.service';
 import { Log } from './schemas/logs.schema';
 
@@ -19,6 +19,11 @@ export class LogsController {
     @Post('teste')
     async createFakeLog(@Body() body: any) {
         return this.logsService.createLog(body)
+    }
+
+    @Patch(':id')
+    async editLog(@Param('id') id: string, @Body() body: any) {
+        return this.logsService.editLog(id, body);
     }
 
     // @Delete(':id')

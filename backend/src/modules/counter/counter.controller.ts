@@ -5,8 +5,8 @@ import { CounterService } from "./counter.service";
 export class CounterController {
     constructor(private readonly counterService: CounterService) {}
 
-    @Post('reset/:id')
-    async reset (@Param('id') id: string) {
-        return this.counterService.reset(id);
+    @Post('reset/:sequenceName')
+    async reset (@Param('sequenceName') sequenceName: string) {
+        return this.counterService.reset(sequenceName, 0);
     }
 }

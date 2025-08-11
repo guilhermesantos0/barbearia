@@ -13,6 +13,11 @@ export class PremiumController {
         return this.premiumService.create(createPremiumDto);
     }
 
+    @Post('/reset')
+    async reset() {
+        this.premiumService.reset();
+    }
+
     @Get()
     async findAll() {
         return this.premiumService.findAll();

@@ -26,16 +26,17 @@ const Log:React.FC<logProps> = ({ data }) => {
 
         const dataNames: Record<string, string> = {
             'name': 'Nome',
-            'date': 'Data'
+            'date': 'Data',
+            'email': 'Email'
         }
 
         if(data.data) {
             const changes: ReactNode[] = Object.entries(data.data).map(([ key, value ]) => {
                 if(typeof value === 'object' && 'old' in value && 'new' in value) {
                     if (key === 'date') {
-                        return (<p>Alterou <span className={style.Highlight}>{dataNames[key]}</span>: {formatDate(value.old)} para {formatDate(value.new)} </p>)
+                        return (<p>Alterou <span className={style.Highlight}>{dataNames[key]}</span>: {formatDate(value.old)} <span className={style.AuxText}>para</span> {formatDate(value.new)} </p>)
                     }
-                    return (<p>Alterou <span className={style.Highlight}>{dataNames[key]}</span>: {value.old} para {value.new} </p>)
+                    return (<p>Alterou <span className={style.Highlight}>{dataNames[key]}</span>: {value.old} <span className={style.AuxText}>para</span> {value.new} </p>)
                 }
                 return ( <p>Alterou <span className={style.Highlight}>{dataNames[key]}</span>: "{JSON.stringify(value)}"</p> )
             })

@@ -48,8 +48,6 @@ export class CostumerController {
     @UseGuards(JwtAuthGuard)
     @Patch(':id')
     async updatePatch(@Param('id') id: string, @Body() updateData: UpdateCostumerDto): Promise<AuthenticatedUserResponse> {
-        console.log('a')
-        console.log(id, updateData)
         return this.costumerService.updatePatch(id, updateData);
     }
 

@@ -10,7 +10,6 @@ export class PasswordService {
     }
 
     async compare(plain: string, hash: string): Promise<boolean> {
-        console.log(plain, hash)
         return bcrypt.compare(plain, hash);
     }
 }

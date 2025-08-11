@@ -20,11 +20,6 @@ async function bootstrap() {
     })
   )
 
-  app.use((req, res, next) => {
-    console.log('Req path:', req.path);
-    next();
-  })
-
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();

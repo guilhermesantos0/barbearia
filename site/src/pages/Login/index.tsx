@@ -119,8 +119,6 @@ const Login = () => {
                 withCredentials: true
             });
 
-            console.log(response.data)
-
             const user = response.data;
             navigate(user.role === 0 ? `/home/cliente/agendamentos` : `/home/funcionario/agendamentos`);
 

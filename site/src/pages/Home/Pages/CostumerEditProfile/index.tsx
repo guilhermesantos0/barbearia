@@ -43,8 +43,6 @@ const CostumerEditProfile = () => {
                 logs: userLogsResult.data
             })
 
-            console.log(result, userLogsResult)
-
             setFormData({
                 name: result.data.name,
                 phone: result.data.phone,

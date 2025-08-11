@@ -109,8 +109,6 @@ export class CostumerService {
 
         const reponse = await this.authService.generateToken(updatedUser, '7d');
 
-        console.log('UPDATED USER: ', updatedUser)
-
         return reponse;
     }
 

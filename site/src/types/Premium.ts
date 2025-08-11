@@ -1,5 +1,5 @@
 interface Benefit {
-    position: number,
+    pos: number,
     description: string
 }
 

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Log, LogDocument } from './schemas/logs.schema';
 import { Model, Connection } from 'mongoose';
@@ -96,5 +96,22 @@ export class LogsService {
         );
 
         return resolvedLogs;
+    }
+
+    async editLog(id, updateData)  {
+        const updated = await this.logModel.findByIdAndUpdate(id, updateData, { new: true })
+        if(!updated) {
+            throw new NotFoundException('Log não encontrada para atualização')
+        }
+
+        return updated
+
+        // async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
+        //         const updated = await this.userModel.findByIdAndUpdate(id, updateUserDto, { new: true });
+        //         if (!updated) {
+        //             throw new NotFoundException('Usuário não encontrado para atualização');
+        //         }
+        //         return updated;
+        //     }
     }
 }

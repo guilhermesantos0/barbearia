@@ -30,4 +30,8 @@ export class PremiumService {
     async delete(id: number): Promise<Premium | null> {
         return this.premiumModel.findByIdAndDelete(id).exec();
     }
+
+    async reset() {
+        
+    }
 }

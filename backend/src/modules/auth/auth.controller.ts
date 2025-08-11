@@ -12,7 +12,6 @@ export class AuthController {
 
     @Post('/login')
     async login(@Body() loginDto: LoginDto, @Res({ passthrough: true }) res: Response) {
-        console.log(loginDto)
         const loginUser = await this.authService.login(loginDto.email, loginDto.password, loginDto.remember);
 
         res.cookie('access_token', loginUser.access_token, {
@@ -35,7 +34,6 @@ export class AuthController {
     @UseGuards(JwtAuthGuard)
     @Get('/profile')
     getProfile(@Request() req) {
-        console.log('req.user', req.user);
         return req.user;
     }
 

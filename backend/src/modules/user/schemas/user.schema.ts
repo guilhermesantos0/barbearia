@@ -38,7 +38,7 @@ class Work {
 }
 
 class Premium {
-    @Prop({ default: 0, ref: 'Premium' })
+    @Prop({ type: Number, ref: 'Premium', default: 0 })
     tier: number;
 
     @Prop()
@@ -83,8 +83,8 @@ export class User {
     @Prop({ type: Number, default: 0, ref: 'Role' })
     role: number;
 
-    @Prop()
-    premium?: Premium;
+    @Prop({ type: Premium })
+    premium?: Premium | any;
 
     @Prop({
         type: [{ type: String, ref: 'ScheduledService' }],

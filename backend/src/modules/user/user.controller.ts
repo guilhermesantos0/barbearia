@@ -19,6 +19,14 @@ export class UserController {
         return this.userService.findById(req.user.sub);
     }
 
+    @UseGuards(AuthGuard('jwt'))
+    @Get('premium')
+    async getPremium(@Request() req) {
+        const userPremium = await this.userService.getPremium(req.user.sub);
+        console.log(userPremium)
+        return userPremium
+    }
+
     @Get()
     findAll() {
         return this.userService.findAll();

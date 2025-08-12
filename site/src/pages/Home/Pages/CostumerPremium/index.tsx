@@ -8,6 +8,8 @@ import api from '../../../../services/api';
 // @ts-ignore
 import { IPremium } from '@types/Premium';
 import PremiumCard from '@components/PremiumCard';
+// @ts-ignore
+import { formatDay } from '@utils/formatDay';
 
 const CostumerPremium = () => {
     const [user, setUser] = useState<IUser | null>(null);
@@ -16,8 +18,10 @@ const CostumerPremium = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const userResult = await api.get('/users/me');
+                const userResult = await api.get('/users/premium');
                 setUser(userResult.data);
+
+                console.log(userResult)
 
                 const premiumResult = await api.get('/premiumtiers');
                 const sorted = [...premiumResult.data].sort((a, b) => a.position - b.position);
@@ -52,7 +56,16 @@ const CostumerPremium = () => {
                 </div>
             ) : (
                 <div className={style.PageContent}>
-                    <p>🎉 Parabéns pelo seu plano! Em breve você verá a página exclusiva para assinantes.</p>
+                    <div className={style.Header}>
+                        <div className={style.LeftContent}>
+                            <h2>Bem vindo, {user?.name}</h2>
+                            <h3>Membro {user?.premium?.plan.name}</h3>
+                        </div>
+                        <div className={style.RightContent}>
+                            <p>Ativo até</p>
+                            <p>{formatDay(new Date(user?.premium?.expireAt))}</p>
+                        </div>
+                    </div>
                 </div>
             )}
         </div>

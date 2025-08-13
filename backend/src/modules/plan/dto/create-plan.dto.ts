@@ -10,7 +10,7 @@ class BenefitDto {
     description: string;
 }
 
-export class CreatePremiumDto {
+export class CreatePlanDto {
     @IsNotEmpty()
     @IsNumber()
     position: number;
@@ -28,9 +28,6 @@ export class CreatePremiumDto {
     price: number;
 
     @IsArray()
-    @ArrayMinSize(1)
-    @ValidateNested({ each: true })
-    @Type(() => BenefitDto)
-    benefits: BenefitDto[];
+    benefits: any;
 
 }

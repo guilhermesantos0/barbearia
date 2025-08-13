@@ -41,6 +41,9 @@ export class ScheduledService {
     @Prop()
     completedAt: Date;
 
+    @Prop({ default: 0 })
+    discountApplied: number;
+
     @Prop({ default: false })
     rated: boolean;
 

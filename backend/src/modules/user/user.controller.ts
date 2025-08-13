@@ -20,11 +20,11 @@ export class UserController {
     }
 
     @UseGuards(AuthGuard('jwt'))
-    @Get('premium')
-    async getPremium(@Request() req) {
-        const userPremium = await this.userService.getPremium(req.user.sub);
-        console.log(userPremium)
-        return userPremium
+    @Get('plan')
+    async getPlan(@Request() req) {
+        const userPlan = await this.userService.getPlan(req.user.sub);
+        console.log(userPlan)
+        return userPlan
     }
 
     @Get()

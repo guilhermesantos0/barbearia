@@ -8,10 +8,11 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ServiceModule } from './modules/service/service.module';
 import { RoleModule } from './modules/role/role.module';
 import { ScheduledserviceModule } from './modules/scheduledservice/scheduledservice.module';
-import { PremiumModule } from './modules/premium/premium.module';
+import { PlanModule } from './modules/plan/plan.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { UserModule } from './modules/user/user.module';
 import { LogsModule } from './modules/logs/logs.module';
+import { SubscriptionModule } from './modules/subscription/subscription.module';
 
 @Module({
     imports: [
@@ -28,10 +29,11 @@ import { LogsModule } from './modules/logs/logs.module';
         ServiceModule,
         RoleModule,
         ScheduledserviceModule,
-        PremiumModule,
+        PlanModule,
         AuthModule,
         UserModule,
-        LogsModule
+        LogsModule,
+        SubscriptionModule
     ],
     controllers: [AppController],
     providers: [AppService],

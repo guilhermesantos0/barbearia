@@ -1,7 +1,7 @@
 export enum TargetType {
     User = 'User',
     Log = 'Log',
-    Premium = 'Premium',
+    Plan = 'Plan',
     Role = 'Role',
     ScheduledService = 'ScheduledService',
     Service = 'Service'

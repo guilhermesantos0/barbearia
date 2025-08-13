@@ -1,31 +1,31 @@
 import { useEffect, useState } from 'react';
-import style from './CostumerPremium.module.scss';
+import style from './CostumerPlan.module.scss';
 
 // @ts-ignore
 import { IUser } from '@types/User';
 // @ts-ignore
 import api from '../../../../services/api';
 // @ts-ignore
-import { IPremium } from '@types/Premium';
-import PremiumCard from '@components/PremiumCard';
+import { IPlan } from '@types/Plan';
+import PlanCard from '@components/PlanCard';
 // @ts-ignore
 import { formatDay } from '@utils/formatDay';
 
-const CostumerPremium = () => {
+const CostumerPlan = () => {
     const [user, setUser] = useState<IUser | null>(null);
-    const [sortedPremiums, setSortedPremiums] = useState<IPremium[]>([]);
+    const [sortedPlans, setSortedPlans] = useState<IPlan[]>([]);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const userResult = await api.get('/users/premium');
+                const userResult = await api.get('/users/plan');
                 setUser(userResult.data);
 
                 console.log(userResult)
 
-                const premiumResult = await api.get('/premiumtiers');
-                const sorted = [...premiumResult.data].sort((a, b) => a.position - b.position);
-                setSortedPremiums(sorted);
+                const planResult = await api.get('/plantiers');
+                const sorted = [...planResult.data].sort((a, b) => a.position - b.position);
+                setSortedPlans(sorted);
             } catch (err) {
                 console.error('Erro ao carregar dados', err);
             }
@@ -36,7 +36,7 @@ const CostumerPremium = () => {
 
     return (
         <div className={style.Container}>
-            {user?.premium?.tier === 0 ? (
+            {user?.plan?.tier === 0 ? (
                 <div className={style.PageContent}>
                     <h1>Planos de Assinatura</h1>
                     <p className={style.Subtitle}>
@@ -44,11 +44,11 @@ const CostumerPremium = () => {
                     </p>
 
                     <div className={style.Plans}>
-                        {sortedPremiums.map((premium) => {
+                        {sortedPlans.map((plan) => {
 
                             return (
-                                <div key={premium._id} className={style.CardWrapper}>
-                                    <PremiumCard data={premium} />
+                                <div key={plan._id} className={style.CardWrapper}>
+                                    <PlanCard data={plan} />
                                 </div>
                             );
                         })}
@@ -59,11 +59,11 @@ const CostumerPremium = () => {
                     <div className={style.Header}>
                         <div className={style.LeftContent}>
                             <h2>Bem vindo, {user?.name}</h2>
-                            <h3>Membro {user?.premium?.plan.name}</h3>
+                            <h3>Membro {user?.plan?.plan.name}</h3>
                         </div>
                         <div className={style.RightContent}>
                             <p>Ativo até</p>
-                            <p>{formatDay(new Date(user?.premium?.expireAt))}</p>
+                            <p>{formatDay(new Date(user?.plan?.expireAt))}</p>
                         </div>
                     </div>
                 </div>
@@ -72,4 +72,4 @@ const CostumerPremium = () => {
     );
 };
 
-export default CostumerPremium;
+export default CostumerPlan;

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Próximos Agendamentos</title>
+    <style>
+        body {
+            background-color: #0B0F1A;
+            font-family: 'Segoe UI', sans-serif;
+            color: #E4E9F2;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h2 {
+            font-size: 24px;
+            color: #2F80ED;
+            margin-bottom: 24px;
+            text-align: left;
+        }
+
+        .card-agendamento {
+            background-color: #111C44;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            position: relative;
+        }
+
+        .info-topo {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .horario {
+            font-size: 20px;
+            font-weight: bold;
+            color: #E4E9F2;
+        }
+
+        .data {
+            font-size: 14px;
+            color: #C5C6CC;
+        }
+
+        .servico {
+            font-size: 16px;
+            margin-top: 6px;
+            color: #E4E9F2;
+        }
+
+        .barbeiro {
+            font-size: 14px;
+            color: #C5C6CC;
+        }
+
+        .status {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background-color: #2F80ED;
+            color: #E4E9F2;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 12px;
+        }
+
+        .sem-agendamentos {
+            background-color: #1F2A40;
+            border-radius: 16px;
+            padding: 40px;
+            text-align: center;
+            font-size: 16px;
+            color: #C5C6CC;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>📅 Próximo Agendamento</h2>
+
+        <!-- Se houver agendamento -->
+        <div class="card-agendamento">
+            <div class="status">Confirmado</div>
+            <div class="info-topo">
+                <div class="horario">13:30</div>
+                <div class="data">Quarta, 19/06/2025</div>
+            </div>
+            <div class="servico">💇 Corte Masculino</div>
+            <div class="barbeiro">✂️ Com Rafael Oliveira</div>
+        </div>
+
+        <!-- Se quiser mostrar mais de um agendamento, pode duplicar o card acima -->
+
+        <!-- Se NÃO houver agendamento, mostrar isso abaixo -->
+        <!-- <div class="sem-agendamentos">
+            Nenhum agendamento marcado no momento 😌<br>
+            Que tal agendar um corte?
+        </div> -->
+
+    </div>
+
+</body>
+</html>

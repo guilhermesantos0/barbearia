@@ -1,24 +1,24 @@
 // @ts-ignore
-import { IPremium } from "@types/Premium";
+import { IPlan } from "@types/Plan";
 
-import style from './PremiumCard.module.scss';
+import style from './PlanCard.module.scss';
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { formatPrice } from "@utils/formatPrice";
 
-interface PremiumCardProps {
-    data: IPremium
+interface PlanCardProps {
+    data: IPlan
 }
 
-const PremiumCard: React.FC<PremiumCardProps> = ({ data }) => {
+const PlanCard: React.FC<PlanCardProps> = ({ data }) => {
 
-    const [sortedPremiumBenefits, setSortedPremiumBenefits] = useState();
+    const [sortedPlanBenefits, setSortedPlanBenefits] = useState();
 
     useEffect(() => {
         if (!data.benefits) return;
 
         const sortedBenefits = [...data.benefits].sort((a, b) => a.pos - b.pos);
-        setSortedPremiumBenefits(sortedBenefits)
+        setSortedPlanBenefits(sortedBenefits)
     }, [data])
 
     return (
@@ -28,7 +28,7 @@ const PremiumCard: React.FC<PremiumCardProps> = ({ data }) => {
             <p className={style.Description}>{data.description}</p>
             <div className={style.Benefits}>
                 {
-                    sortedPremiumBenefits && sortedPremiumBenefits.map((benefit) => (
+                    sortedPlanBenefits && sortedPlanBenefits.map((benefit) => (
                         <div className={style.Benefit}><FontAwesomeIcon icon={['far', 'circle-check']} className={style.Icon} />{benefit.description}</div>
                     ))
                 }
@@ -40,4 +40,4 @@ const PremiumCard: React.FC<PremiumCardProps> = ({ data }) => {
     )
 }
 
-export default PremiumCard
+export default PlanCard

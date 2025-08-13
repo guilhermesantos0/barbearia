@@ -37,17 +37,6 @@ class Work {
     services: string[];
 }
 
-class Premium {
-    @Prop({ type: Number, ref: 'Premium', default: 0 })
-    tier: number;
-
-    @Prop()
-    acquiredAt?: Date;
-
-    @Prop()
-    expireAt?: Date;
-}
-
 @Schema({ timestamps: true, versionKey: false })
 export class User {
     @Prop({
@@ -83,8 +72,8 @@ export class User {
     @Prop({ type: Number, default: 0, ref: 'Role' })
     role: number;
 
-    @Prop({ type: Premium })
-    premium?: Premium | any;
+    @Prop({ type: [String], ref: 'Subscription', default: [] })
+    subscription: string[];
 
     @Prop({
         type: [{ type: String, ref: 'ScheduledService' }],

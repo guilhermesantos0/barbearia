@@ -47,6 +47,10 @@ export class CreateScheduledServiceDto {
     @IsOptional()
     completedAt?: string;
 
+    @IsNumber()
+    @IsOptional()
+    discountAppliend: number;
+
     @IsBoolean()
     @IsOptional()
     rated?: boolean;

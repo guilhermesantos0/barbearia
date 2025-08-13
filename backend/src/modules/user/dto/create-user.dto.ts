@@ -32,7 +32,7 @@ export class CreateUserDto {
     role: number;
 
     @IsOptional()
-    premium?: any;
+    plan?: any;
 
     @IsOptional()
     @IsArray()

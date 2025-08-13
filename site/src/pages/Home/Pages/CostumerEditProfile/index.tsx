@@ -138,10 +138,10 @@ const CostumerEditProfile = () => {
                                 <div className={style.Card}>
                                     <div className={style.TopArea}>
                                         <FontAwesomeIcon className={style.Icon} icon='crown' />
-                                        <p className={style.PremiumStatus}>ATIVO</p>
+                                        <p className={style.PlanStatus}>ATIVO</p>
                                     </div>
                                     <div className={style.CardDetails}>
-                                        <h3 className={style.CardTitle}>Premium</h3>
+                                        <h3 className={style.CardTitle}>Plan</h3>
                                         <h4 className={style.CardText}>Valido até Dez 2025</h4>
                                     </div>
                                 </div>

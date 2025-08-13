@@ -2,10 +2,32 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
 
-export type PremiumDocument = Plan & Document;
+export type PlanDocument = Plan & Document;
+
+@Schema()
+class Benefit {
+    @Prop({ type: String, default: () => uuidv4() })
+    _id: string;
+
+    @Prop({ required: true })
+    key: string;
+
+    @Prop({ required: true })
+    label: string;
+
+    @Prop({ required: true })
+    type: string; // 'percentage', 'fixed_value', 'free_service'...
+
+    @Prop()
+    value: number;
+
+    @Prop()
+    conditions?: object;
+}
+
 
 @Schema({ timestamps: true, versionKey: false })
-class Plan {
+export class Plan {
     @Prop({ type: String, default: () => uuidv4() })
     _id: string;
 
@@ -16,7 +38,7 @@ class Plan {
     description: string;
 
     @Prop({ required: true })
-    price: number; // preço base
+    price: number;
 
     @Prop({ default: 'BRL' })
     currency: string;
@@ -27,7 +49,7 @@ class Plan {
     @Prop({ default: true })
     active: boolean;
 
-    @Prop({ type: [Benefit], default: [] }) // benefícios diretos do plano
+    @Prop({ type: [Benefit], default: [] })
     benefits: Benefit[];
 }
 

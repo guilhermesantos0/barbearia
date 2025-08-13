@@ -7,7 +7,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 
 import { PasswordService } from 'src/common/services/password.service';
 import { AuthService } from '../auth/auth.service';
-import { Premium, PremiumDocument } from '../premium/schemas/premium.schema';
+import { SubscriptionService } from '../subscription/subscription.service';
 
 @Injectable()
 export class UserService {
@@ -16,7 +16,7 @@ export class UserService {
         private passwordService: PasswordService,
         @Inject(forwardRef(() => AuthService))
         private authService: AuthService,
-        @InjectModel(Premium.name) private premiumModel: Model<PremiumDocument>
+        private subscriptionService: SubscriptionService
     ) {}
 
     async create(createUserDto: CreateUserDto): Promise<User> {
@@ -57,19 +57,8 @@ export class UserService {
         return user;
     }
 
-    async getPremium(id: string): Promise<User | null> {
-        const user = await this.userModel.findById(id).exec();
-        if (!user) return null
-
-        if (user.premium?.tier !== 0) {
-            const premium = await this.premiumModel.findById(user.premium?.tier).lean();
-            user.premium = {
-                ...user.premium,
-                plan: premium
-            };
-        }
-
-        return user;
+    async getPlan(userId: string) {
+        return this.subscriptionService.getActiveSubscriptionByUser(userId)
     }
 
     async findByEmail(email: string): Promise<User | null> {

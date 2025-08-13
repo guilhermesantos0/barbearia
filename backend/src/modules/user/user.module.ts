@@ -8,15 +8,15 @@ import { User, UserSchema } from './schemas/user.schema';
 import { CommonModule } from 'src/common/common.module';
 
 import { AuthModule } from '../auth/auth.module';
-import { PremiumModule } from '../premium/premium.module';
-import { Premium, PremiumSchema } from '../premium/schemas/premium.schema';
+import { PlanModule } from '../plan/plan.module';
+import { SubscriptionModule } from '../subscription/subscription.module';
 
 @Module({
     imports: [
-        MongooseModule.forFeature([{ name: User.name, schema: UserSchema }, { name: Premium.name, schema: PremiumSchema }]),
+        MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
         CommonModule,
         forwardRef(() => AuthModule),
-        PremiumModule
+        SubscriptionModule
     ],
     controllers: [UserController],
     providers: [UserService],

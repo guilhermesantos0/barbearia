@@ -9,7 +9,7 @@ interface Interval {
     end: string;
 }
 
-interface Premium {
+interface Plan {
     tier: number;
     acquiredAt: Date;
     expireAt: Date;
@@ -39,7 +39,7 @@ export interface IUser {
 
     services?: IService[];
 
-    premium?: Premium;
+    plan?: Plan;
 
     logs?: ILog[];
 

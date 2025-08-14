@@ -2,6 +2,7 @@ import { IScheduledService } from "./ScheduledService";
 import { IService } from "./Service";
 import { IRole } from "./Role";
 import { ILog } from "./Log";
+import { ISubscription } from "./subscription";
 
 interface Interval {
     name: string;
@@ -39,7 +40,7 @@ export interface IUser {
 
     services?: IService[];
 
-    plan?: Plan;
+    subscription: ISubscription[] | string[];
 
     logs?: ILog[];
 

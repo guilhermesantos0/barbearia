@@ -11,7 +11,7 @@ import CostumerSchedules from "./Pages/CostumerSchedules";
 import CostumerFavouriteBarbers from "./Pages/CostumerFavouriteBarbers";
 import CostumerHistory from "./Pages/CostumerHistory";
 import CostumerEditProfile from "./Pages/CostumerEditProfile";
-import CostumerPlan from "./Pages/CostumerPlan";
+import CostumerPlan from "./Pages/CostumerPremium";
 
 const Home = () => {
     const { user } = useUser();

@@ -7,7 +7,10 @@ export type PlanDocument = Plan & Document;
 @Schema()
 class Benefit {
     @Prop({ type: String, default: () => uuidv4() })
-    _id: string;
+    _id?: string;
+
+    @Prop({ default: 0 })
+    position: number
 
     @Prop({ required: true })
     key: string;
@@ -18,10 +21,13 @@ class Benefit {
     @Prop({ required: true })
     type: string; // 'percentage', 'fixed_value', 'free_service'...
 
-    @Prop()
-    value: number;
+    @Prop({ type: Boolean })
+    unlimited: boolean
 
     @Prop()
+    value?: number;
+
+    @Prop({ type: Object })
     conditions?: object;
 }
 
@@ -34,17 +40,14 @@ export class Plan {
     @Prop({ required: true, unique: true })
     name: string;
 
+    @Prop({ default: 0 })
+    position: number;
+
     @Prop({ required: true })
     description: string;
 
     @Prop({ required: true })
     price: number;
-
-    @Prop({ default: 'BRL' })
-    currency: string;
-
-    @Prop({ enum: ['monthly', 'quarterly', 'yearly'], default: 'monthly' })
-    billingCycle: string;
 
     @Prop({ default: true })
     active: boolean;

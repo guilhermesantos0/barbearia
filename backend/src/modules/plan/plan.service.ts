@@ -16,7 +16,18 @@ export class PlanService {
     }
 
     async findAll(): Promise<Plan[]> {
-        return this.planModel.find().exec()
+        return this.planModel
+            .aggregate([
+                {
+                    $addFields: {
+                        benefits: {
+                            $sortArray: { input: '$benefits', sortBy: { position: 1 } }
+                        }
+                    }
+                },
+                { $sort: { position: 1 } }
+            ])
+            .exec()
     }
 
     async findById(id: number): Promise<Plan | null> {
@@ -27,7 +38,7 @@ export class PlanService {
         return this.planModel.findByIdAndUpdate(id, data, { new: true }).exec();
     }
 
-    async delete(id: number): Promise<Plan | null> {
+    async remove(id: string): Promise<Plan | null> {
         return this.planModel.findByIdAndDelete(id).exec();
     }
 

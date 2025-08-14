@@ -1,19 +1,21 @@
 import { useEffect, useState } from 'react';
-import style from './CostumerPlan.module.scss';
+import style from './CostumerPremium.module.scss';
 
 // @ts-ignore
 import { IUser } from '@types/User';
 // @ts-ignore
 import api from '../../../../services/api';
 // @ts-ignore
-import { IPlan } from '@types/Plan';
-import PlanCard from '@components/PlanCard';
+import { IPlan, IBenefit } from '@types/Plan';
+import PlanCard from '@components/PremiumCard';
 // @ts-ignore
 import { formatDay } from '@utils/formatDay';
 
 const CostumerPlan = () => {
-    const [user, setUser] = useState<IUser | null>(null);
+    const [user, setUser] = useState<any | null>(null);
     const [sortedPlans, setSortedPlans] = useState<IPlan[]>([]);
+
+    const [hasPremiumSignature, setHasPremiumSignature] = useState<boolean>(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -21,9 +23,7 @@ const CostumerPlan = () => {
                 const userResult = await api.get('/users/plan');
                 setUser(userResult.data);
 
-                console.log(userResult)
-
-                const planResult = await api.get('/plantiers');
+                const planResult = await api.get('/plans');
                 const sorted = [...planResult.data].sort((a, b) => a.position - b.position);
                 setSortedPlans(sorted);
             } catch (err) {
@@ -36,7 +36,20 @@ const CostumerPlan = () => {
 
     return (
         <div className={style.Container}>
-            {user?.plan?.tier === 0 ? (
+            {user ? (
+                <div className={style.PageContent}>
+                    <div className={style.Header}>
+                        <div className={style.LeftContent}>
+                            <h2>Bem vindo, {user.userId.name}</h2>
+                            <h3>Membro {user.planId.name}</h3>
+                        </div>
+                        <div className={style.RightContent}>
+                            <p>Ativo até</p>
+                            <p>{formatDay(new Date(user.endDate))}</p>
+                        </div>
+                    </div>
+                </div>
+            ) : (
                 <div className={style.PageContent}>
                     <h1>Planos de Assinatura</h1>
                     <p className={style.Subtitle}>
@@ -54,19 +67,7 @@ const CostumerPlan = () => {
                         })}
                     </div>
                 </div>
-            ) : (
-                <div className={style.PageContent}>
-                    <div className={style.Header}>
-                        <div className={style.LeftContent}>
-                            <h2>Bem vindo, {user?.name}</h2>
-                            <h3>Membro {user?.plan?.plan.name}</h3>
-                        </div>
-                        <div className={style.RightContent}>
-                            <p>Ativo até</p>
-                            <p>{formatDay(new Date(user?.plan?.expireAt))}</p>
-                        </div>
-                    </div>
-                </div>
+                
             )}
         </div>
     );

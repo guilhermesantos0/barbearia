@@ -32,6 +32,11 @@ export class UserController {
         return this.userService.findAll();
     }
 
+    @Get('fix')
+    fix() {
+        return this.userService.fix();
+    }
+
     @Get(':id')
     findOne(@Param('id') id: string) {
         return this.userService.findOne(id);
@@ -46,4 +51,6 @@ export class UserController {
     remove(@Param('id') id: string) {
         return this.userService.remove(id);
     }
+
+    
 }

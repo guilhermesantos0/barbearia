@@ -4,7 +4,7 @@ import { Plan } from './schemas/plan.schema';
 
 import { CreatePlanDto } from './dto/create-plan.dto';
 
-@Controller('/plantiers')
+@Controller('/plans')
 export class PlanController {
     constructor(private readonly planService: PlanService) {}
 
@@ -34,7 +34,7 @@ export class PlanController {
     }
 
     @Delete(':id')
-    async delete(@Param('id') id: number) {
-        return this.planService.delete(id);
+    async remove(@Param('id') id: string) {
+        return this.planService.remove(id);
     }
 }

@@ -14,9 +14,7 @@ export class UserService {
     constructor(
         @InjectModel(User.name) private userModel: Model<UserDocument>,
         private passwordService: PasswordService,
-        @Inject(forwardRef(() => AuthService))
-        private authService: AuthService,
-        private subscriptionService: SubscriptionService
+        private readonly subscriptionService: SubscriptionService
     ) {}
 
     async create(createUserDto: CreateUserDto): Promise<User> {
@@ -58,7 +56,8 @@ export class UserService {
     }
 
     async getPlan(userId: string) {
-        return this.subscriptionService.getActiveSubscriptionByUser(userId)
+        const plan = await this.subscriptionService.getActiveSubscriptionByUser(userId)
+        return plan
     }
 
     async findByEmail(email: string): Promise<User | null> {
@@ -97,5 +96,14 @@ export class UserService {
             email: user.email,
             role: user.role
         };
+    }
+
+    async fix(): Promise<string | null> {
+        const result = await this.userModel.updateMany(
+            {}, 
+            { $unset: { premium: '', premiumTier: '' } },
+            { strict: false }
+        );
+        return `${result.modifiedCount} usuários modificados`
     }
 }

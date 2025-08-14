@@ -1,7 +1,7 @@
 // @ts-ignore
-import { IPlan } from "@types/Plan";
+import { IBenefit, IPlan } from "@types/Plan";
 
-import style from './PlanCard.module.scss';
+import style from './PremiumCard.module.scss';
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { formatPrice } from "@utils/formatPrice";
@@ -12,12 +12,12 @@ interface PlanCardProps {
 
 const PlanCard: React.FC<PlanCardProps> = ({ data }) => {
 
-    const [sortedPlanBenefits, setSortedPlanBenefits] = useState();
+    const [sortedPlanBenefits, setSortedPlanBenefits] = useState<IBenefit[]>();
 
     useEffect(() => {
         if (!data.benefits) return;
 
-        const sortedBenefits = [...data.benefits].sort((a, b) => a.pos - b.pos);
+        const sortedBenefits = [...data.benefits].sort((a, b) => a.position - b.position);
         setSortedPlanBenefits(sortedBenefits)
     }, [data])
 
@@ -29,7 +29,7 @@ const PlanCard: React.FC<PlanCardProps> = ({ data }) => {
             <div className={style.Benefits}>
                 {
                     sortedPlanBenefits && sortedPlanBenefits.map((benefit) => (
-                        <div className={style.Benefit}><FontAwesomeIcon icon={['far', 'circle-check']} className={style.Icon} />{benefit.description}</div>
+                        <div className={style.Benefit}><FontAwesomeIcon icon={['far', 'circle-check']} className={style.Icon} />{benefit.label}</div>
                     ))
                 }
             </div>

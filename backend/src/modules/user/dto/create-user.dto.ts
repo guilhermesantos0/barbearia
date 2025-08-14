@@ -40,4 +40,10 @@ export class CreateUserDto {
 
     @IsOptional()
     work?: any;
+
+    @IsOptional()
+    premium: any;
+
+    @IsOptional()
+    premiumTier: any;
 }

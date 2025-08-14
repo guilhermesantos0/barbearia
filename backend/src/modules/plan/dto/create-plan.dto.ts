@@ -1,33 +1,81 @@
-import { Type } from "class-transformer";
-import { ArrayMinSize, IsArray, IsNotEmpty, IsNumber, IsString, ValidateNested } from "class-validator";
+import { Type } from 'class-transformer';
+import {
+    IsArray,
+    IsBoolean,
+    IsEnum,
+    IsNotEmpty,
+    IsNumber,
+    IsObject,
+    IsOptional,
+    IsPositive,
+    IsString,
+    IsUUID,
+    MaxLength,
+    ValidateNested,
+} from 'class-validator';
 
 class BenefitDto {
-    @IsNumber()
-    pos: number;
+    @IsOptional()
+    @IsUUID()
+    _id?: string;
 
-    @IsString()
-    @IsNotEmpty()
-    description: string;
-}
-
-export class CreatePlanDto {
-    @IsNotEmpty()
     @IsNumber()
     position: number;
 
-    @IsNotEmpty()
     @IsString()
+    @IsNotEmpty()
+    @MaxLength(100)
+    key: string;
+
+    @IsString()
+    @IsNotEmpty()
+    @MaxLength(255)
+    label: string;
+
+    @IsString()
+    @IsNotEmpty()
+    @IsEnum(['percentage', 'fixed_value', 'free_service', 'free_courtesy', 'free_extra_service', 'other_plan_benefits', 'free_barbershop_products'], {
+        message: 'type must be one of: percentage, fixed_value, free_service, free_courtesy, free_extra_service, other_plan_benefits, free_barbershop_products',
+    })
+    type: string;
+
+    @IsBoolean()
+    unlimited: boolean
+
+    @IsOptional()
+    @IsNumber()
+    @IsPositive()
+    value: number;
+
+    @IsOptional()
+    @IsObject()
+    conditions?: Record<string, any>;
+}
+
+export class CreatePlanDto {
+    @IsString()
+    @IsNotEmpty()
+    @MaxLength(100)
     name: string;
 
-    @IsNotEmpty()
+    @IsNumber()
+    position: number;
+
     @IsString()
+    @IsNotEmpty()
+    @MaxLength(500)
     description: string;
 
-    @IsNotEmpty()
     @IsNumber()
+    @IsPositive()
     price: number;
 
-    @IsArray()
-    benefits: any;
+    @IsOptional()
+    @IsBoolean()
+    active?: boolean = true;
 
+    @IsArray()
+    @ValidateNested({ each: true })
+    @Type(() => BenefitDto)
+    benefits: BenefitDto[];
 }

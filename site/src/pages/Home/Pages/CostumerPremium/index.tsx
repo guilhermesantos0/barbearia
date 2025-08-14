@@ -10,6 +10,8 @@ import { IPlan, IBenefit } from '@types/Plan';
 import PlanCard from '@components/PremiumCard';
 // @ts-ignore
 import { formatDay } from '@utils/formatDay';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 const CostumerPlan = () => {
     const [user, setUser] = useState<any | null>(null);
@@ -47,6 +49,17 @@ const CostumerPlan = () => {
                             <p>Ativo até</p>
                             <p>{formatDay(new Date(user.endDate))}</p>
                         </div>
+                    </div>
+                    <div className={style.Benefits}>
+                        {
+                            user.planId.benefits.map((benefit) => (
+                                <div className={style.Benefit}>
+                                    <FontAwesomeIcon icon{{
+                                        'free_service': 'clock' as IconProp
+                                    }[benefit.type] } />
+                                </div>
+                            ))
+                        }
                     </div>
                 </div>
             ) : (

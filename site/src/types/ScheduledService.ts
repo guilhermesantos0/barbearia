@@ -15,6 +15,7 @@ export interface IScheduledService {
         comment: string,
         ratedAt: Date
     },
+    discountApplied: number,
     createdAt: string | Date,
     editedAt: string | Date
 }

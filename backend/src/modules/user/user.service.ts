@@ -66,7 +66,15 @@ export class UserService {
             .select('history')
             .populate({
                 path: 'history',
-                match: { discountApplied: { $ne: 0 } } 
+                match: { 
+                    $and: [
+                        { discountApplied: { $exists: true } },
+                        { discountApplied: { $nin: [0, '0', null] } }
+                    ]
+                 },
+                populate: [
+                    { path: 'costumer' }, { path: 'barber' }, { path: 'service' }
+                ]
             });
     }
 

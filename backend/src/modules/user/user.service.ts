@@ -60,6 +60,16 @@ export class UserService {
         return plan
     }
 
+    async getHistory(userId: string) {
+        return this.userModel
+            .findById(userId)
+            .select('history')
+            .populate({
+                path: 'history',
+                match: { discountApplied: { $ne: 0 } } 
+            });
+    }
+
     async findByEmail(email: string): Promise<User | null> {
         return this.userModel.findOne({ email }).exec();
     }

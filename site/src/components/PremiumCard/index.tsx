@@ -4,6 +4,8 @@ import { IBenefit, IPlan } from "@types/Plan";
 import style from './PremiumCard.module.scss';
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+// @ts-ignore
 import { formatPrice } from "@utils/formatPrice";
 
 interface PlanCardProps {

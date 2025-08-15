@@ -13,9 +13,15 @@ import { formatDay } from '@utils/formatDay';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
+import PercentageIcon from '@assets/icons/percentage.svg?react';
+import PumpSoapIcon from '@assets/icons/pump-soap.svg?react';
+// @ts-ignore
+import { IScheduledService } from '@types/ScheduledService';
+
 const CostumerPlan = () => {
     const [user, setUser] = useState<any | null>(null);
     const [sortedPlans, setSortedPlans] = useState<IPlan[]>([]);
+    const [userHistory, setUserHistory] = useState<IScheduledService[]>([]);
 
     const [hasPremiumSignature, setHasPremiumSignature] = useState<boolean>(false);
 
@@ -24,6 +30,9 @@ const CostumerPlan = () => {
             try {
                 const userResult = await api.get('/users/plan');
                 setUser(userResult.data);
+
+                const userHistoryResult = await api.get('/users/history');
+                setUserHistory(userHistoryResult.data)
 
                 const planResult = await api.get('/plans');
                 const sorted = [...planResult.data].sort((a, b) => a.position - b.position);
@@ -52,22 +61,50 @@ const CostumerPlan = () => {
                     </div>
                     <div className={style.Benefits}>
                         {
-                            user.planId.benefits.map((benefit) => (
+                            user.planId.benefits.map((benefit: IBenefit) => (
                                 <div className={style.Benefit}>
-                                    <FontAwesomeIcon icon{{
-                                        'free_service': 'clock' as IconProp
-                                    }[benefit.type] } />
+                                    <FontAwesomeIcon 
+                                        icon={{
+                                            'fixed_value': 'dollar-sign' as IconProp,
+                                            'free_service': 'scissors' as IconProp,
+                                            'free_courtesy': 'gift' as IconProp,
+                                            'free_extra_service': 'star' as IconProp,
+                                            'other_plan_benefits' : 'medal' as IconProp,
+                                            'free_barbershop_products': 'pump-soap' as IconProp
+                                        }[benefit.type] || 'question'}
+                                    />
+
+                                    {
+                                        benefit.type === 'percentage' && <PercentageIcon />
+                                    }
+                                    
+                                    <p>{benefit.label}</p>
                                 </div>
                             ))
                         }
+                    </div>
+                    <div className={style.GridSection}>
+                        <div className={style.QuickActions}>
+                            <h2 className={style.QuickActionsTitle}>Ações Rápidas</h2>
+                            <div className={style.QuickActionCard}>
+                                <FontAwesomeIcon icon='calendar' className={style.QuickActionCardIcon} />
+                                <h3 className={style.QuickActionCardTitle}>Agendar Serviço</h3>
+                                <h5 className={style.QuickActionCardSubtitle}>Agende seu próximo serviço com seus benefícios exclusivos!</h5>
+                            </div>
+                            <div className={style.QuickActionCard}>
+                                <FontAwesomeIcon icon='people' className={style.QuickActionCardIcon} />
+                                <h3 className={style.QuickActionCardTitle}>Nossos Profissionais</h3>
+                                <h5 className={style.QuickActionCardSubtitle}>Veja nossos profissionais!</h5>
+                            </div>
+                        </div>
+                        <div>
+                            <h2>Ações Recentes</h2>
+                        </div>
                     </div>
                 </div>
             ) : (
                 <div className={style.PageContent}>
                     <h1>Planos de Assinatura</h1>
-                    <p className={style.Subtitle}>
-                        Escolha o plano que mais combina com você e aproveite benefícios exclusivos.
-                    </p>
 
                     <div className={style.Plans}>
                         {sortedPlans.map((plan) => {

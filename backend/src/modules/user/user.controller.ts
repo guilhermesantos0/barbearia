@@ -27,6 +27,12 @@ export class UserController {
         return userPlan
     }
 
+    @UseGuards(AuthGuard('jwt'))
+    @Get('history')
+    async getHistory(@Request() req) {
+        return this.userService.getHistory(req.user.sub);
+    }
+
     @Get()
     findAll() {
         return this.userService.findAll();

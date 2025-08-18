@@ -5,6 +5,7 @@ export interface ISubscription {
     userId: string | IUser,
     planId: string,
     startDate: Date,
+    nextBillingDate: Date,
     endDate: Date,
     status: 'active' | 'paused' | 'canceled',
     autoRenew: boolean

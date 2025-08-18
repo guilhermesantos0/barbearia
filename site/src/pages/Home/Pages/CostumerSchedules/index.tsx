@@ -11,6 +11,7 @@ import { IScheduledService } from '@types/ScheduledService';
 import { PlusIcon } from '@radix-ui/react-icons';
 import { useEffect, useState } from 'react';
 import api from '../../../../services/api';
+import { Link } from 'react-router-dom';
 
 const CostumerSchedules = () => {
 
@@ -37,7 +38,7 @@ const CostumerSchedules = () => {
                         <h1 className={style.Welcome}>Olá, {user.name.split(' ')[0]}</h1>
                         <div className={style.InlineElements}>
                             <h3 className={style.Subtitle}>Confira seus agendamentos</h3>
-                            <button className={style.ScheduleNew}><PlusIcon className={style.Icon} /> Agendar Serviço</button>
+                            <Link to='/agendar-servico' className={style.ScheduleNew}><PlusIcon className={style.Icon} /> Agendar Serviço</Link>
                         </div>
                         <div className={style.PageContent}>
                             {

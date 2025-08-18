@@ -27,6 +27,13 @@ export class RoleService {
         return this.roleModel.findById(id).exec();
     }
 
+    async findBarberRoles() {
+        const barberRoles = await this.roleModel.find({ isBarber: true }).exec();
+        const barberRolesId = barberRoles.map((role) => role._id);
+        
+        return barberRolesId;
+    }
+
     async update(id: number, data: Partial<Role>): Promise<Role | null> {
         return this.roleModel.findByIdAndUpdate(id, data, { new: true }).exec();
     }

@@ -28,6 +28,20 @@ export class ScheduledServiceService {
         return this.scheduledServiceModel.findById(id).populate('costumer').populate('barber').populate('service').exec();
     }
 
+    async findDateScheduled(barberId: string, startOfDay, endOfDay) {
+        // console.log('barberId: ', barberId)
+        console.log('startOfDay: ', startOfDay.toDate())
+        console.log('endOfDay: ', endOfDay.toDate())
+
+        const scheduled = await this.scheduledServiceModel.find({ 
+            barber: barberId,
+            date: { $gte: startOfDay.toDate(), $lt: endOfDay.toDate() },
+            status: { $ne: 'Cancelado' }
+        }).exec();
+
+        return scheduled;
+    }
+
     async update(id: string, data: Partial<ScheduledService>): Promise<ScheduledService | null> {
         return this.scheduledServiceModel.findByIdAndUpdate(id, data, { new: true }).exec();
     }

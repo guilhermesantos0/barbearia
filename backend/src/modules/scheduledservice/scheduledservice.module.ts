@@ -12,6 +12,7 @@ import { UserModule } from '../user/user.module';
         UserModule
   ],
   controllers: [ScheduledServiceController],
-  providers: [ScheduledServiceService]
+  providers: [ScheduledServiceService],
+  exports: [ScheduledServiceService]
 })
 export class ScheduledserviceModule {}

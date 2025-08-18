@@ -19,6 +19,9 @@ export class Subscription {
     startDate: Date;
 
     @Prop()
+    nextBillingDate: Date;
+
+    @Prop()
     endDate: Date;
 
     @Prop({ enum: ['active', 'paused', 'canceled'], default: 'active' })

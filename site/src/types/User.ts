@@ -2,7 +2,7 @@ import { IScheduledService } from "./ScheduledService";
 import { IService } from "./Service";
 import { IRole } from "./Role";
 import { ILog } from "./Log";
-import { ISubscription } from "./subscription";
+import { ISubscription } from "./Subscription";
 
 interface Interval {
     name: string;
@@ -45,5 +45,5 @@ export interface IUser {
     logs?: ILog[];
 
     createdAt: string | Date;
-    editedAt: string | Date;
+    updatedAt: string | Date;
 }

@@ -10,14 +10,12 @@ import { CounterService } from '../counter/counter.service';
 
 @Module({
     imports: [
-        // Importa o módulo que fornece o CounterService
         CounterModule,
 
-        // Configura o schema com o useFactory e injeção de dependência
         MongooseModule.forFeatureAsync([
             {
                 name: Role.name,
-                imports: [CounterModule], // ⚠️ ESSENCIAL aqui também
+                imports: [CounterModule],
                 inject: [CounterService],
                 useFactory: async (counterService: CounterService) => {
                     const schema = RoleSchema;
@@ -38,5 +36,6 @@ import { CounterService } from '../counter/counter.service';
     ],
     providers: [RoleService],
     controllers: [RoleController],
+    exports: [RoleService]
 })
 export class RoleModule {}

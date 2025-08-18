@@ -28,6 +28,9 @@ export class Role {
     @Prop({ required: true, unique: true })
     name: string;
 
+    @Prop({ default: false })
+    isBarber: boolean;
+
     @Prop({
         type: Object,
         required: true,

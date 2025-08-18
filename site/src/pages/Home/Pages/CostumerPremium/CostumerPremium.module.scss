@@ -1,4 +1,6 @@
 @use '@assets/scss/variables' as *;
+@use '@assets/scss/mixins' as *;
+@use 'sass:color';
 
 .Container {
     width: 100%;
@@ -7,7 +9,7 @@
     justify-content: center;
 
     .PageContent {
-        max-width: 1200px;
+        // max-width: 1200px;
         width: 100%;
         display: flex;
         flex-direction: column;
@@ -70,16 +72,217 @@
         }
     }
 
-    .Benefits {
-        display: flex;
-        gap: 2rem;
-        overflow-x: scroll;
+    .GridSection {
+        display: grid;
+        grid-template-columns: 1fr, 1fr;
+        grid-template-areas: 
+            'quickactions quickactions dashboard'
+            'recentactions recentactions monthsaving'
+            'recentactions recentactions accountinfo';
+        gap: 1rem;
+        // place-items: center;
 
-        .Benefit {
-            width: 25rem;
-            height: 15vh;
-            background-color: red;
+        .QuickActions {
+            grid-area: quickactions;
+
+            .QuickActionsTitle {
+                font-size: 1.3rem;
+            }
+
+            .QuickActionsCardsContainer {
+                display: flex;
+                gap: 2rem;
+                margin-top: .5rem;
+
+                .QuickActionCard {
+                    width: 30vw;
+                    height: 15vh;
+
+                    background: $dark-blue;
+
+                    border-radius: 5px;
+                    padding: 1rem;
+
+                    transition: transform .3s ease-in-out;
+
+                    &:hover {
+                        cursor: pointer;
+                        transform: translateY(-3px);
+                    }
+
+                    .QuickActionCardIcon {
+                        width: 1.7rem;
+                        height: 1.7rem;
+                        color: $light-blue;
+                    }
+
+                    .QuickActionCardTitle {
+                        font-size: 1.2rem;
+                        margin-top: .5rem;
+                    }
+
+                    .QuickActionCardSubtitle {
+                        font-size: 0.8rem;
+                        color: $light-gray;
+                    }
+                }
+            }
         }
+        
+        .RecentActions {
+            grid-area: recentactions;
+
+            .RecentActionsTitle {
+                font-size: 1.3rem;
+            }
+
+            .UserHistory {
+                display: flex;
+                flex-direction: column;
+                gap: 1.5rem;
+                margin-top: 1rem;
+
+                .HistotryService {
+                    width: calc(30vw * 2 + 2rem);
+                    height: 10vh;
+
+                    display: flex;
+                    justify-content: space-between;
+
+                    background: $dark-blue;
+
+                    border-radius: 5px;
+
+                    padding: .5rem 1rem;
+
+                    .LeftContent {
+                        display: flex;
+                        align-items: center;
+                        gap: 1rem;
+                        
+                        .BarberProfilePic {
+                            height: 3rem;
+                            width: 3rem;
+
+                            border-radius: 50%;
+                        }
+
+                        .ServiceDescription {
+                            font-weight: 400;
+                            color: $light-gray;
+                        }
+                    }
+
+                    .RightContent {
+                        display: flex;
+                        align-items: center;
+                        gap: 1rem;
+
+                        .DiscountApplied {
+                            background: $light-blue;
+                            padding: 0 .8rem;
+
+                            border-radius: 100vw;
+                        }
+
+                        .Trash {
+                            width: 1.5rem;
+                            height: 1.5rem;
+
+                            color: $red;
+
+                            transition: color .3s ease-in-out;
+
+                            &:hover {
+                                cursor: pointer;
+                                color: color.adjust($red, $lightness: -5%);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .SideCard {
+            width: 24vw;
+
+            .SideCardTitle {
+                font-size: 1.3rem;
+            }
+
+            .SideCardContent {
+                width: 100%;
+                height: 20vh;
+                background: $dark-blue;
+                padding: .5rem 1rem;
+                margin-top: .5rem;
+
+                display: flex;
+                flex-direction: column;
+                // justify-content: center;
+                gap: 1vh;
+
+                border-radius: 5px;
+
+                .SideCardContentTitle {
+                    margin-bottom: 1vh;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    
+                    font-size: 1.1rem;
+
+                    .Icon {
+                        color: $light-blue;
+                    }
+                }
+
+                .SideCardDetails {
+                    height: 15vh;
+
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-evenly;
+
+                    .Detail {
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+    
+                        .DetailLabel {
+                            font-weight: 500;
+                        }
+    
+                        .DetailValue {
+                            color: $light-gray;
+                        }
+                    }
+                }
+
+            }            
+        }
+
+        .Dashboard { 
+            grid-area: dashboard;
+
+            .SideCardContent {
+                height: calc(15vh + 4rem);
+
+                .SideCardContentTitle {
+                    margin-bottom: 0;
+                }
+
+                .Button {
+                    @include button-secondary;
+
+                    width: 100%;
+                    height: 3rem;
+
+                    // margin-top: 1rem;
+                }
+            }
+        }
+        .MonthSaving { grid-area: monthsaving; }
+        .AccountInformation { grid-area: accountinfo; }
     }
 }
-

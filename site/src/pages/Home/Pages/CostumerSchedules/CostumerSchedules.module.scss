@@ -20,6 +20,7 @@
         justify-content: space-between;
 
         .ScheduleNew {
+            all: unset;
             margin-right: calc(7.5% + .5rem);
             @include button-primary;
             padding: .5rem 1rem;

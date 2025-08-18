@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Delete, Put, Request, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Put, Request, UseGuards, Query } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -38,10 +38,20 @@ export class UserController {
         return this.userService.findAll();
     }
 
-    @Get('fix')
-    fix() {
-        return this.userService.fix();
+    @Get('barbers')
+    async getBarbers() {
+        return this.userService.getBarbers();
     }
+
+    @Get('barbers/:barberId/available-slots')
+    async getAvailableSlots(@Param('barberId') barberId: string, @Query('date') date: string, @Query('serviceDuration') serviceDuration: string) {
+        return this.userService.getAvailableSlots(barberId, new Date(date), Number(serviceDuration));
+    }
+
+    // @Get('fix')
+    // fix() {
+    //     return this.userService.fix();
+    // }
 
     @Get(':id')
     findOne(@Param('id') id: string) {

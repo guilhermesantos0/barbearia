@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import style from './Home.module.scss'
 
 import Sidebar from "../../components/SideBar";
@@ -21,7 +21,6 @@ const Home = () => {
     useEffect(() => {
         setOpenedTab(`${userType}_${page}`)
     },[ userType, page ])
-
     
     return (
         <div className={style.Container}>

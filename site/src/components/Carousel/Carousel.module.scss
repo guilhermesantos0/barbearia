@@ -1,0 +1,58 @@
+.CarouselContainer {
+    width: 100%;
+    position: relative;
+}
+
+.Swiper {
+    padding: 1rem 0;
+}
+
+.Slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 25rem;
+}
+
+.Item {
+    width: 25rem;
+    height: 10rem;
+    background: #111C44;
+    border-radius: 1rem;
+    padding: 1rem;
+    text-align: center;
+    color: #E4E9F2;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s ease;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+
+    &:hover {
+        transform: translateY(-4px);
+    }
+}
+
+.Icon {
+    width: 3rem;
+    height: 3rem;
+    color: #2F80ED;
+    margin-bottom: 0.5rem;
+}
+
+.Label {
+    font-size: 1.1rem;
+}
+
+/* customiza setas */
+:global(.swiper-button-next),
+:global(.swiper-button-prev) {
+    color: #2F80ED;
+    transition: color 0.3s ease;
+
+    &:hover {
+        color: #4c9fff;
+    }
+}

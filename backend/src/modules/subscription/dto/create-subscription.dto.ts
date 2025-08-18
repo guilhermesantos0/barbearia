@@ -11,6 +11,9 @@ export class CreateSubscriptionDto {
     startDate: Date;
 
     @IsOptional()
+    nextBillingDate?: Date;
+
+    @IsOptional()
     @IsDateString()
     endDate?: Date;
 

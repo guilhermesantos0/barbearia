@@ -48,6 +48,11 @@ export class UserController {
         return this.userService.getAvailableSlots(barberId, new Date(date), Number(serviceDuration));
     }
 
+    @Get('barbers/:barberId/services')
+    async getBarberServices(@Param('barberId') barberId: string) {
+        return this.userService.getBarberServices(barberId);
+    }
+
     // @Get('fix')
     // fix() {
     //     return this.userService.fix();

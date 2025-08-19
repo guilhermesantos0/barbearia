@@ -18,14 +18,15 @@ class Interval {
 class Time {
     @Prop({ required: true })
     start: string;
-
+    
     @Prop({ required: true })
     end: string;
-
+    
     @Prop({ type: [Object], default: [] })
     intervals: Interval[];
 }
 
+@Schema({ _id: false, versionKey: false })
 class Work {
     @Prop({ type: [String], default: [] })
     days: string[];
@@ -33,9 +34,10 @@ class Work {
     @Prop({ type: Object })
     time: Time;
 
-    @Prop({ type: [String], ref: 'Service', default: [] })
+    @Prop({ type: [{ type: String, ref: 'Service' }], default: [] })
     services: string[];
 }
+const WorkSchema = SchemaFactory.createForClass(Work);
 
 @Schema({ timestamps: true, versionKey: false })
 export class User {
@@ -81,7 +83,7 @@ export class User {
     })
     history: string[];
 
-    @Prop({ type: Object })
+    @Prop({ type: WorkSchema })
     work?: Work;
 }
 

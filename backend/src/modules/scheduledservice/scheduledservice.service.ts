@@ -8,6 +8,7 @@ import {
 } from './schemas/scheduledservice.schema';
 
 import { CreateScheduledServiceDto } from './dto/create-scheduledservice.dto';
+import { Dayjs } from 'dayjs';
 
 @Injectable()
 export class ScheduledServiceService {
@@ -28,10 +29,7 @@ export class ScheduledServiceService {
         return this.scheduledServiceModel.findById(id).populate('costumer').populate('barber').populate('service').exec();
     }
 
-    async findDateScheduled(barberId: string, startOfDay, endOfDay) {
-        // console.log('barberId: ', barberId)
-        console.log('startOfDay: ', startOfDay.toDate())
-        console.log('endOfDay: ', endOfDay.toDate())
+    async findDateScheduled(barberId: string, startOfDay: Dayjs, endOfDay: Dayjs) {
 
         const scheduled = await this.scheduledServiceModel.find({ 
             barber: barberId,

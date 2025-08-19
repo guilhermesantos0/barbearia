@@ -16,6 +16,7 @@ import * as dayjs from 'dayjs';
 import 'dayjs/locale/pt-br';
 import * as timezone from 'dayjs/plugin/timezone';
 import * as utc from 'dayjs/plugin/utc';
+import { Service } from '../service/schemas/service.schema';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -109,12 +110,11 @@ export class UserService {
         const barber = await this.userModel.findById(barberId).exec();
         if(!barber?.work) return [];
 
-        const date = dayjs.tz(dateString, 'YYYY-MM-DD', 'America/Sao_Paulo')
+        const _date = dayjs.utc(dateString).format('YYYY-MM-DD')
+        const date = dayjs.tz(_date, 'YYYY-MM-DD', 'America/Sao_Paulo');
 
         const dayOfWeek = dayjs(date).tz('America/Sao_Paulo').format('dddd').toLowerCase();
         if(!barber.work.days.includes(dayOfWeek)) return[];
-
-        console.log('date: ', date)
 
         const startOfDay = dayjs
             .tz(date, 'America/Sao_Paulo')
@@ -126,7 +126,7 @@ export class UserService {
             .hour(Number(barber.work.time.end.split(':')[0]))
             .minute(Number(barber.work.time.end.split(':')[1]))
 
-        const scheduled = await this.scheduledServiceService.findDateScheduled(barberId, startOfDay, endOfDay); // (Aqui printa o startOfDay e o endOfDay)
+        const scheduled = await this.scheduledServiceService.findDateScheduled(barberId, startOfDay, endOfDay);
 
         let slots: string[] = [];
         let current = startOfDay;
@@ -175,6 +175,17 @@ export class UserService {
 
         return slots;
     } 
+
+    async getBarberServices(barberId: string): Promise<any> {
+        return this.userModel
+            .findById(barberId)
+            .populate({
+                path: 'work.services',
+                model: 'Service'
+            })
+            .select('work.schema')
+            .exec();
+    }
 
     async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
         const updated = await this.userModel.findByIdAndUpdate(id, updateUserDto, { new: true });

@@ -85,6 +85,12 @@ export class User {
 
     @Prop({ type: WorkSchema })
     work?: Work;
+
+    @Prop({ type: Number })
+    averageRating: number;
+
+    @Prop({ type: Number })
+    ratingCount: number;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

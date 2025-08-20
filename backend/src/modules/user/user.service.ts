@@ -187,6 +187,18 @@ export class UserService {
             .exec();
     }
 
+    async addServices(id: string, services: string[]): Promise<User> {
+        const updated = await this.userModel.findByIdAndUpdate(
+            id,
+            { $addToSet: { 'work.services': { $each: services } } },
+            { new: true }
+        )
+        if(!updated) {
+            throw new NotFoundException('Usuário não encontrado para atualização')
+        }
+        return updated;
+    }
+
     async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
         const updated = await this.userModel.findByIdAndUpdate(id, updateUserDto, { new: true });
         if (!updated) {
@@ -229,3 +241,11 @@ export class UserService {
         return `${result.modifiedCount} usuários modificados`
     }
 }
+
+/* 
+    CALCULAR NOVA MEDIA
+
+    newAverage = (oldAverage * ratingCount + newRating) / (ratingCount + 1)
+    ratingCount += 1
+
+*/

@@ -41,9 +41,9 @@ export class CreateUserDto {
     @IsOptional()
     work?: any;
 
-    @IsOptional()
-    premium: any;
+    @IsNumber()
+    averageRating: number;
 
-    @IsOptional()
-    premiumTier: any;
+    @IsNumber()
+    ratingCount: number;
 }

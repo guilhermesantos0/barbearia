@@ -10,12 +10,6 @@ interface Interval {
     end: string;
 }
 
-interface Plan {
-    tier: number;
-    acquiredAt: Date;
-    expireAt: Date;
-}
-
 export interface IUser {
     _id: string;
     role: number | IRole; 
@@ -43,6 +37,9 @@ export interface IUser {
     subscription: ISubscription[] | string[];
 
     logs?: ILog[];
+
+    averageRating: number,
+    ratingCount: number
 
     createdAt: string | Date;
     updatedAt: string | Date;

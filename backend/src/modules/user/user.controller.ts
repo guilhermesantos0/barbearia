@@ -43,6 +43,16 @@ export class UserController {
         return this.userService.getBarbers();
     }
 
+    @Get('barbers/:barberId/available-today')
+    async getAvailableYoday(@Param('barberId') barberId: string) {
+        const today = new Date();
+        const serviceDuration = 30;
+
+        const availableSlotsToday = await this.userService.getAvailableSlots(barberId, today, serviceDuration);
+
+        return availableSlotsToday.length > 0
+    }
+
     @Get('barbers/:barberId/available-slots')
     async getAvailableSlots(@Param('barberId') barberId: string, @Query('date') date: string, @Query('serviceDuration') serviceDuration: string) {
         return this.userService.getAvailableSlots(barberId, new Date(date), Number(serviceDuration));
@@ -61,6 +71,11 @@ export class UserController {
     @Get(':id')
     findOne(@Param('id') id: string) {
         return this.userService.findOne(id);
+    }
+
+    @Put('/barbers/:id/services')
+    addService(@Param('id') id: string, @Body('services') services: string[]) {
+        return this.userService.addServices(id, services)
     }
 
     @Put(':id')

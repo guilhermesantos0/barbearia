@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { ServiceService } from './service.service';
 import { Service } from './schemas/service.schema';
+import { UpdateServiceDto } from './dto/update-service.dto';
 
 @Controller('/services')
 export class ServiceController {
@@ -22,8 +23,8 @@ export class ServiceController {
     }
 
     @Put(':id')
-    async update(@Param('id') id: string, @Body() data: Partial<Service>) {
-        return this.serviceService.update(id, data);
+    async update(@Param('id') id: string, @Body() updateServiceDto: UpdateServiceDto) {
+        return this.serviceService.update(id, updateServiceDto);
     }
 
     @Delete(':id')

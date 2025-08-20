@@ -1,0 +1,72 @@
+@use '@assets/scss/variables' as *;
+@use 'sass:color';
+
+.Container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .PageContent {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        width: 80%;
+
+        .StepIndicatior {
+            display: flex;
+            justify-content: space-between;
+
+            .Step {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+
+                .Circle {
+                    width: 2.7rem;
+                    height: 2.7rem;
+
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+
+                    background: $gray;
+                    
+                    border-radius: 50%;
+                    font-size: 1.3rem;
+                }
+
+                .Text {
+                    font-size: 1.2rem;
+                }
+
+                .DivisorLine {
+                    width: 10px;
+                    background: $light-gray;
+                }
+
+                &.CurrentStep, &.CompletedStep  {
+                    .Circle {
+                        background: $light-blue;
+                    }
+
+                    .Text {
+                        color: $light-blue;
+                    }
+                }
+
+                &.NextStep {
+                    .Circle {
+                        background: transparent;
+                        border: 1px solid $light-blue;
+                    }
+                }
+            }
+        }   
+    }
+}
+
+.BarbersContainer {
+    display: flex;
+    gap: 2rem;
+    padding: 1rem;
+}

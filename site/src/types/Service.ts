@@ -3,5 +3,7 @@ export interface IService {
     name: string,
     description: string,
     price: number,
-    duration: number
+    duration: number,
+    category: string,
+    active: boolean
 }

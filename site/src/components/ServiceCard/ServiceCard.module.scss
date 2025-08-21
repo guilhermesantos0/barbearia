@@ -1,0 +1,50 @@
+@use '@assets/scss/variables' as *;
+@use 'sass:color';
+
+.Container {
+    background: $dark-blue;
+    padding: .5rem 1rem;
+    border-radius: 5px;
+
+    width: 100%;
+    height: 7rem;
+
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+
+    transition: transform .3s ease-in-out, box-shadow .3s ease-in-out;
+
+    .Description {
+        color: $light-gray;
+    }
+
+    .Details {
+        display: flex;
+        gap: 1rem;
+        color: $light-gray;
+        
+        p {
+            display: flex;
+            align-items: center;
+            gap: .2rem;
+        }
+    }
+
+    .Price {
+        position: absolute;
+        right: 2rem;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 1.3rem;
+    }
+
+    &:hover {
+        cursor: pointer;
+        transform: translateY(-4px);
+
+        box-shadow: 0 0 5px color.adjust($light-blue, $lightness: 10%);
+    }
+}

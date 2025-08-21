@@ -6,20 +6,33 @@
     flex-direction: column;
     align-items: center;
 
+    .Return {
+        display: flex;
+        gap: .3rem;
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
     .PageContent {
         display: flex;
         flex-direction: column;
         gap: 2rem;
-        width: 80%;
+        width: 70rem;
 
         .StepIndicatior {
             display: flex;
             justify-content: space-between;
 
+            
             .Step {
                 display: flex;
                 align-items: center;
                 gap: 1rem;
+
+                &:hover {
+                    cursor: pointer;
+                }
 
                 .Circle {
                     width: 2.7rem;
@@ -40,20 +53,25 @@
                 }
 
                 .DivisorLine {
-                    width: 10px;
+                    width: 5rem;
+                    height: 1px;
                     background: $light-gray;
-                }
 
+                    &.CompletedStep {
+                        background: $light-blue;
+                    }
+                }
+                
                 &.CurrentStep, &.CompletedStep  {
                     .Circle {
                         background: $light-blue;
                     }
-
+                    
                     .Text {
                         color: $light-blue;
                     }
                 }
-
+                
                 &.NextStep {
                     .Circle {
                         background: transparent;
@@ -62,11 +80,88 @@
                 }
             }
         }   
+
+        .AppointmentDetails {
+            width: 100%;
+            height: 6rem;
+            padding: 0 1rem;
+            
+            display: flex;
+            justify-content: space-between;
+            
+            background: $dark-blue;
+
+            border-radius: 5px;
+
+            .BarberDetails {
+                display: flex;
+                align-items: center;
+                gap: .8rem;
+
+                .BarberData {
+                    display: flex;
+                    flex-direction: column;
+                    gap: .3rem;
+
+                    .BarberName {
+                        font-size: 1.2rem;
+                        font-weight: 600;
+                        color: $white;
+                    }
+
+                    .BarberRate {
+                        color: $light-gray;
+                    }
+                }
+
+                
+                img {
+                    width: 4rem;
+                    height: 4rem;
+                    
+                    border-radius: 50%;
+                }
+                
+            }
+
+            .ServiceDetails {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: flex-end;
+
+                gap: .3rem;
+
+                .ServiceName {
+                    font-size: 1.2rem;
+                    font-weight: 600;
+                }
+
+                .ServiceInfos {
+                    font-size: .9rem;
+                    color: $light-gray;
+                }
+            }
+
+        }
+
+        .CalendarContent {
+            margin-top: 3vh;
+            display: flex;
+            justify-content: center;
+        }
     }
 }
 
 .BarbersContainer {
     display: flex;
     gap: 2rem;
+    padding: 1rem;
+}
+
+.ServicesContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
     padding: 1rem;
 }

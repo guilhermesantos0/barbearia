@@ -58,6 +58,11 @@ export class UserController {
         return this.userService.getAvailableSlots(barberId, new Date(date), Number(serviceDuration));
     }
 
+    @Get('barbers/:barberId/available-days')
+    async getAvailableDays(@Param('barberId') barberId: string) {
+        return this.userService.getBarberDays(barberId);
+    }
+
     @Get('barbers/:barberId/services')
     async getBarberServices(@Param('barberId') barberId: string) {
         return this.userService.getBarberServices(barberId);

@@ -187,6 +187,46 @@ export class UserService {
             .exec();
     }
 
+    async getBarberDays(barberId: string): Promise<any[]> {
+        const barber = await this.userModel.findById(barberId).exec();
+        if(!barber || !barber.work) {
+            throw new NotFoundException('Barbeiro não encontrado ou não possui agenda configurada')
+        }
+
+        const { days } = barber.work;
+        if(!days || days.length === 0) {
+            return[];
+        }
+
+        dayjs.locale('pt-br');
+
+        const date = dayjs(new Date());
+        const year = date.year()
+        const month = date.month() + 1;
+        const day = date.date();
+
+        const startOfPeriod = dayjs(`${year}-${month}-${day}`);
+        const endOfPeriod = startOfPeriod.add(15, 'day');
+
+        const barberDays: any[] = [];
+
+        let currentDay = startOfPeriod.clone();
+
+        while (currentDay.isBefore(endOfPeriod) || currentDay.isSame(endOfPeriod)) {
+            const weekday = currentDay.format('dddd').toLowerCase();
+
+            if (days.includes(weekday)) {
+                barberDays.push({ day: currentDay.format('YYYY-MM-DD'), available: true });
+            } else {
+                barberDays.push({ day: currentDay.format('YYYY-MM-DD'), available: false })
+            }
+
+            currentDay = currentDay.add(1, 'day')
+        }
+
+        return barberDays;
+    }
+
     async addServices(id: string, services: string[]): Promise<User> {
         const updated = await this.userModel.findByIdAndUpdate(
             id,

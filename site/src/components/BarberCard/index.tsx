@@ -5,11 +5,19 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useEffect, useState } from 'react'
 import api from '../../services/api'
 
-interface BarberCardProps {
-    barber: IUser
+interface BarberData {
+    id: string,
+    name: string,
+    profilePic: string,
+    rate: number
 }
 
-const BarberCard: React.FC<BarberCardProps> = ({ barber }) => {
+interface BarberCardProps {
+    barber: IUser,
+    selected?: (barberData: BarberData) => void;
+}
+
+const BarberCard: React.FC<BarberCardProps> = ({ barber, selected }) => {
     const [availableToday, setAvailableToday] = useState<boolean>();
 
     useEffect(() => {
@@ -22,8 +30,18 @@ const BarberCard: React.FC<BarberCardProps> = ({ barber }) => {
         fetchData();
     }, [])
 
+    const handleSelectBarber = () => {
+        if (!selected) return
+        selected({
+            id: barber._id,
+            name: barber.name,
+            profilePic: barber.profilePic,
+            rate: barber.averageRating
+        })
+    }
+
     return (
-        <div className={style.Container}>
+        <div className={style.Container} onClick={handleSelectBarber}>
             <img src={barber.profilePic} alt="" className={style.BarberImage} loading='lazy' />
             <div className={style.BarberDetails}>
                 <span className={style.BarberName}>{barber.name}</span>

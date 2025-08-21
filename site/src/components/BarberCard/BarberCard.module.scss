@@ -34,9 +34,8 @@
 
     &:hover {
         cursor: pointer;
+        
         transform: translateY(-4px);
-
-        // border: 1px solid color.adjust($light-blue, $lightness: 10%);
         box-shadow: 0 0 5px color.adjust($light-blue, $lightness: 10%);
 
         .BarberImage {

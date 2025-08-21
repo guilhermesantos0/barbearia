@@ -25,4 +25,9 @@ export default defineConfig({
             '@utils': path.resolve(__dirname, './src/utils')
         },
     },
+    css: {
+        modules: {
+            generateScopedName: "[name]_[local]__[hash:base64:5]"
+        }
+    }
 });

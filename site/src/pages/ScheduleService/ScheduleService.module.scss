@@ -124,25 +124,36 @@
                 
             }
 
-            .ServiceDetails {
+            .RightContent {
                 display: flex;
                 flex-direction: column;
-                justify-content: center;
                 align-items: flex-end;
+                justify-content: center;
 
-                gap: .3rem;
-
-                .ServiceName {
-                    font-size: 1.2rem;
-                    font-weight: 600;
+                .ServiceDetails {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: flex-end;
+    
+                    gap: .3rem;
+    
+                    .ServiceName {
+                        font-size: 1.2rem;
+                        font-weight: 600;
+                    }
+    
+                    .ServiceInfos {
+                        font-size: .9rem;
+                        color: $light-gray;
+                    }
                 }
-
-                .ServiceInfos {
-                    font-size: .9rem;
-                    color: $light-gray;
+    
+                .AppointmentDate {
+                    color: $light-blue;
+                    font-weight: 500;
                 }
             }
-
         }
 
         .CalendarContent {
@@ -150,6 +161,49 @@
             display: flex;
             justify-content: center;
         }
+
+        .TimePickerContent {
+            margin-top: 3vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+
+            .TimesContainer {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 1rem;
+    
+                width: 60%;
+    
+                .Time {
+                    width: 6rem;
+                    height: 4rem;
+    
+                    background: $dark-blue;
+    
+                    border-radius: 5px;
+                    border: 1px solid $light-blue;
+    
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+    
+                    font-size: 1.3rem;
+                    font-weight: 600;
+    
+                    transition: transform .3s ease-in-out, box-shadow .3s ease-in-out;
+    
+                    &:hover {
+                        cursor: pointer;
+                        transform: translateY(-4px);
+                        box-shadow: 0 0 5px $light-blue;
+                    }
+                }
+            }
+        }
+
     }
 }
 

@@ -1,4 +1,4 @@
-export const formatDay = (date: Date | string) => {
+export const formatDay = (date: Date | string, showYear?: boolean) => {
 
     const months = [ 'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Agosto', 'Novembro', 'Dezembro' ];
 
@@ -10,5 +10,5 @@ export const formatDay = (date: Date | string) => {
     const month = months[d.getMonth()]
     const year = d.getFullYear();
 
-    return `${day} de ${month} de ${year}`
+    return `${day} de ${month} ${showYear ? `de ${year}` : ''}`
 }

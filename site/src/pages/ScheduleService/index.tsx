@@ -18,6 +18,8 @@ import { Link } from 'react-router-dom';
 import { fomratTimeDuration } from '@utils/formatTimeDuration';
 // @ts-ignore
 import { formatPrice } from '@utils/formatPrice';
+// @ts-ignore
+import { formatDay } from '@utils/formatDay';
 
 interface BarberData {
     id: string,
@@ -49,11 +51,14 @@ const ScheduleService = () => {
     const [barbers, setBarbers] = useState<IUser[]>([]);
     const [services, setServices] = useState<IService[]>([]);
     const [days, setDays] = useState<BarberDay[]>([]);
+    const [times, setTimes] = useState<string[]>([]);
 
     const [selectedBarber, setSelectedBarber] = useState<BarberData | null>();
     const [selectedService, setSelectedService] = useState<ServiceData | null>();
+    const [selectedDate, setSelectedDate] = useState<Date | null>();
+    const [selectedTime, setSelectedTime] = useState<string | null>();
 
-    const [currentStep, setCurrentStep] = useState<1 | 2 | 3 | 4>(1);
+    const [currentStep, setCurrentStep] = useState<1 | 2 | 3 | 4 | 5>(1);
 
     const steps:Step[] = [
         { id: 1, label: 'Escolher Barbeiro' },
@@ -86,8 +91,6 @@ const ScheduleService = () => {
     const handleSelectService = async (serviceData: ServiceData) => {
         setSelectedService(serviceData)
 
-        console.log(selectedBarber)
-
         const barberDaysResult = await api.get(`/users/barbers/${selectedBarber?.id}/available-days`);
         setDays(barberDaysResult.data);
 
@@ -95,7 +98,20 @@ const ScheduleService = () => {
     }
 
     const handleSelectDay = async (day: any) => {
-        console.log(day)
+        setSelectedDate(day)
+
+        const selectedDate = day.toISOString().split("T")[0];
+
+        const barberTimesResult = await api.get(`/users/barbers/${selectedBarber?.id}/available-slots?date=${selectedDate}&serviceDuration=${selectedService?.duration}`);
+        console.log(barberTimesResult.data)
+        setTimes(barberTimesResult.data);
+
+        setCurrentStep(4);
+    }
+
+    const handleSelectTime = async (time: any) => {
+        setSelectedTime(time);
+        setCurrentStep(5);
     }
 
     return (
@@ -149,17 +165,25 @@ const ScheduleService = () => {
                                             </div>
                                         )
                                     }
-                                    {
-                                        currentStep > 2 && selectedService && (
-                                            <div className={style.ServiceDetails}>
-                                                <span className={style.ServiceName}>{selectedService.name}</span>
-                                                <span className={style.ServiceInfos}>{fomratTimeDuration(selectedService.duration)} {formatPrice(selectedService.price)}</span>
-                                            </div>
-                                        )
-                                    }
+                                    <div className={style.RightContent}>
+                                        {
+                                            currentStep > 2 && selectedService && (
+                                                <div className={style.ServiceDetails}>
+                                                    <span className={style.ServiceName}>{selectedService.name}</span>
+                                                    <span className={style.ServiceInfos}>{fomratTimeDuration(selectedService.duration)} {formatPrice(selectedService.price)}</span>
+                                                </div>
+                                            )
+                                        }
+                                        {
+                                            currentStep > 3 && selectedDate && (
+                                                <span className={style.AppointmentDate}>{formatDay(selectedDate, false)}</span>
+                                            )
+                                        }
+                                    </div>
                                 </div>
                             )
                         }
+
                             {
                                 currentStep === 1 && (
                                     <div className={style.StepContent}>
@@ -200,6 +224,44 @@ const ScheduleService = () => {
                                 currentStep === 3 && (
                                     <div className={`${style.StepContent} ${style.CalendarContent}`}>
                                         <CalendarDatePicker days={days} selected={handleSelectDay} />
+                                    </div>
+                                )
+                            }
+                            {
+                                (currentStep === 4 || currentStep === 5) && (
+                                    <div className={`${style.StepContent} ${style.TimePickerContent}`}>
+                                        {
+                                            times && times.length > 0 ? (
+                                                <div className={style.TimesContainer}>
+                                                    {
+                                                        times.map((time, idx) => (
+                                                            <div className={style.Time} key={idx} onClick={() => handleSelectTime(time)}>
+                                                                {time}
+                                                            </div>
+                                                        ))
+                                                    }
+                                                </div>
+                                            ) : (
+                                                <div>sem tempo irmão</div>
+                                            )
+                                        }
+
+                                        {
+                                            currentStep === 5 && (
+                                                <div className={style.Resume}>
+                                                    <h3>Resumo do Agendamento</h3>
+                                                    <div className={style.ResumeDetails}>
+                                                        <span className={style.Detail}><p className={style.DetailLabel}>Barbeiro: </p><p className={style.DetailValue}>{selectedBarber?.name}</p></span>
+                                                        <span className={style.Detail}><p className={style.DetailLabel}>Serviço: </p><p className={style.DetailValue}>{selectedService?.name}</p></span>
+                                                        <span className={style.Detail}><p className={style.DetailLabel}>Data: </p><p className={style.DetailValue}>{formatDay(selectedDate)}</p></span>
+                                                        <span className={style.Detail}><p className={style.DetailLabel}>Horário: </p><p className={style.DetailValue}>{selectedTime}</p></span>
+                                                        <span className={style.Detail}><p className={style.DetailLabel}>Duração: </p><p className={style.DetailValue}>{selectedService?.duration}</p></span>
+                                                        <div className={style.DivisorLine}></div>
+                                                        <span className={style.Detail}><p className={style.DetailLabel}>Preço Total: </p><p className={style.DetailValue}>{formatPrice(selectedService?.price)}</p></span>
+                                                    </div>
+                                                </div>
+                                            )
+                                        }
                                     </div>
                                 )
                             }

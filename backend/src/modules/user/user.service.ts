@@ -17,6 +17,8 @@ import 'dayjs/locale/pt-br';
 import * as timezone from 'dayjs/plugin/timezone';
 import * as utc from 'dayjs/plugin/utc';
 import { Service } from '../service/schemas/service.schema';
+import { PlanService } from '../plan/plan.service';
+import { Benefit } from '../plan/schemas/plan.schema';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -31,7 +33,8 @@ export class UserService {
         private readonly subscriptionService: SubscriptionService,
         private readonly roleService: RoleService,
         private readonly scheduledServiceService: ScheduledServiceService,
-        private readonly serviceService: ServiceService
+        private readonly serviceService: ServiceService,
+        private readonly planService: PlanService
     ) {}
 
     async create(createUserDto: CreateUserDto): Promise<User> {
@@ -225,6 +228,49 @@ export class UserService {
         }
 
         return barberDays;
+    }
+
+    async getUserDiscount(userId: string, serviceId: string): Promise<number> {
+        const userSubscription = await this.subscriptionService.getActiveSubscriptionByUser(userId);
+        const service = await this.serviceService.findById(serviceId);
+
+        if (!userSubscription || !service) return 0;
+
+        if (typeof userSubscription.planId === 'string') return 0
+
+        let userBenefits: Benefit[] = [...userSubscription.planId.benefits];
+
+        const otherPlanRef = userBenefits.find( benefit => benefit.type === "other_plan_benefits" );
+
+        if (otherPlanRef) {
+            // @ts-ignore
+            const otherPlanBenefits = await this.planService.getBenefits(otherPlanRef.conditions?.targetPlan);
+            // @ts-ignore
+            userBenefits = [...userBenefits, ...otherPlanBenefits]
+        }
+        
+        console.log(userBenefits)
+
+        const freeService = userBenefits.find(
+            // @ts-ignore
+            benefit => benefit.type === "free_service" && benefit.conditions?.appliesTo === service?.category
+        );
+        
+        if (freeService) {
+            return 100
+        }
+        
+        const discount = userBenefits.find(
+            // @ts-ignore
+            benefit => benefit.key === "discount_appointments" && benefit.type === "percentage" && benefit.conditions?.appliesTo === service?.category
+        );
+
+        if (discount) {
+            return 15
+        }
+
+        return 0;
+
     }
 
     async addServices(id: string, services: string[]): Promise<User> {

@@ -114,6 +114,13 @@ const ScheduleService = () => {
         setCurrentStep(5);
     }
 
+    const handleCheckout = async () => {
+        const discountResult = await api.get(`/users/checkout/appointment?userId=${user?._id}&serviceId=${selectedService?.id}`);
+        const discount = discountResult.data;
+
+        
+    }
+
     return (
         <div className={style.Container}>
             <Link to='/home/cliente/agendamentos' className={style.Return}>

@@ -24,7 +24,7 @@ export class PlanController {
     }
 
     @Get(':id')
-    async findOne(@Param('id') id: number) {
+    async findOne(@Param('id') id: string) {
         return this.planService.findById(id);
     }
 

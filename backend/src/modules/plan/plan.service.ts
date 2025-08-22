@@ -30,8 +30,15 @@ export class PlanService {
             .exec()
     }
 
-    async findById(id: number): Promise<Plan | null> {
+    async findById(id: string): Promise<Plan | null> {
         return this.planModel.findById(id).exec();
+    }
+
+    async getBenefits(id: string): Promise<any[] | null> {
+        const plan = await this.planModel.findById(id).exec();
+        if(!plan) return [];
+
+        return plan.benefits;
     }
 
     async update(id: number, data: Partial<Plan>): Promise<Plan | null> {

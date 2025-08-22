@@ -68,6 +68,11 @@ export class UserController {
         return this.userService.getBarberServices(barberId);
     }
 
+    @Get('checkout/discount')
+    async getDiscount(@Query('userId') userId: string, @Query('serviceId') serviceId: string) {
+        return this.userService.getUserDiscount(userId, serviceId);
+    }
+
     // @Get('fix')
     // fix() {
     //     return this.userService.fix();

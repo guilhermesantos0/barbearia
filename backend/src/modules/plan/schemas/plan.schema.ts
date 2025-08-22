@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 export type PlanDocument = Plan & Document;
 
 @Schema()
-class Benefit {
+export class Benefit {
     @Prop({ type: String, default: () => uuidv4() })
     _id?: string;
 

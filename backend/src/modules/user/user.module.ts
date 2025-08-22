@@ -12,6 +12,7 @@ import { SubscriptionModule } from '../subscription/subscription.module';
 import { RoleModule } from '../role/role.module';
 import { ScheduledserviceModule } from '../scheduledservice/scheduledservice.module';
 import { ServiceModule } from '../service/service.module';
+import { PlanModule } from '../plan/plan.module';
 
 @Module({
     imports: [
@@ -21,7 +22,8 @@ import { ServiceModule } from '../service/service.module';
         SubscriptionModule,
         RoleModule,
         forwardRef(() => ScheduledserviceModule),
-        ServiceModule
+        ServiceModule,
+        PlanModule
     ],
     controllers: [UserController],
     providers: [UserService],

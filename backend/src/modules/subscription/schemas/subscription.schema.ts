@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document } from "mongoose";
+import { Plan } from "src/modules/plan/schemas/plan.schema";
 import { v4 as uuidv4 } from 'uuid';
 
 export type SubscriptionDocument = Subscription & Document; 
@@ -13,7 +14,7 @@ export class Subscription {
     userId: string;
 
     @Prop({ type: String, ref: 'Plan', required: true })
-    planId: string;
+    planId: string | Plan;
 
     @Prop({ required: true })
     startDate: Date;

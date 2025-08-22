@@ -98,6 +98,8 @@
                     width: 30vw;
                     height: 15vh;
 
+                    text-decoration: none;
+
                     background: $dark-blue;
 
                     border-radius: 5px;
@@ -119,6 +121,7 @@
                     .QuickActionCardTitle {
                         font-size: 1.2rem;
                         margin-top: .5rem;
+                        color: $white;
                     }
 
                     .QuickActionCardSubtitle {

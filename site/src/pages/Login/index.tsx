@@ -7,6 +7,8 @@ import api from '../../services/api';
 import OTPInput from '../../components/OTPInput';
 import { useNavigate } from 'react-router-dom';
 
+import { toast } from 'react-toastify';
+
 const Login = () => {
     const [currentState, setCurrentState] = useState<'login' | 'signup'>('login')
     const [signupStage, setSignupStage] = useState<1 | 2 | 3 | 4>(1);
@@ -124,10 +126,10 @@ const Login = () => {
 
         } catch (error: any) {
             if (error.response) {
-                alert(`Erro: ${error.response.data.message}`);
+                toast.error(`${error.response.data.message}`)
             } else {
                 console.error('Erro ao fazer login:', error);
-                alert('Erro ao conectar com o servidor');
+                toast.error('Erro ao conectar com o servidor')
             }
         }
     };

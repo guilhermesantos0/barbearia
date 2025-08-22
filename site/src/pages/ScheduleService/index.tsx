@@ -12,7 +12,7 @@ import BarberCard from '@components/BarberCard';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ServiceCard from '@components/ServiceCard';
 import CalendarDatePicker from '@components/CalendarDatePicker';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 // @ts-ignore
 import { fomratTimeDuration } from '@utils/formatTimeDuration';
@@ -20,6 +20,8 @@ import { fomratTimeDuration } from '@utils/formatTimeDuration';
 import { formatPrice } from '@utils/formatPrice';
 // @ts-ignore
 import { formatDay } from '@utils/formatDay';
+// @ts-ignore
+import { useCheckoutStore } from '@store/checkoutStore';
 
 interface BarberData {
     id: string,
@@ -46,6 +48,8 @@ interface Step {
 }
 
 const ScheduleService = () => {
+    const navigate = useNavigate();
+
     const [user, setUser] = useState<IUser>();
 
     const [barbers, setBarbers] = useState<IUser[]>([]);
@@ -115,10 +119,28 @@ const ScheduleService = () => {
     }
 
     const handleCheckout = async () => {
-        const discountResult = await api.get(`/users/checkout/appointment?userId=${user?._id}&serviceId=${selectedService?.id}`);
+        const discountResult = await api.get(`/users/checkout/discount?userId=${user?._id}&serviceId=${selectedService?.id}`);
         const discount = discountResult.data;
 
-        
+        const productObj = {
+            name: selectedService?.name,
+            data: {
+                duration: fomratTimeDuration(selectedService?.duration),
+                date: formatDay(selectedDate, false),
+                time: selectedTime
+            }
+        };
+
+        const price = selectedService?.price;
+
+        useCheckoutStore.getState().setCheckout({
+            price,
+            product: productObj,
+            discount,
+            type: "appointment"
+        })
+
+        navigate('/agendar-servico/pagamento')
     }
 
     return (
@@ -284,7 +306,7 @@ const ScheduleService = () => {
                                         }
                                         <div className={style.ButtonsContainer}>
                                             <button className={style.PreviousStep} onClick={() => {setCurrentStep(3); setSelectedTime(null)}}>&larr; Voltar Etapa</button>
-                                            { currentStep === 5 && (<button className={style.Payment}><FontAwesomeIcon icon='credit-card' />Ir Para o Pagamento</button>) }
+                                            { currentStep === 5 && (<button className={style.Payment} onClick={handleCheckout}><FontAwesomeIcon icon='credit-card' />Ir Para o Pagamento</button>) }
                                         </div>
                                     </div>
                                 )

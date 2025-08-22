@@ -27,7 +27,7 @@ export default function Carousel({ benefits }: { benefits: IBenefit[] }) {
                     <SwiperSlide key={i} className={style.Slide}>
                         <div className={style.Item}>
                             {benefit.type === "percentage" ? (
-                                <PercentageIcon />
+                                <PercentageIcon className={style.Icon} />
                             ) : (
                                 <FontAwesomeIcon 
                                     icon={{

@@ -22,7 +22,8 @@ export default defineConfig({
             '@styles': path.resolve(__dirname, './src/styles'),
             '@contexts': path.resolve(__dirname, './src/contexts'),
             '@types': path.resolve(__dirname, './src/types'),
-            '@utils': path.resolve(__dirname, './src/utils')
+            '@utils': path.resolve(__dirname, './src/utils'),
+            '@store': path.resolve(__dirname, './src/store')
         },
     },
     css: {

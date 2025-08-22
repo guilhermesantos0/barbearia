@@ -31,6 +31,7 @@
       "@assets/": ["src/assets/*"],
       "@types/": ["src/types"],
       "@utils/": ["src/utils"],
+      "@store/": ["src/store"]
     }
   },
   "include": ["src", "types.d.ts"]

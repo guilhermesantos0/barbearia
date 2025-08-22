@@ -23,6 +23,7 @@ import { formatDayNumbers } from '@utils/formatDayNumbers';
 import Carousel from '@components/Carousel';
 // @ts-ignore
 import { formatPrice } from '@utils/formatPrice';
+import { Link } from 'react-router-dom';
 
 interface IResult {
     _id: string,
@@ -82,11 +83,11 @@ const CostumerPlan = () => {
                         <div className={style.QuickActions}>
                             <h2 className={style.QuickActionsTitle}>Ações Rápidas</h2>
                             <div className={style.QuickActionsCardsContainer}>
-                                <div className={style.QuickActionCard}>
+                                <Link to='/agendar-servico' className={style.QuickActionCard} >
                                     <FontAwesomeIcon icon='calendar' className={style.QuickActionCardIcon} />
                                     <h3 className={style.QuickActionCardTitle}>Agendar Serviço</h3>
                                     <h5 className={style.QuickActionCardSubtitle}>Agende seu próximo serviço com seus benefícios exclusivos!</h5>
-                                </div>
+                                </Link>
                                 <div className={style.QuickActionCard}>
                                     <FontAwesomeIcon icon='clock' className={style.QuickActionCardIcon} />
                                     <h3 className={style.QuickActionCardTitle}>Nossos Profissionais</h3>

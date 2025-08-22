@@ -118,7 +118,7 @@ const ScheduleService = () => {
         <div className={style.Container}>
             <Link to='/home/cliente/agendamentos' className={style.Return}>
                 <FontAwesomeIcon icon='arrow-left' />
-                <p>Voltar</p>
+                <p>Ver Meus Agendamentos</p>
             </Link>
             {
                 user && barbers && (
@@ -127,15 +127,15 @@ const ScheduleService = () => {
                             {   
                                 steps.map((step, idx) => (
                                     <>
-                                        <div key={step.id} onClick={() => setCurrentStep(step.id)} className={`${style.Step} ${currentStep === step.id ? style.CurrentStep: ''} ${currentStep > step.id ? style.CompletedStep : ''} ${currentStep === step.id - 1 ? style.NextStep : ''}`}>
+                                        <div key={step.id} className={`${style.Step} ${currentStep === step.id ? style.CurrentStep: ''} ${currentStep > step.id ? style.CompletedStep : ''} ${currentStep === step.id - 1 ? style.NextStep : ''}`}>
                                             <div className={style.Circle}>
                                                 {
                                                     currentStep > step.id ? (
-                                                        <FontAwesomeIcon icon="check" />
+                                                        <FontAwesomeIcon icon="check" className={style.Icon} />
                                                     ) : (
-                                                        <>
+                                                        <p className={style.number}>
                                                             { step.id }
-                                                        </>
+                                                        </p>
                                                     )
                                                 }
                                             </div>
@@ -200,30 +200,40 @@ const ScheduleService = () => {
                             }
                             {
                                 currentStep === 2 && (
-                                    <div className={style.StepContent}>
-                                        {
-                                            services.length > 0 ? (
-                                                <>
-                                                    <h1>Escolha seu Serviço</h1>
-                                                    <div className={style.ServicesContainer}>
-                                                        {
-                                                            services.map(service => (
-                                                                <ServiceCard service={service} selected={handleSelectService} />
-                                                            ))
-                                                        }
-                                                    </div>
-                                                </>
-                                            ) : (
-                                                <span>Selecione um barbeiro primeiro</span>
-                                            )
-                                        }
-                                    </div>
+                                    <>
+                                        <div className={style.StepContent}>
+                                            {
+                                                services.length > 0 ? (
+                                                    <>
+                                                        <h1>Escolha seu Serviço</h1>
+                                                        <div className={style.ServicesContainer}>
+                                                            {
+                                                                services.map(service => (
+                                                                    <ServiceCard service={service} selected={handleSelectService} />
+                                                                ))
+                                                            }
+                                                        </div>
+                                                    </>
+                                                ) : (
+                                                    <span>Selecione um barbeiro primeiro</span>
+                                                )
+                                            }
+                                        </div>
+                                        <div className={style.ButtonsContainer}>
+                                            <button className={style.PreviousStep} onClick={() => {setCurrentStep(1); setSelectedService(null)}}>&larr; Voltar Etapa</button>
+                                        </div>
+                                    </>
                                 )
                             }
                             {
                                 currentStep === 3 && (
-                                    <div className={`${style.StepContent} ${style.CalendarContent}`}>
-                                        <CalendarDatePicker days={days} selected={handleSelectDay} />
+                                    <div className={style.HorizontalCentralize}>
+                                        <div className={`${style.StepContent} ${style.CalendarContent}`}>
+                                            <CalendarDatePicker days={days} selected={handleSelectDay} />
+                                        </div>
+                                        <div className={style.ButtonsContainer}>
+                                            <button className={style.PreviousStep} onClick={() => {setCurrentStep(2); setSelectedDate(null)}}>&larr; Voltar Etapa</button>
+                                        </div>
                                     </div>
                                 )
                             }
@@ -235,7 +245,7 @@ const ScheduleService = () => {
                                                 <div className={style.TimesContainer}>
                                                     {
                                                         times.map((time, idx) => (
-                                                            <div className={style.Time} key={idx} onClick={() => handleSelectTime(time)}>
+                                                            <div className={`${style.Time} ${selectedTime === time ? style.Selected : ''}`} key={idx} onClick={() => handleSelectTime(time)}>
                                                                 {time}
                                                             </div>
                                                         ))
@@ -248,20 +258,27 @@ const ScheduleService = () => {
 
                                         {
                                             currentStep === 5 && (
-                                                <div className={style.Resume}>
-                                                    <h3>Resumo do Agendamento</h3>
-                                                    <div className={style.ResumeDetails}>
-                                                        <span className={style.Detail}><p className={style.DetailLabel}>Barbeiro: </p><p className={style.DetailValue}>{selectedBarber?.name}</p></span>
-                                                        <span className={style.Detail}><p className={style.DetailLabel}>Serviço: </p><p className={style.DetailValue}>{selectedService?.name}</p></span>
-                                                        <span className={style.Detail}><p className={style.DetailLabel}>Data: </p><p className={style.DetailValue}>{formatDay(selectedDate)}</p></span>
-                                                        <span className={style.Detail}><p className={style.DetailLabel}>Horário: </p><p className={style.DetailValue}>{selectedTime}</p></span>
-                                                        <span className={style.Detail}><p className={style.DetailLabel}>Duração: </p><p className={style.DetailValue}>{selectedService?.duration}</p></span>
-                                                        <div className={style.DivisorLine}></div>
-                                                        <span className={style.Detail}><p className={style.DetailLabel}>Preço Total: </p><p className={style.DetailValue}>{formatPrice(selectedService?.price)}</p></span>
+                                                <>
+                                                    <div className={style.Resume}>
+                                                        <h3>Resumo do Agendamento</h3>
+                                                        <div className={style.ResumeDetails}>
+                                                            <span className={style.Detail}><p className={style.DetailLabel}>Barbeiro</p><p className={style.DetailValue}>{selectedBarber?.name}</p></span>
+                                                            <span className={style.Detail}><p className={style.DetailLabel}>Serviço</p><p className={style.DetailValue}>{selectedService?.name}</p></span>
+                                                            <span className={style.Detail}><p className={style.DetailLabel}>Data</p><p className={style.DetailValue}>{formatDay(selectedDate)}</p></span>
+                                                            <span className={style.Detail}><p className={style.DetailLabel}>Horário</p><p className={style.DetailValue}>{selectedTime}</p></span>
+                                                            <span className={style.Detail}><p className={style.DetailLabel}>Duração</p><p className={style.DetailValue}>{fomratTimeDuration(selectedService?.duration)}</p></span>
+                                                            <div className={style.DivisorLine}></div>
+                                                            <span className={style.Detail}><p className={style.DetailLabel}>Preço Total</p><p className={style.DetailValue}>{formatPrice(selectedService?.price)}</p></span>
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                    
+                                                </>
                                             )
                                         }
+                                        <div className={style.ButtonsContainer}>
+                                            <button className={style.PreviousStep} onClick={() => {setCurrentStep(3); setSelectedTime(null)}}>&larr; Voltar Etapa</button>
+                                            { currentStep === 5 && (<button className={style.Payment}><FontAwesomeIcon icon='credit-card' />Ir Para o Pagamento</button>) }
+                                        </div>
                                     </div>
                                 )
                             }

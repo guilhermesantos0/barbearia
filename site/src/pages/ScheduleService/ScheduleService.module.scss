@@ -1,4 +1,5 @@
 @use '@assets/scss/variables' as *;
+@use '@assets/scss/mixins' as *;
 @use 'sass:color';
 
 .Container {
@@ -8,10 +9,30 @@
 
     .Return {
         display: flex;
+        align-items: center;
         gap: .3rem;
         &:hover {
             cursor: pointer;
         }
+
+        width: 70rem;
+        height: 3rem;
+
+        margin-bottom: 1rem;
+
+        color: $white;
+
+        font-size: 1.3rem;
+
+        text-decoration: none;
+
+        transition: all .3s ease-in-out;
+
+        &:hover {
+            color: $light-gray;
+            text-decoration: underline;
+        }
+
     }
 
     .PageContent {
@@ -30,10 +51,6 @@
                 align-items: center;
                 gap: 1rem;
 
-                &:hover {
-                    cursor: pointer;
-                }
-
                 .Circle {
                     width: 2.7rem;
                     height: 2.7rem;
@@ -46,29 +63,76 @@
                     
                     border-radius: 50%;
                     font-size: 1.3rem;
+
+                    transition: background .3s ease-in-out, border .3s ease-in-out, color .3s ease-in-out;
+
+                    position: relative;
+                    overflow: hidden;
+
+                    .Number, .Icon {
+                        position: absolute;
+                        transition: opacity .3s ease, transform .3s ease;
+                    }
+
+                    .Number {
+                        opacity: 1;
+                        transform: scale(1);
+                    }
+
+                    .Icon {
+                        opacity: 0;
+                        transform: scale(.5);
+                    }
                 }
 
                 .Text {
                     font-size: 1.2rem;
+
+                    transition: color .3s ease-in-out;
                 }
 
                 .DivisorLine {
                     width: 5rem;
-                    height: 1px;
+                    height: 3px;
                     background: $light-gray;
+                    position: relative;
+                    overflow: hidden;
 
-                    &.CompletedStep {
+                    &::after {
+                        content: '';
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        height: 100%;
+                        width: 0%;
                         background: $light-blue;
+                        transition: width .3s ease-in-out;
+                    }
+
+                    &.CompletedStep::after {
+                        width: 100%;
                     }
                 }
                 
                 &.CurrentStep, &.CompletedStep  {
                     .Circle {
                         background: $light-blue;
+                        transition-delay: .3s;
+
+                        .Number {
+                            opacity: 0;
+                            transform: scale(.5);
+                        }
+
+                        .Icon {
+                            opacity: 1;
+                            transform: scale(1);
+                        }
                     }
                     
                     .Text {
                         color: $light-blue;
+                        transition-delay: .3s;
                     }
                 }
                 
@@ -200,7 +264,73 @@
                         transform: translateY(-4px);
                         box-shadow: 0 0 5px $light-blue;
                     }
+
+                    &.Selected {
+                        background: $light-blue;
+                    }
                 }
+            }
+
+            .Resume {
+                width: 60%;
+                background: $dark-blue;
+                padding: .5rem 1rem;
+                border-radius: 5px;
+
+                .ResumeDetails {
+                    margin-top: 1rem;
+
+                    display: flex;
+                    flex-direction: column;
+                    gap: .3rem;
+
+                    .Detail {
+                        display: flex;
+                        justify-content: space-between;
+                        font-weight: 500;
+
+                        .DetailLabel {
+                            color: $light-gray;
+                        }
+                    }
+
+                    .DivisorLine {
+                        width: 100%;
+                        height: 2px;
+                        background: linear-gradient(90deg, transparent, $light-gray 50%, transparent);
+                        opacity: .5;
+                        margin-top: .5rem;
+                        margin-bottom: .3rem;
+                    }
+                }
+
+            }
+        }
+
+        .HorizontalCentralize {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            gap: 3rem;
+        }
+
+        .ButtonsContainer {
+            width: 60%;
+            display: flex;
+            justify-content: space-between;
+
+
+            margin-bottom: 3rem;
+
+            .PreviousStep {
+                @include button-secondary;
+                padding: .8rem 1rem;
+            }
+
+            .Payment {
+                @include button-primary;
+                padding: .8rem 1rem;
             }
         }
 

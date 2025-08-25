@@ -1,14 +1,19 @@
 import { create } from 'zustand';
 
-interface ProductData {
+interface ScheduledServiceData {
     duration?: string,
     date?: string,
-    time?: string
+    time?: string,
+    barber?: {
+        name?: string,
+        profilePic?: string,
+        rate?: string
+    }
 }
 
 interface Product {
     name?: string,
-    data?: ProductData
+    data?: ScheduledServiceData
 }
 
 interface CheckoutState {

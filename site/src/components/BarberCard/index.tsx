@@ -9,7 +9,8 @@ interface BarberData {
     id: string,
     name: string,
     profilePic: string,
-    rate: number
+    rate: number,
+    ratingCount: number
 }
 
 interface BarberCardProps {
@@ -36,7 +37,8 @@ const BarberCard: React.FC<BarberCardProps> = ({ barber, selected }) => {
             id: barber._id,
             name: barber.name,
             profilePic: barber.profilePic,
-            rate: barber.averageRating
+            rate: barber.averageRating,
+            ratingCount: barber.ratingCount
         })
     }
 

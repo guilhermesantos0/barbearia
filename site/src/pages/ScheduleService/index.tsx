@@ -27,7 +27,8 @@ interface BarberData {
     id: string,
     name: string,
     profilePic: string,
-    rate: number
+    rate: number,
+    ratingCount: number
 }
 
 interface ServiceData {
@@ -71,6 +72,19 @@ const ScheduleService = () => {
         { id: 4, label: 'Escolher Horário' }
     ]
 
+    const isTimePast = (time: string, date: Date): boolean => {
+        const now = new Date();
+        if(date.toISOString().split("T")[0] != now.toISOString().split("T")[0]) return false
+        
+        const [hours, minutes] = time.split(":").map(Number);
+        
+        const target = new Date();
+
+        target.setHours(hours, minutes, 0, 0);
+
+        return target < now;
+    }
+
     useEffect(() => {
         const fetchData = async () => {
             const userResult = await api.get('/users/me');
@@ -107,8 +121,8 @@ const ScheduleService = () => {
         const selectedDate = day.toISOString().split("T")[0];
 
         const barberTimesResult = await api.get(`/users/barbers/${selectedBarber?.id}/available-slots?date=${selectedDate}&serviceDuration=${selectedService?.duration}`);
-        console.log(barberTimesResult.data)
-        setTimes(barberTimesResult.data);
+        const validTimes = barberTimesResult.data.filter((time: string) => !isTimePast(time, day));
+        setTimes(validTimes);
 
         setCurrentStep(4);
     }
@@ -127,9 +141,16 @@ const ScheduleService = () => {
             data: {
                 duration: fomratTimeDuration(selectedService?.duration),
                 date: formatDay(selectedDate, false),
-                time: selectedTime
+                time: selectedTime,
+                barber: {
+                    name: selectedBarber?.name,
+                    profilePic: selectedBarber?.profilePic,
+                    rate: `${selectedBarber?.rate} (${selectedBarber?.ratingCount} avaliações)`
+                }
             }
         };
+
+        console.log(productObj)
 
         const price = selectedService?.price;
 

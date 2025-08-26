@@ -7,6 +7,7 @@ import { useCheckoutStore } from '@store/checkoutStore';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import PixIcon from '@assets/icons/pix.svg?react';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 const Checkout = () => {
     const { price, product, discount, type, clearCheckout } = useCheckoutStore();
@@ -39,6 +40,10 @@ const Checkout = () => {
 
     const handleGenerateQRCode = () => {
         setQrCode("https://codigosdebarrasbrasil.com.br/wp-content/uploads/2019/09/codigo_qr-300x300.png");
+    }
+
+    const __Test__handleRemoveQRCode = () => {
+        setQrCode(null);
     }
 
     return(
@@ -97,11 +102,11 @@ const Checkout = () => {
                                 value="pix"
                                 checked={selectedPaymentMethod === 'pix'}
                                 onChange={() => setSelectedPaymentMethod('pix')}
-                                className={style.HiddenInput}
+                                className={style.CustomRadio}
                             />
                         </label>
 
-                        <label className={`${style.PaymentMethod} ${selectedPaymentMethod === 'card' ? style.Selected : ''}`}>
+                        <label className={`${style.PaymentMethod} ${(selectedPaymentMethod === 'card' || selectedPaymentMethod === 'credit' || selectedPaymentMethod === 'debit') ? style.Selected : ''}`}>
                             <div className={style.PaymentMethodDetails}>
                                 <div className={style.IconContainer}>
                                     <FontAwesomeIcon icon={['far', "credit-card"]} className={style.Icon} />
@@ -115,22 +120,22 @@ const Checkout = () => {
                                 type="radio"
                                 name="payment"
                                 value="card"
-                                checked={selectedPaymentMethod === 'card'} 
+                                checked={(selectedPaymentMethod === 'card' || selectedPaymentMethod === 'credit' || selectedPaymentMethod === 'debit')} 
                                 onChange={() => setSelectedPaymentMethod('card')}
-                                className={style.HiddenInput}
+                                className={style.CustomRadio}
                             />
                         </label>
                     </div>
+                    <div className={style.DivisorLine}></div>
                     <div className={style.PaymentMethodArea}>
                         {
                             selectedPaymentMethod === 'pix' && (
                                 <div className={style.PixContainer}>
                                     {
                                         qrCode ? (
-                                            <>
+                                            <div className={style.QrCodeContainer}>
                                                 <img className={style.QrCode} src={qrCode} alt="" />
-                                                <button className={style.QrCodeButton}>Copiar QR Code</button>
-                                            </>
+                                            </div>
                                         ) : (
                                             <button className={style.QrCodeButton} onClick={handleGenerateQRCode}>Gerar QR Code</button>
                                         )
@@ -138,16 +143,48 @@ const Checkout = () => {
                                 </div>
                             )
                         }
+                        {
+                            (selectedPaymentMethod === 'card' || selectedPaymentMethod === 'credit' || selectedPaymentMethod === 'debit') && (
+                                <div className={style.CardContainer}>
+                                    <div className={`${style.CardTypeSelector} ${selectedPaymentMethod === 'debit' ? style.debit : ''}`}>
+                                        <span className={style.CardType} onClick={() => setSelectedPaymentMethod('credit')}> Crédito </span>
+                                        <span className={style.CardType} onClick={() => setSelectedPaymentMethod('debit')}> Débito </span>
+                                    </div>
+                                    <div className={style.CardInfosInputs}>
+                                        <div className={`${style.InputContainer} ${style.CardNumberGridArea}`}>
+                                            <label className={style.Label} htmlFor="cardNumber">Número do Cartão</label>
+                                            <input className={style.Input} type="text" name="cardNumber" />
+                                        </div>
+                                        <div className={`${style.InputContainer} ${style.CardNameGridArea}`}>
+                                            <label className={style.Label} htmlFor="cardName">Nome do Titular</label>
+                                            <input className={style.Input} type="text" name="cardName" />
+                                        </div>
+                                        <div className={`${style.InputContainer} ${style.CardExpDateGridArea}`}>
+                                            <label className={style.Label} htmlFor="expireDate">Validade</label>
+                                            <input className={style.Input} type="text" name='expireDate' />
+                                        </div>
+                                        <div className={`${style.InputContainer} ${style.CardCVVGridArea}`}>
+                                            <label className={style.Label} htmlFor="cvv">CVV</label>
+                                            <input className={style.Input} type="text" name="cvv" />
+                                        </div>
+                                        <div className={`${style.InputContainer} ${style.CardCPFGridArea}`}>
+                                            <label className={style.Label} htmlFor="cpf">CPF do Proprietário</label>
+                                            <input className={style.Input} type="text" name='cpf' />
+                                        </div>
+                                    </div>
+                                </div>
+                            )
+                        }
                     </div>
                     <div className={style.ButtonsContainer}>
-                        <button><FontAwesomeIcon icon='lock' />Finalizar Pagamento</button>
-                        <button>Cancelar</button>
+                        <button className={`${style.Button} ${style.PayButton}`} disabled={selectedPaymentMethod === 'pix' && !qrCode}><FontAwesomeIcon icon={{'pix': 'copy' as IconProp}[selectedPaymentMethod] || 'lock'} />{ selectedPaymentMethod === 'pix' ? 'Copiar Código' : 'Finalizar Pagamento' }</button>
+                        <button className={`${style.Button} ${style.CancelButton}`}>Cancelar</button>
                     </div>
                     <div className={style.Security}>
-                        <FontAwesomeIcon icon="shield-halved" />
+                        <FontAwesomeIcon icon="shield-halved" className={style.Icon} />
                         <div className={style.SecurityText}>
-                            <h3>Pagamento seguro</h3>
-                            <p>As informações de pagamento são totalmente criptografadas e seguras</p>
+                            <p className={style.Title}>Pagamento seguro</p>
+                            <p className={style.Text}>As informações de pagamento são totalmente criptografadas e seguras</p>
                         </div>
                     </div>
                 </div>

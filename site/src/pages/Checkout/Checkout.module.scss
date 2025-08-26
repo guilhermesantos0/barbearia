@@ -1,26 +1,36 @@
 @use '@assets/scss/variables' as *;
+@use '@assets/scss/mixins' as *;
 @use 'sass:color';
 
 .Container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
 
     height: 100vh;
 
     .PageContent {
         display: flex;
         gap: 3rem;
+        margin-top: 2vh;
+
+        .DivisorLine {
+            width: 100%;
+            height: 1px;
+
+            margin-top: 1.5rem;
+
+            background: linear-gradient(90deg, transparent, $light-gray, transparent);
+        }
 
         .LeftArea {
             display: flex;
             flex-direction: column;
-            gap: 3rem;
+            gap: 4rem;
 
             .TopContent {
                 width: 25rem;
-                padding: 1rem;
+                padding: 1.5rem;
 
                 background: $dark-blue;
                 border-radius: 5px;
@@ -61,14 +71,7 @@
 
                 
             }
-            .DivisorLine {
-                width: 100%;
-                height: 1px;
-
-                margin-top: 1.5rem;
-
-                background: linear-gradient(90deg, transparent, $light-gray, transparent);
-            }
+            
 
             .Details {
                 margin-top: 1.5rem;
@@ -103,7 +106,7 @@
 
             .BottomContent {
                 width: 25rem;
-                padding: 1rem;
+                padding: 1.5rem;
 
                 background: $dark-blue;
                 border-radius: 5px;
@@ -125,9 +128,7 @@
             background: $dark-blue;
             border-radius: 5px;
             padding: 1rem;
-            width: 30rem;
-
-            transition: height .3s ease-in-out;
+            width: 25rem;
 
             .PaymentMethods {
                 display: flex;
@@ -142,6 +143,8 @@
                     padding: 1rem;
                     border: 3px solid $gray;
                     border-radius: 10px;
+
+                    position: relative;
 
                     transition: border-color .3s ease, background-color .3s ease;
 
@@ -163,6 +166,33 @@
                                 fill: $light-blue !important;
                             }
                         }
+                    }
+
+                    .CustomRadio {
+                        appearance: none;
+                        -webkit-appearance: none;
+                        -moz-appearance: none;
+
+                        position: absolute;
+
+                        width: 1.2rem;
+                        height: 1.2rem;
+                        border: 2px solid $gray;
+                        border-radius: 50%;
+                        cursor: pointer;
+                        transition: border-color 0.3s ease, background-color 0.3s ease;
+
+                        right: 0;
+                        top: 50%;
+
+                        transform: translateY(-50%);
+
+                        margin-right: 0.7rem;
+                        background: transparent;
+                    }
+
+                    .CustomRadio:checked {
+                        border-color: $light-blue;
                     }
 
                     .PaymentMethodDetails {
@@ -195,12 +225,165 @@
                 }
             }
 
+
+
             .PaymentMethodArea {
                 display: flex;
-                max-height: 20rem;
+                align-items: center;
+                justify-content: center;
+                width: 100%;
 
-                margin-top: 1rem;
+                margin-top: 1.5rem;
+
+                .PixContainer { 
+                    .QrCodeContainer {
+                        display: flex;
+                        flex-direction: column;
+    
+                        .QrCode {
+                            width: 11rem;
+                            height: 11rem;
+    
+                            background: white;
+                            padding: .5rem;
+                            border-radius: 5px;
+                        }
+                    }
+    
+                    .QrCodeButton {
+                        @include button-primary;
+                        height: 2rem;
+                        width: 10rem;
+                        margin-top: .5rem;
+                    }
+                }
+
+                .CardContainer {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 1rem;
+
+                    
+                    .CardTypeSelector {
+                        display: flex;
+                        width: calc(60% + .3rem);
+                        gap: .3rem;
+                        position: relative;
+
+                        .CardType {
+                            width: 50%;
+                            text-align: center;
+                            padding: 0.5rem 0;
+                            cursor: pointer;
+                            position: relative;
+                        }
+
+                        &::after {
+                            content: "";
+                            position: absolute;
+                            bottom: 0;
+                            left: 0;
+    
+                            width: 50%;
+                            height: 3px;
+                            background: $light-blue;
+                            border-radius: 3px;
+    
+                            transition: transform 0.3s ease; 
+                            transform: translateX(0%);
+                        }
+    
+                        &.debit::after {
+                            transform: translateX(100%);
+                        }
+                    }
+
+                    .CardInfosInputs {
+                        display: grid;
+                        grid-template-columns: 1fr 1fr;
+                        grid-template-areas: 
+                            "number number"
+                            "name name"
+                            "expireDate cvv"
+                            "cpf cpf"
+                        ;
+                        width: 23rem;
+                        gap: .5rem;
+
+                        .InputContainer {
+                            display: flex;
+                            flex-direction: column;
+                            gap: .3rem;
+
+                            .Input {
+                                height: 2rem;
+                                padding: .5rem;
+
+                                background: $gray;
+                                border: 0;
+                                outline: 0;
+                                border-radius: 5px;
+
+                                color: $white;
+                            }
+                        }
+                    }
+
+                }
+            }
+
+            .ButtonsContainer {
+                display: flex;
+                flex-direction: column;
+                gap: .5rem;
+                margin-top: 1.5rem;
+
+                .Button {
+                    height: 2.5rem;
+                    
+                    &.PayButton {
+                        @include button-primary;
+                    }
+
+                    &.CancelButton {
+                        @include button-secondary;
+                    }
+                }
+            }
+
+            .Security {
+                margin-top: .7rem;
+                display: flex;
+                align-items: center;
+                gap: .5rem;
+                padding: .5rem;
+
+                border-radius: 10px;
+
+                background: rgba(0, 0, 0, 0.2);
+
+                .Icon {
+                    color: $light-blue;
+                }
+
+                .SecurityText {
+                    .Title {
+                        font-size: .8rem;
+                        font-weight: 500;
+                    }
+
+                    .Text {
+                        font-size: .6rem;
+                    }
+                }
             }
         }
     }
 }
+
+.CardNumberGridArea { grid-area: number; }
+.CardNameGridArea { grid-area: name; }
+.CardExpDateGridArea { grid-area: expireDate; }
+.CardCVVGridArea { grid-area: cvv; }
+.CardCPFGridArea { grid-area: cpf; }

@@ -1,6 +1,7 @@
 import { useLocation } from 'react-router-dom';
 import style from './Success.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// @ts-ignore
 import { formatPrice } from '@utils/formatPrice';
 
 interface LocationState {
@@ -42,28 +43,26 @@ const Success = () => {
                     <h3 className={style.SectionTitle}>Detalhes do Pedido</h3>
                     
                     {state.type === 'premium' && (
-                        <div className={style.DetailBox}>
-                            <p><strong>Plano:</strong> {state.planName}</p>
-                            <p><strong>Total:</strong> R$ {state.totalPrice?.toFixed(2)}</p>
+                        <div className={style.Details}>
+                            <span className={style.Detail}><strong>Plano:</strong> {state.planName}</span>
+                            <span className={style.Detail}><strong>Total:</strong> R$ {state.totalPrice?.toFixed(2)}</span>
                             {state.discount && (
-                                <p><strong>Desconto:</strong> - R$ {state.discount.toFixed(2)}</p>
+                                <span className={style.Detail}><strong>Desconto:</strong> - R$ {state.discount.toFixed(2)}</span>
                             )}
                         </div>
                     )}
 
                     {state.type === 'service' && state.service && (
-                        <div className={style.DetailBox}>
-                            <p><strong>Serviço:</strong> {state.service.title}</p>
-                            <p><strong>Barbeiro:</strong> {state.service.barber}</p>
-                            <p><strong>Data e Hora:</strong> {state.service.dateTime}</p>
+                        <div className={style.Details}>
+                            <span className={style.Detail}><p className={style.DetailLabel}>Serviço:</p> <p className={style.DetailValue}>{state.service.title}</p></span>
+                            <span className={style.Detail}><p className={style.DetailLabel}>Barbeiro:</p> <p className={style.DetailValue}>{state.service.barber}</p></span>
+                            <span className={style.Detail}><p className={style.DetailLabel}>Data e Hora:</p> <p className={style.DetailValue}>{state.service.dateTime}</p></span>
                         </div>
                     )}
 
-                    <div className={style.DetailBox}>
-                        <p><strong>Método de Pagamento:</strong> {paymentMethodLables[state.paymentMethod]}</p>
-                        <p className={style.FinalPrice}>
-                            <strong>Valor Final:</strong> {formatPrice(state.finalPrice)}
-                        </p>
+                    <div className={style.Details}>
+                        <span className={style.Detail}><p className={style.DetailLabel}>Método de Pagamento:</p> <p className={style.DetailValue}>{paymentMethodLables[state.paymentMethod]}</p></span>
+                        <span className={style.Detail}><p className={style.DetailLabel}>Valor Final:</p> <p className={style.DetailValue}>{formatPrice(state.finalPrice)}</p></span>
                     </div>
                 </div>
 

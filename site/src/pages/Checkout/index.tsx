@@ -47,31 +47,53 @@ const Checkout = () => {
 
     const __Test__handleCompletePayment = async () => {
 
-        const scheduledServicePayload = {
-            costumer: userId,
-            barber: product.data.barber.id,
-            service: product.data.id,
-            date: product.data.rawDateTime,
-            discountApplied: discount
-        }
+        const paymentApproved = true
 
-        console.log(scheduledServicePayload)
-        const createdAppointment = await api.post('/scheduledservices', scheduledServicePayload);
-        console.log(createdAppointment);
-
-        navigate('/agendar-servico/pagamento/sucesso', { state: {
-            "type": 'service',
-            "finalPrice": finalPrice,
-            "paymentMethod": selectedPaymentMethod,
-            "planName": "Teste Ainda",
-            "totalPrice": price,
-            "discount": discount,
-            "service": {
-                "title": product.name,
-                "barber": product.data.barber.name,
-                "dateTime": `${product.data.date} às ${product.data.time}`
+        if(paymentApproved) {
+            const scheduledServicePayload = {
+                costumer: userId,
+                barber: product.data.barber.id,
+                service: product.data.id,
+                date: product.data.rawDateTime,
+                discountApplied: discount
             }
-        } })
+    
+            console.log(scheduledServicePayload)
+            const createdAppointment = await api.post('/scheduledservices', scheduledServicePayload);
+            console.log(createdAppointment);
+    
+            navigate('/agendar-servico/pagamento/sucesso', { state: {
+                "type": 'service',
+                "finalPrice": finalPrice,
+                "paymentMethod": selectedPaymentMethod,
+                "planName": "Teste Ainda",
+                "totalPrice": price,
+                "discount": discount,
+                "service": {
+                    "title": product.name,
+                    "barber": product.data.barber.name,
+                    "dateTime": `${product.data.date} às ${product.data.time}`
+                }
+            } })
+        } else {
+
+            navigate('/agendar-servico/pagamento/falha', { state: {
+                "type": 'service',
+                "finalPrice": finalPrice,
+                "paymentMethod": selectedPaymentMethod,
+                "planName": "Teste Ainda",
+                "totalPrice": price,
+                "discount": discount,
+                "service": {
+                    "title": product.name,
+                    "barber": product.data.barber.name,
+                    "dateTime": `${product.data.date} às ${product.data.time}`
+                },
+                "message": "Recusado pelo banco"
+            }})
+
+        }
+        
     }
 
     return(

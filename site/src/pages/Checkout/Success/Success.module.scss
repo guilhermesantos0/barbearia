@@ -1,0 +1,77 @@
+@use "@assets/scss/variables" as *;
+@use "@assets/scss/mixins" as *;
+
+.Container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+}
+
+.PageContent {
+    background: $dark-blue;
+    padding: 2.5rem;
+    border-radius: 1.5rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    max-width: 500px;
+    width: 100%;
+    text-align: center;
+    color: $white;
+}
+
+.Icon {
+    font-size: 4rem;
+    color: $light-blue;
+    margin-bottom: 1rem;
+}
+
+.Title {
+    font-size: 1.8rem;
+    margin-bottom: .5rem;
+    color: $white;
+}
+
+.Subtitle {
+    font-size: 1rem;
+    margin-bottom: 2rem;
+    color: $light-gray;
+}
+
+.ShopDetails {
+    text-align: left;
+    margin-bottom: 2rem;
+}
+
+.SectionTitle {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: $light-blue;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: .3rem;
+}
+
+.DetailBox {
+    background: $gray;
+    padding: 1rem;
+    border-radius: .8rem;
+    margin-bottom: 1rem;
+
+    p {
+        margin: .3rem 0;
+        font-size: .95rem;
+    }
+}
+
+.FinalPrice {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: $light-blue;
+}
+
+.BackButton {
+    @include button-primary;
+
+    width: 100%;
+    padding: 0.8rem;
+}

@@ -4,10 +4,13 @@ interface ScheduledServiceData {
     duration?: string,
     date?: string,
     time?: string,
+    rawDateTime?: Date,
+    id?: string,
     barber?: {
         name?: string,
         profilePic?: string,
-        rate?: string
+        rate?: string,
+        id?: string
     }
 }
 
@@ -21,6 +24,7 @@ interface CheckoutState {
     product?: Product,
     discount?: number,
     type?: string,
+    userId?: string,
     setCheckout: (checkout: CheckoutState) => void;
     clearCheckout: () => void;
 }
@@ -30,11 +34,13 @@ export const useCheckoutStore = create<CheckoutState>((set) => ({
     product: undefined,
     discount: undefined,
     type: undefined,
+    userId: undefined,
     setCheckout: (checkout) => set(checkout),
     clearCheckout: () => set({
         price: undefined,
         product: undefined,
         discount: undefined,
-        type: undefined
+        type: undefined,
+        userId: undefined
     })
 }));

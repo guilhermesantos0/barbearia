@@ -136,21 +136,31 @@ const ScheduleService = () => {
         const discountResult = await api.get(`/users/checkout/discount?userId=${user?._id}&serviceId=${selectedService?.id}`);
         const discount = discountResult.data;
 
+        console.log(selectedDate)
+        console.log(selectedTime)
+
+        const rawDateTime = new Date(selectedDate)
+        const [hours, minutes] = selectedTime?.split(':').map(Number);
+        rawDateTime.setHours(hours, minutes, 0, 0)
+
+        console.log(rawDateTime)
+
         const productObj = {
             name: selectedService?.name,
             data: {
                 duration: fomratTimeDuration(selectedService?.duration),
                 date: formatDay(selectedDate, false),
                 time: selectedTime,
+                rawDateTime: rawDateTime,
+                id: selectedService?.id,
                 barber: {
                     name: selectedBarber?.name,
                     profilePic: selectedBarber?.profilePic,
-                    rate: `${selectedBarber?.rate} (${selectedBarber?.ratingCount} avaliações)`
+                    rate: `${selectedBarber?.rate} (${selectedBarber?.ratingCount} avaliações)`,
+                    id: selectedBarber?.id
                 }
             }
         };
-
-        console.log(productObj)
 
         const price = selectedService?.price;
 
@@ -158,7 +168,8 @@ const ScheduleService = () => {
             price,
             product: productObj,
             discount,
-            type: "appointment"
+            type: "appointment",
+            userId: user?._id
         })
 
         navigate('/agendar-servico/pagamento')

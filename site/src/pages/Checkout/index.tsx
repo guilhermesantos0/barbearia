@@ -8,11 +8,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import PixIcon from '@assets/icons/pix.svg?react';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
+import { useNavigate } from 'react-router-dom';
+import api from '../../services/api';
 
 const Checkout = () => {
-    const { price, product, discount, type, clearCheckout } = useCheckoutStore();
+    const navigate = useNavigate();
+    const { price, product, discount, type, userId, clearCheckout } = useCheckoutStore();
 
-    if (!price || !product || !discount || !type || !clearCheckout) return <div>deu pau aqui</div>
+    if (!price || !product || !discount || !type || !userId || !clearCheckout) return <div>deu pau aqui</div>
 
     const [finalPrice, setFinalPrice] = useState<number>(price);
     const [discountApplied, setDiscountApplied] = useState<number>(0);
@@ -42,8 +45,33 @@ const Checkout = () => {
         setQrCode("https://codigosdebarrasbrasil.com.br/wp-content/uploads/2019/09/codigo_qr-300x300.png");
     }
 
-    const __Test__handleRemoveQRCode = () => {
-        setQrCode(null);
+    const __Test__handleCompletePayment = async () => {
+
+        const scheduledServicePayload = {
+            costumer: userId,
+            barber: product.data.barber.id,
+            service: product.data.id,
+            date: product.data.rawDateTime,
+            discountApplied: discount
+        }
+
+        console.log(scheduledServicePayload)
+        const createdAppointment = await api.post('/scheduledservices', scheduledServicePayload);
+        console.log(createdAppointment);
+
+        navigate('/agendar-servico/pagamento/sucesso', { state: {
+            "type": 'service',
+            "finalPrice": finalPrice,
+            "paymentMethod": selectedPaymentMethod,
+            "planName": "Teste Ainda",
+            "totalPrice": price,
+            "discount": discount,
+            "service": {
+                "title": product.name,
+                "barber": product.data.barber.name,
+                "dateTime": `${product.data.date} às ${product.data.time}`
+            }
+        } })
     }
 
     return(
@@ -177,7 +205,7 @@ const Checkout = () => {
                         }
                     </div>
                     <div className={style.ButtonsContainer}>
-                        <button className={`${style.Button} ${style.PayButton}`} disabled={selectedPaymentMethod === 'pix' && !qrCode}><FontAwesomeIcon icon={{'pix': 'copy' as IconProp}[selectedPaymentMethod] || 'lock'} />{ selectedPaymentMethod === 'pix' ? 'Copiar Código' : 'Finalizar Pagamento' }</button>
+                        <button className={`${style.Button} ${style.PayButton}`} disabled={selectedPaymentMethod === 'pix' && !qrCode} onClick={__Test__handleCompletePayment}><FontAwesomeIcon icon={{'pix': 'copy' as IconProp}[selectedPaymentMethod] || 'lock'} />{ selectedPaymentMethod === 'pix' ? 'Copiar Código' : 'Finalizar Pagamento' }</button>
                         <button className={`${style.Button} ${style.CancelButton}`}>Cancelar</button>
                     </div>
                     <div className={style.Security}>

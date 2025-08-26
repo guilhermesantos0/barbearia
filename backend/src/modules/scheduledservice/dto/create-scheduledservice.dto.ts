@@ -41,6 +41,7 @@ export class CreateScheduledServiceDto {
     date: string;
 
     @IsString()
+    @IsOptional()
     status?: string;
 
     @IsDateString()
@@ -49,7 +50,7 @@ export class CreateScheduledServiceDto {
 
     @IsNumber()
     @IsOptional()
-    discountAppliend: number;
+    discountApplied?: number;
 
     @IsBoolean()
     @IsOptional()

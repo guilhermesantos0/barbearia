@@ -4,6 +4,7 @@ import Home from './pages/Home'
 import Login from './pages/Login'
 import ScheduleService from './pages/ScheduleService'
 import Checkout from './pages/Checkout'
+import Success from './pages/Checkout/Success'
 
 function App() {
     return (
@@ -13,6 +14,7 @@ function App() {
             <Route path='/login' element={<Login />} />
             <Route path='/agendar-servico' element={<ScheduleService />} />
             <Route path='/agendar-servico/pagamento' element={<Checkout />} />
+            <Route path='/agendar-servico/pagamento/sucesso' element={<Success />} />
         </Routes>    
     )
 }

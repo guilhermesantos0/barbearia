@@ -34,7 +34,7 @@ const Failed = () => {
             <div className={style.PageContent}>
                 <FontAwesomeIcon icon="times-circle" className={style.Icon} />
 
-                <h2 className={style.Title}>Pagamento não concluído 😕</h2>
+                <h2 className={style.Title}>Pagamento não concluído</h2>
                 <p className={style.Subtitle}>
                     Algo deu errado durante o processamento do seu pagamento.
                 </p>
@@ -43,33 +43,58 @@ const Failed = () => {
                     <h3 className={style.SectionTitle}>Detalhes da Tentativa</h3>
                     
                     {state.type === 'premium' && (
-                        <div className={style.DetailBox}>
-                            <p><strong>Plano:</strong> {state.planName}</p>
-                            <p><strong>Total:</strong> R$ {state.totalPrice?.toFixed(2)}</p>
+                        <div className={style.Details}>
+                            <span className={style.Detail}>
+                                <p className={style.DetailLabel}>Plano:</p>
+                                <p className={style.DetailValue}>{state.planName}</p>
+                            </span>
+                            <span className={style.Detail}>
+                                <p className={style.DetailLabel}>Total:</p>
+                                <p className={style.DetailValue}>{formatPrice(state.totalPrice ?? 0)}</p>
+                            </span>
                             {state.discount && (
-                                <p><strong>Desconto:</strong> - R$ {state.discount.toFixed(2)}</p>
+                                <span className={style.Detail}>
+                                    <p className={style.DetailLabel}>Desconto:</p>
+                                    <p className={style.DetailValue}>- {formatPrice(state.discount)}</p>
+                                </span>
                             )}
                         </div>
                     )}
 
                     {state.type === 'service' && state.service && (
-                        <div className={style.DetailBox}>
-                            <p><strong>Serviço:</strong> {state.service.title}</p>
-                            <p><strong>Barbeiro:</strong> {state.service.barber}</p>
-                            <p><strong>Data e Hora:</strong> {state.service.dateTime}</p>
+                        <div className={style.Details}>
+                            <span className={style.Detail}>
+                                <p className={style.DetailLabel}>Serviço:</p>
+                                <p className={style.DetailValue}>{state.service.title}</p>
+                            </span>
+                            <span className={style.Detail}>
+                                <p className={style.DetailLabel}>Barbeiro:</p>
+                                <p className={style.DetailValue}>{state.service.barber}</p>
+                            </span>
+                            <span className={style.Detail}>
+                                <p className={style.DetailLabel}>Data e Hora:</p>
+                                <p className={style.DetailValue}>{state.service.dateTime}</p>
+                            </span>
                         </div>
                     )}
 
-                    <div className={style.DetailBox}>
-                        <p><strong>Método de Pagamento:</strong> {paymentMethodLabels[state.paymentMethod]}</p>
-                        <p className={style.FinalPrice}>
-                            <strong>Valor Final:</strong> {formatPrice(state.finalPrice)}
-                        </p>
+                    <div className={style.Details}>
+                        <span className={style.Detail}>
+                            <p className={style.DetailLabel}>Método de Pagamento:</p>
+                            <p className={style.DetailValue}>{paymentMethodLabels[state.paymentMethod]}</p>
+                        </span>
+                        <span className={style.Detail}>
+                            <p className={style.DetailLabel}>Valor Final:</p>
+                            <p className={style.DetailValue}>{formatPrice(state.finalPrice)}</p>
+                        </span>
                     </div>
 
                     {state.errorMessage && (
                         <div className={style.ErrorBox}>
-                            <p><strong>Erro:</strong> {state.errorMessage}</p>
+                            <span className={style.Detail}>
+                                <p className={style.DetailLabel}>Erro:</p>
+                                <p className={style.DetailValue}>{state.errorMessage}</p>
+                            </span>
                         </div>
                     )}
                 </div>

@@ -1,0 +1,159 @@
+@use '@assets/scss/variables' as *;
+@use '@assets/scss/mixins' as *;
+
+.Container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    width: 25rem;
+    height: 36rem;
+
+    .Title {
+        color: $light-blue;
+        text-align: center;
+    }
+ 
+    .ServiceData {
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+
+        p {
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+        }
+
+        .BarberName {
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+
+        .ServiceDate {
+            font-size: 1rem;
+            color: $light-gray;
+            margin-left: .08rem;
+        }
+    }
+
+    .RateArea {
+        display: flex;
+        flex-direction: column;
+        gap: .7rem;
+
+        .Stars {
+            display: flex;
+            gap: .5rem;
+
+            .Star {
+                width: 2rem;
+                height: 2rem;
+
+                color: $yellow;
+
+                transition: transform .3s ease;
+                
+                &:hover {
+                    cursor: pointer;
+                    transform: translateY(-3px);
+                }
+            }
+        }
+    }    
+
+    .CommentArea {
+        display: flex;
+        flex-direction: column;
+        gap: .7rem;
+
+        .CommentText {
+            width: 100%;
+            height: 13rem;
+
+            resize: none;
+
+            background: $gray;
+            border: 0;
+            border-radius: 5px;
+
+            color: $white;
+            padding: 1rem;
+            outline: none;
+
+            font-size: 1rem;
+        }
+    }
+
+    .ButtonArea {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+
+        .Button {
+            width: 10rem;
+            height: 3rem;
+
+            &.Rate {
+                @include button-primary;
+            }
+    
+            &.Cancel {
+                @include button-secondary
+            }
+        }
+
+    }
+    
+}
+
+.ConfirmOverlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+.ConfirmContainer {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: $dark-blue;
+    padding: 2rem;
+    border-radius: 1.5rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    color: $white;
+    z-index: 1000;
+}
+
+.ConfirmContainer h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: $light-blue;
+}
+
+.ConfirmContainer p {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    color: $light-gray;
+}
+
+.ConfirmButtons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.Cancel {
+    @include button-error;
+    padding: 0.8rem 1.5rem;
+}
+
+.Confirm {
+    @include button-primary;
+    padding: 0.8rem 1.5rem;
+}

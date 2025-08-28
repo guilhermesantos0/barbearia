@@ -36,7 +36,7 @@ const Success = () => {
 
                 <h2 className={style.Title}>Pagamento Confirmado!</h2>
                 <p className={style.Subtitle}>
-                    Obrigado por confiar na nossa barbearia ✨
+                    Obrigado por confiar na BarberPrime
                 </p>
 
                 <div className={style.ShopDetails}>
@@ -44,8 +44,8 @@ const Success = () => {
                     
                     {state.type === 'premium' && (
                         <div className={style.Details}>
-                            <span className={style.Detail}><strong>Plano:</strong> {state.planName}</span>
-                            <span className={style.Detail}><strong>Total:</strong> R$ {state.totalPrice?.toFixed(2)}</span>
+                            <span className={style.Detail}><p className={style.DetailLabel}>Plano:</p> <p className={style.DetailValue}>{state.planName}</p></span>
+                            <span className={style.Detail}><p className={style.DetailLabel}>Total:</p> R$ {state.totalPrice?.toFixed(2)}</span>
                             {state.discount && (
                                 <span className={style.Detail}><strong>Desconto:</strong> - R$ {state.discount.toFixed(2)}</span>
                             )}

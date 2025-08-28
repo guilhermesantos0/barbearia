@@ -83,3 +83,7 @@ body {
     background: #0B0F1A;
     color: #E4E9F2;
 }
+
+.Toastify__toast-container {
+    z-index: 9999 !important;
+}

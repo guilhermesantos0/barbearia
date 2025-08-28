@@ -47,7 +47,7 @@ const Checkout = () => {
 
     const __Test__handleCompletePayment = async () => {
 
-        const paymentApproved = true
+        const paymentApproved = false
 
         if(paymentApproved) {
             const scheduledServicePayload = {

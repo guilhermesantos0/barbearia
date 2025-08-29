@@ -7,11 +7,11 @@ import Sidebar from "../../components/SideBar";
 import { useUser } from "../../contexts/UserContext";
 
 // COSTUMER
-import CostumerSchedules from "./Pages/CostumerSchedules";
-import CostumerFavouriteBarbers from "./Pages/CostumerFavouriteBarbers";
-import CostumerHistory from "./Pages/CostumerHistory";
-import CostumerEditProfile from "./Pages/CostumerEditProfile";
-import CostumerPlan from "./Pages/CostumerPremium";
+import CostumerSchedules from "./Pages/Customer/Schedules";
+import CostumerFavouriteBarbers from "./Pages/Customer/FavouriteBarbers";
+import CostumerHistory from "./Pages/Customer/History";
+import CostumerEditProfile from "./Pages/Customer/EditProfile";
+import CostumerPlan from "./Pages/Customer/Premium";
 
 const Home = () => {
     const { user } = useUser();

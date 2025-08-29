@@ -27,6 +27,14 @@ export class RoleService {
         return this.roleModel.findById(id).exec();
     }
 
+    async findIsBarber(id: number) : Promise<boolean> {
+        const role = await this.roleModel.findById(id).exec();
+
+        if(!role) return false;
+
+        return role?.isBarber;
+    }
+
     async findBarberRoles() {
         const barberRoles = await this.roleModel.find({ isBarber: true }).exec();
         const barberRolesId = barberRoles.map((role) => role._id);

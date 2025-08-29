@@ -136,14 +136,9 @@ const ScheduleService = () => {
         const discountResult = await api.get(`/users/checkout/discount?userId=${user?._id}&serviceId=${selectedService?.id}`);
         const discount = discountResult.data;
 
-        console.log(selectedDate)
-        console.log(selectedTime)
-
         const rawDateTime = new Date(selectedDate)
         const [hours, minutes] = selectedTime?.split(':').map(Number);
         rawDateTime.setHours(hours, minutes, 0, 0)
-
-        console.log(rawDateTime)
 
         const productObj = {
             name: selectedService?.name,
@@ -162,6 +157,7 @@ const ScheduleService = () => {
             }
         };
 
+        
         const price = selectedService?.price;
 
         useCheckoutStore.getState().setCheckout({

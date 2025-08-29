@@ -18,9 +18,15 @@ export class RoleController {
         return this.roleService.findAll();
     }
 
+    
     @Get(':id')
     async findOne(@Param('id') id: number) {
         return this.roleService.findById(id);
+    }
+
+    @Get(':id/isBarber')
+    async findIsBarber(@Param('id') id: number) {
+        return this.roleService.findIsBarber(id);
     }
 
     @Put(':id')

@@ -15,7 +15,7 @@ const Checkout = () => {
     const navigate = useNavigate();
     const { price, product, discount, type, userId, clearCheckout } = useCheckoutStore();
 
-    if (!price || !product || !discount || !type || !userId || !clearCheckout) return <div>deu pau aqui</div>
+    if (!price || !product || !type || !userId || !clearCheckout) return <div>deu pau aqui</div>
 
     const [finalPrice, setFinalPrice] = useState<number>(price);
     const [discountApplied, setDiscountApplied] = useState<number>(0);
@@ -47,7 +47,7 @@ const Checkout = () => {
 
     const __Test__handleCompletePayment = async () => {
 
-        const paymentApproved = false
+        const paymentApproved = true
 
         if(paymentApproved) {
             const scheduledServicePayload = {

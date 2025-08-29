@@ -1,4 +1,4 @@
-import style from './CostumerHistory.module.scss';
+import style from './History.module.scss';
 import { useUser } from '@contexts/UserContext';
 import Filter from '@assets/icons/filter.svg?react';
 import { useEffect, useMemo, useState } from 'react';
@@ -9,7 +9,8 @@ import { SelectMenu } from '@components/SelectMenu';
 import { IUser } from '@types/User';
 
 import HistoryService from '@components/HistoryService';
-import api from '../../../../services/api';
+//@ts-ignore
+import api from '@services/api';
 
 const CostumerHistory = () => {
     const [user, setUser] = useState<IUser | null>();

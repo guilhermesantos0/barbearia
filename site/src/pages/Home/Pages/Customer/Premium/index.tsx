@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import style from './CostumerPremium.module.scss';
+import style from './Premium.module.scss';
 
 // @ts-ignore
 import { IUser } from '@types/User';
-// @ts-ignore
-import api from '../../../../services/api';
+//@ts-ignore
+import api from '@services/api';
 // @ts-ignore
 import { IPlan, IBenefit } from '@types/Plan';
 import PlanCard from '@components/PremiumCard';

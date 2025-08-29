@@ -1,4 +1,4 @@
-import style from './CostumerSchedules.module.scss'
+import style from './Schedules.module.scss'
 
 import { useUser } from '@contexts/UserContext'
 import ScheduledService from '@components/ScheduledService';
@@ -10,7 +10,8 @@ import { IScheduledService } from '@types/ScheduledService';
 
 import { PlusIcon } from '@radix-ui/react-icons';
 import { useEffect, useState } from 'react';
-import api from '../../../../services/api';
+//@ts-ignore
+import api from '@services/api';
 import { Link } from 'react-router-dom';
 
 const CostumerSchedules = () => {

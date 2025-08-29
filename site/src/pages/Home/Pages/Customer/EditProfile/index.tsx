@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import style from './CostumerEditProfile.module.scss';
+import style from './EditProfile.module.scss';
 
 // @ts-ignore
 import { IUser } from '@types/User';
 
-import api from '../../../../services/api';
+//@ts-ignore
+import api from '@services/api';
 
 import Camera from '@assets/icons/camera.svg?react';
 import { LockClosedIcon } from '@radix-ui/react-icons';

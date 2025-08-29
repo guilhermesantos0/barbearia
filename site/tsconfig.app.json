@@ -31,7 +31,8 @@
       "@assets/": ["src/assets/*"],
       "@types/": ["src/types"],
       "@utils/": ["src/utils"],
-      "@store/": ["src/store"]
+      "@store/": ["src/store"],
+      "@services/": ["src/services"]
     }
   },
   "include": ["src", "types.d.ts"]

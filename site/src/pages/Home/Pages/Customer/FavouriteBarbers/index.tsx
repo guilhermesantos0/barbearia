@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import style from './CostumerFavouriteBarbers.module.scss';
+import style from './FavouriteBarbers.module.scss';
 import { useUser } from '@contexts/UserContext';
 
 // @ts-ignore
 import { IUser } from '@types/User';
-import api from '../../../../services/api';
+//@ts-ignore
+import api from '@services/api';
 
 interface IServiceCount {
     [serviceName: string]: number;

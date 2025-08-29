@@ -1,10 +1,10 @@
 import style from './SideBar.module.scss';
 
-import { ChevronRightIcon, CalendarIcon, AvatarIcon, ClockIcon, Pencil1Icon, BadgeIcon, ExitFullScreenIcon, ChevronLeftIcon, DashboardIcon, ExitIcon } from '@radix-ui/react-icons';
+import { ChevronRightIcon, ExitIcon } from '@radix-ui/react-icons';
 
 import { useUser } from '../../contexts/UserContext';
 import * as Collapsible from '@radix-ui/react-collapsible';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 
@@ -13,16 +13,33 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Pencil from '../../assets/icons/pencil.svg?react';
 import Badge from '../../assets/icons/badge.svg?react'
 
+// @ts-ignore
+import api from '@services/api';
+
 interface Props {
     setOpenedTab: (tab: string) => void;
 }
 
 const Sidebar: React.FC<Props> = ({ setOpenedTab }) => {
 
-    const { user } = useUser()
+    const [isBarber, setIsBarber] = useState<boolean>(false);
+
+    const { logout, user } = useUser()
     const [isExpanded, setIsExpanded] = useState(false);
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if(!user) return
+
+        const fetchData = async () => {
+            const isBarberResult = await api.get(`/roles/${user?.role}/isBarber`);
+            setIsBarber(isBarberResult.data);
+        }
+
+        fetchData()
+
+    }, [user])
 
     return (
         <Collapsible.Root
@@ -66,8 +83,6 @@ const Sidebar: React.FC<Props> = ({ setOpenedTab }) => {
                             </li>
 
                             <li className={style.Option} onClick={() => navigate('/home/cliente/editar-perfil')}>
-                                {/* <Pencil1Icon className={style.Icon} />
-                                <FontAwesomeIcon icon="pencil-alt" /> */}
                                 <Pencil className={`${style.Icon} ${style.Pencil}`} />
                                 <Collapsible.Content asChild>
                                     <span className={style.Label}>Editar Perfil</span>
@@ -75,7 +90,6 @@ const Sidebar: React.FC<Props> = ({ setOpenedTab }) => {
                             </li>
 
                             <li className={style.Option} onClick={() => navigate('/home/cliente/assinaturas')}>
-                                {/* <BadgeIcon className={style.Icon} /> */}
                                 <Badge className={style.Icon} />
                                 <Collapsible.Content asChild>
                                     <span className={style.Label}>Assinaturas</span>
@@ -84,9 +98,11 @@ const Sidebar: React.FC<Props> = ({ setOpenedTab }) => {
                         </ul>
 
                     )
+
+                    
                 }
 
-                <div className={style.BottomOption}>
+                <div className={style.BottomOption} onClick={() => logout()}>
                     <ExitIcon className={style.Icon} />
                     <Collapsible.Content asChild>
                         <span className={style.Label}>Encerrar Sessão</span>

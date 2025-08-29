@@ -114,6 +114,18 @@
                         box-shadow: 0 0 3px $light-blue;
                     }
 
+                    &:-webkit-autofill {
+                        -webkit-box-shadow: 0 0 0 1000px $gray inset !important;
+                        -webkit-text-fill-color: $white !important;
+                        border-radius: 10px;
+                        transition: background-color 500000s ease-in-out 0s;
+                        background-clip: content-box, padding-box;
+                    }
+
+                    &:-webkit-autofill:focus {
+                        -webkit-box-shadow: 0 0 0 1000px $gray inset !important;
+                        -webkit-text-fill-color: $white !important;
+                    }
                 }
 
                 .BottomPassword {

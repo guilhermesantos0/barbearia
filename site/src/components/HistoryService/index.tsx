@@ -9,7 +9,8 @@ import ScheduleAgain from '@assets/icons/schedule_again.svg?react';
 import Eye from '@assets/icons/eye.svg?react';
 
 interface Props {
-    service: IScheduledService
+    service: IScheduledService,
+    onAction: () => void;
 }
 
 import RateService from '@components/RateService';
@@ -17,7 +18,7 @@ import RateService from '@components/RateService';
 // @ts-ignore
 import { formatDate } from '@utils/formatDate';
 
-const HistoryService:React.FC<Props> = ({ service }) => {
+const HistoryService:React.FC<Props> = ({ service, onAction }) => {
 
     const [starsComponent, setStarsComponent] = useState<React.ReactNode>();
 
@@ -40,6 +41,7 @@ const HistoryService:React.FC<Props> = ({ service }) => {
 
     return (
         <RateService 
+            onAction={onAction}
             service={service}
             trigger={
                 <div className={style.Container}>

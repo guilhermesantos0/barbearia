@@ -13,13 +13,12 @@ import api from '../../../../services/api';
 
 const CostumerHistory = () => {
     const [user, setUser] = useState<IUser | null>();
-
+    
+    const fetchData = async () => {
+        const result = await api.get('/users/me')
+        setUser(result.data);
+    }
     useEffect(() => {
-        const fetchData = async () => {
-            const result = await api.get('/users/me')
-            setUser(result.data);
-        }
-
         fetchData();
     }, [])
 
@@ -155,7 +154,7 @@ const CostumerHistory = () => {
                                 filteredHistory.length > 0 ? (
                                     <div className={style.UserHistory}>
                                         {filteredHistory.map((service, index) => (
-                                            <HistoryService key={index} service={service} />
+                                            <HistoryService key={index} service={service} onAction={fetchData} />
                                         ))}
                                     </div>
                                 ) : (

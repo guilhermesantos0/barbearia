@@ -9,12 +9,14 @@ interface ModalProps {
     trigger: ReactNode,
     children: ReactNode,
     close?: boolean,
-    customClose?: ReactNode
+    customClose?: ReactNode,
+    open?: boolean;
+    onOpenChange?: (open: boolean) => void;
 }
 
-const Modal:React.FC<ModalProps> = ({ trigger, children, close }) => {
+const Modal:React.FC<ModalProps> = ({ trigger, children, close, open, onOpenChange }) => {
     return (
-        <Dialog.Root>
+        <Dialog.Root open={open} onOpenChange={onOpenChange}>
             <Dialog.Trigger asChild>
                 {trigger}
             </Dialog.Trigger>

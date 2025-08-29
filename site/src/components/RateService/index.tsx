@@ -9,37 +9,54 @@ import { IScheduledService } from '@types/ScheduledService';
 // @ts-ignore
 import { formatDate } from '@utils/formatDate';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import api from '../../services/api';
 
 interface RateServiceProps {
     trigger: ReactNode,
-    service: IScheduledService
+    service: IScheduledService,
+    onAction: () => void;
 }
 
-const RateService: React.FC<RateServiceProps> = ({ trigger, service }) => {
+const RateService: React.FC<RateServiceProps> = ({ trigger, service, onAction }) => {
     const [rating, setRating] = useState<number>(0);
     const [comment, setComment] = useState<string>('');
     const [confirmOpen, setConfirmOpen] = useState(false);
+    const [modalOpen, setModalOpen] = useState(false);
 
     const handleRate = () => {
         if (rating < 1) return alert('Você deve avaliar com ao menos 1 estrela');
 
         if (comment === '') {
-            setConfirmOpen(true); // abre modal de confirmação
+            setConfirmOpen(true);
             return;
         }
 
         submitRate();
     };
 
-    const submitRate = () => {
-        console.log('Avaliação enviada:', { rating, comment });
-        // Aqui você chamaria a API
-        setConfirmOpen(false); // fecha modal de confirmação se estiver aberto
+    const submitRate = async () => {
+        
+        const payload = {
+            "rated": true,
+            "rate": {
+                "stars": rating,
+                "comment": comment,
+                "ratedAt": new Date()
+            }
+        }
+
+        const confirm = await api.put(`/scheduledservices/${service._id}`, payload)
+        if(confirm.status === 200) {
+            onAction();
+            setModalOpen(false);
+        }
+
+        setConfirmOpen(false);
     };
 
     return (
         <>
-            <Modal trigger={trigger}>
+            <Modal trigger={trigger} open={modalOpen} onOpenChange={setModalOpen}>
                 <div className={style.Container}>
                     <h1 className={style.Title}>{service.service.name}</h1>
                     <div className={style.ServiceData}>
@@ -86,7 +103,6 @@ const RateService: React.FC<RateServiceProps> = ({ trigger, service }) => {
                 </div>
             </Modal>
 
-            {/* Modal de confirmação */}
             <Dialog.Root open={confirmOpen} onOpenChange={setConfirmOpen}>
                 <Dialog.Portal>
                     <Dialog.Overlay className={style.ConfirmOverlay} />

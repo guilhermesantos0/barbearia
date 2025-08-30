@@ -1,0 +1,17 @@
+@use '@assets/scss/variables.scss' as *;
+
+.Container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 1rem;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+
+    .PendingSchedules {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+}

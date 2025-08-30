@@ -1,0 +1,64 @@
+.Container {
+    margin-top: .5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+
+    .PageContent {
+        display: flex;
+
+        .ServicesArea {
+            width: 75vw;
+            height: 75vh;
+            
+            position: relative;
+
+            padding: 1rem 0;
+
+            overflow-y: auto;
+
+            &::after {
+                content: '';
+                position: absolute;
+                width: 1px;
+                height: 80%;
+
+                right: 1vw;
+                top: 50%;
+                transform: translateY(-50%);
+                background: linear-gradient(to bottom, transparent, white, transparent);
+            }
+
+            .UserHistory {
+                display: flex;
+                flex-wrap: wrap;
+                padding-left: 1rem;
+                width: 75vw;
+                gap: 1rem;
+            }
+        }
+
+        .FilterArea {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+
+            .Title {
+                font-size: 1.5rem;
+                text-align: center;
+                font-weight: 700;
+            }
+
+            .FilterOptions {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+                list-style: none;
+
+                .SelectMenu {
+                    width: 15vw;
+                }
+            }
+        }
+    }
+}

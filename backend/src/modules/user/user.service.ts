@@ -80,7 +80,7 @@ export class UserService {
         return plan
     }
 
-    async getHistory(userId: string) {
+    async getDiscountHistory(userId: string, full: boolean = false) {
         return this.userModel
             .findById(userId)
             .select('history')
@@ -92,6 +92,18 @@ export class UserService {
                         { discountApplied: { $nin: [0, '0', null] } }
                     ]
                  },
+                populate: [
+                    { path: 'costumer' }, { path: 'barber' }, { path: 'service' }
+                ]
+            });
+    }
+
+    async getHistory(userId: string) {
+        return this.userModel
+            .findById(userId)
+            .select('history')
+            .populate({
+                path: 'history',
                 populate: [
                     { path: 'costumer' }, { path: 'barber' }, { path: 'service' }
                 ]

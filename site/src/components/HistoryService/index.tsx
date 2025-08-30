@@ -11,6 +11,7 @@ import Eye from '@assets/icons/eye.svg?react';
 interface Props {
     service: IScheduledService,
     onAction: () => void;
+    view: 'customer' | 'barber';
 }
 
 import RateService from '@components/RateService';
@@ -18,7 +19,7 @@ import RateService from '@components/RateService';
 // @ts-ignore
 import { formatDate } from '@utils/formatDate';
 
-const HistoryService:React.FC<Props> = ({ service, onAction }) => {
+const HistoryService:React.FC<Props> = ({ service, onAction, view }) => {
 
     const [starsComponent, setStarsComponent] = useState<React.ReactNode>();
 
@@ -40,29 +41,53 @@ const HistoryService:React.FC<Props> = ({ service, onAction }) => {
     }, [service])
 
     return (
-        <RateService 
-            onAction={onAction}
-            service={service}
-            trigger={
-                <div className={style.Container}>
-                    <p className={style.Title}>{service.service.name}</p>
-                    <div className={style.Details}>
-                        <p className={style.AditionalInfo}><FontAwesomeIcon className={style.DetailsIcon} icon="user" /> {service.barber.name}</p>
-                        <p className={style.AditionalInfo}><FontAwesomeIcon className={style.DetailsIcon} icon="calendar" />{formatDate(service.date) || 'Carregando data...'}</p>
-                    </div>
-                    <div className={style.BottomInfos}>
-                        {starsComponent}
-                        <div className={style.ActionButtons}>
-                            <ScheduleAgain className={style.Icon} />
-                            <Eye className={style.Icon} />
-                            <FontAwesomeIcon icon="trash" className={`${style.Icon} ${style.Trash}`} /> 
+        <>
+            {
+                view === 'customer' && (
+                    <RateService 
+                        onAction={onAction}
+                        service={service}
+                        trigger={
+                            <div className={style.Container}>
+                                <p className={style.Title}>{service.service.name}</p>
+                                <div className={style.Details}>
+                                    <p className={style.AditionalInfo}><FontAwesomeIcon className={style.DetailsIcon} icon="user" /> {service.barber.name}</p>
+                                    <p className={style.AditionalInfo}><FontAwesomeIcon className={style.DetailsIcon} icon="calendar" />{formatDate(service.date) || 'Carregando data...'}</p>
+                                </div>
+                                <div className={style.BottomInfos}>
+                                    {starsComponent}
+                                    <div className={style.ActionButtons}>
+                                        <ScheduleAgain className={style.Icon} />
+                                        <Eye className={style.Icon} />
+                                        <FontAwesomeIcon icon="trash" className={`${style.Icon} ${style.Trash}`} /> 
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    >
+                    </RateService>
+                )
+            }
+
+            {
+                view === 'barber' && (
+                    <div className={style.Container}>
+                        <p className={style.Title}>{service.service.name}</p>
+                        <div className={style.Details}>
+                            <p className={style.AditionalInfo}><FontAwesomeIcon className={style.DetailsIcon} icon="user" /> {service.costumer.name}</p>
+                            <p className={style.AditionalInfo}><FontAwesomeIcon className={style.DetailsIcon} icon="calendar" />{formatDate(service.date) || 'Carregando data...'}</p>
+                        </div>
+                        <div className={style.BottomInfos}>
+                            {starsComponent}
+                            <div className={style.ActionButtons}>
+                                <Eye className={style.Icon} />
+                                <FontAwesomeIcon icon="trash" className={`${style.Icon} ${style.Trash}`} /> 
+                            </div>
                         </div>
                     </div>
-                </div>
+                )
             }
-        >
-            
-        </RateService>
+        </>
     )
 }
 

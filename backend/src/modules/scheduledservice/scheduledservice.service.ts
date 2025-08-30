@@ -40,6 +40,13 @@ export class ScheduledServiceService {
         return scheduled;
     }
 
+    async findUnconfirmedByBarber(barberId: string): Promise<ScheduledService[]> {
+        return this.scheduledServiceModel.find({ 
+            barber: barberId,
+            status: 'Pendente'
+        }).populate('costumer').populate('barber').populate('service').exec();
+    }
+
     async update(id: string, data: Partial<ScheduledService>): Promise<ScheduledService | null> {
         return this.scheduledServiceModel.findByIdAndUpdate(id, data, { new: true }).exec();
     }

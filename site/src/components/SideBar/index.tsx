@@ -10,8 +10,9 @@ import { useNavigate } from 'react-router-dom';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import Pencil from '../../assets/icons/pencil.svg?react';
-import Badge from '../../assets/icons/badge.svg?react'
+import Pencil from '@assets/icons/pencil.svg?react';
+import Badge from '@assets/icons/badge.svg?react'
+import ConfirmSchedule from '@assets/icons/confirm-schedule.svg?react';
 
 // @ts-ignore
 import api from '@services/api';
@@ -96,10 +97,48 @@ const Sidebar: React.FC<Props> = ({ setOpenedTab }) => {
                                 </Collapsible.Content>
                             </li>
                         </ul>
-
                     )
+                }
 
-                    
+                {
+                    user && isBarber && (
+                        <ul className={style.NavList}>
+                            <li className={style.Option} onClick={() => navigate('/home/barbeiro/confirmar-agendamentos')}>
+                                <ConfirmSchedule className={`${style.Icon} ${style.Greater1}`} />
+                                <Collapsible.Content asChild>
+                                    <span className={style.Label}>Confirmar</span>
+                                </Collapsible.Content>
+                            </li>
+
+                            <li className={style.Option} onClick={() => navigate('/home/barbeiro/agendamentos')}>
+                                <FontAwesomeIcon icon={['far', 'calendar']} className={style.Icon} />
+                                <Collapsible.Content asChild>
+                                    <span className={style.Label}>Agendamentos</span>
+                                </Collapsible.Content>
+                            </li>
+
+                            <li className={style.Option} onClick={() => navigate('/home/barbeiro/historico')}>
+                                <FontAwesomeIcon icon={['far', 'clock']} className={style.Icon} />
+                                <Collapsible.Content asChild>
+                                    <span className={style.Label}>Histórico</span>
+                                </Collapsible.Content>
+                            </li>
+
+                            <li className={style.Option} onClick={() => navigate('/home/barbeiro/estatisticas')}>
+                                <FontAwesomeIcon icon='chart-column' className={style.Icon} />
+                                <Collapsible.Content asChild>
+                                    <span className={style.Label}>Estatísticas</span>
+                                </Collapsible.Content>
+                            </li>
+
+                            <li className={style.Option} onClick={() => navigate('/home/barbeiro/editar-perfil')}>
+                                <Pencil className={`${style.Icon} ${style.Pencil}`} />
+                                <Collapsible.Content asChild>
+                                    <span className={style.Label}>Editar Perfil</span>
+                                </Collapsible.Content>
+                            </li>
+                        </ul>
+                    )
                 }
 
                 <div className={style.BottomOption} onClick={() => logout()}>

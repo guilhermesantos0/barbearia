@@ -60,4 +60,8 @@ export class CreateScheduledServiceDto {
     @Type(() => RateDto)
     @IsOptional()
     rate?: RateDto;
+
+    @IsString()
+    @IsOptional()
+    cancelReason?: string;
 }

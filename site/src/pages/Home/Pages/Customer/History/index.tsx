@@ -19,6 +19,7 @@ const CostumerHistory = () => {
         const result = await api.get('/users/me')
         setUser(result.data);
     }
+    
     useEffect(() => {
         fetchData();
     }, [])
@@ -155,7 +156,7 @@ const CostumerHistory = () => {
                                 filteredHistory.length > 0 ? (
                                     <div className={style.UserHistory}>
                                         {filteredHistory.map((service, index) => (
-                                            <HistoryService key={index} service={service} onAction={fetchData} />
+                                            <HistoryService key={index} service={service} onAction={fetchData} view='customer' />
                                         ))}
                                     </div>
                                 ) : (

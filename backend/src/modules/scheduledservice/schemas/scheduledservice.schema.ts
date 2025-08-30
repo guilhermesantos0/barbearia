@@ -49,6 +49,9 @@ export class ScheduledService {
 
     @Prop({ type: Rate })
     rate: Rate;
+
+    @Prop()
+    cancelReason?: string;
 }
 
 export const ScheduledServiceSchema = SchemaFactory.createForClass(ScheduledService);

@@ -122,7 +122,8 @@ const Login = () => {
             });
 
             const user = response.data;
-            navigate(user.role === 0 ? `/home/cliente/agendamentos` : `/home/funcionario/agendamentos`);
+
+            navigate(user.role === 0 ? `/home/cliente/agendamentos` : `/home/barbeiro/agendamentos`);
 
         } catch (error: any) {
             if (error.response) {

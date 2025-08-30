@@ -227,7 +227,23 @@ const Checkout = () => {
                         }
                     </div>
                     <div className={style.ButtonsContainer}>
-                        <button className={`${style.Button} ${style.PayButton}`} disabled={selectedPaymentMethod === 'pix' && !qrCode} onClick={__Test__handleCompletePayment}><FontAwesomeIcon icon={{'pix': 'copy' as IconProp}[selectedPaymentMethod] || 'lock'} />{ selectedPaymentMethod === 'pix' ? 'Copiar Código' : 'Finalizar Pagamento' }</button>
+                        <button
+                            className={`${style.Button} ${style.PayButton}`}
+                            disabled={selectedPaymentMethod === 'pix' && !qrCode}
+                            onClick={__Test__handleCompletePayment}
+                        >
+                            <FontAwesomeIcon
+                                icon={
+                                    {
+                                        pix: 'copy',
+                                        card: ['far', 'credit-card'],
+                                        credit: ['far', 'credit-card'],
+                                        debit: ['far', 'credit-card'],
+                                    }[selectedPaymentMethod] as IconProp || 'lock'
+                                }
+                            />
+                            {selectedPaymentMethod === 'pix' ? 'Copiar Código' : 'Finalizar Pagamento'}
+                        </button>
                         <button className={`${style.Button} ${style.CancelButton}`}>Cancelar</button>
                     </div>
                     <div className={style.Security}>

@@ -41,6 +41,11 @@ export class ScheduledServiceController {
         return this.scheduledService.findById(id);
     }
 
+    @Get(':barberId/unconfirmed')
+    async findUnconfirmedByBarber(@Param('barberId') barberId: string): Promise<ScheduledService[]> {
+        return this.scheduledService.findUnconfirmedByBarber(barberId);
+    }
+
     @Put(':id')
     async update(@Param('id') id: string, @Body() updateData: Partial<ScheduledService>) {
         return this.scheduledService.update(id, updateData);

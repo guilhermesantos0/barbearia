@@ -126,6 +126,7 @@
 
             display: flex;
             flex-direction: column;
+            align-items: flex-start;
             gap: 1.5rem;
 
             list-style: none;
@@ -189,6 +190,13 @@
         &.Pencil {
             width: 1.8rem;
             height: 1.8rem;
+        }
+
+        &.Greater1 {
+            width: 2.5rem;
+            height: 2.5rem;
+
+            // transform: translateX(10%);
         }
     }
 }

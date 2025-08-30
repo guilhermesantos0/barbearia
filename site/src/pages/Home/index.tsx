@@ -13,6 +13,12 @@ import CostumerHistory from "./Pages/Customer/History";
 import CostumerEditProfile from "./Pages/Customer/EditProfile";
 import CostumerPlan from "./Pages/Customer/Premium";
 
+// BARBER
+import ConfirmSchedules from "./Pages/Barber/ConfirmSchedules";
+import History from "./Pages/Barber/History";
+import Schedules from "./Pages/Barber/Schedules";
+
+
 const Home = () => {
     const { user } = useUser();
     const [openedTab, setOpenedTab] = useState<string | undefined>();
@@ -53,6 +59,23 @@ const Home = () => {
                                 {
                                     openedTab === "cliente_assinaturas" && (
                                         <CostumerPlan />
+                                    )
+                                }
+
+
+                                {
+                                    openedTab === "barbeiro_confirmar-agendamentos" && (
+                                        <ConfirmSchedules />
+                                    )
+                                }
+                                {
+                                    openedTab === "barbeiro_historico" && (
+                                        <History />
+                                    )
+                                }
+                                {
+                                    openedTab === "barbeiro_agendamentos" && (
+                                        <Schedules />   
                                     )
                                 }
                             </>

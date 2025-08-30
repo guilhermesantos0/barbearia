@@ -10,6 +10,7 @@ import { IScheduledService } from '@types/ScheduledService';
 import { formatDate } from '@utils/formatDate';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import api from '../../services/api';
+import { toast } from 'react-toastify';
 
 interface RateServiceProps {
     trigger: ReactNode,
@@ -18,8 +19,8 @@ interface RateServiceProps {
 }
 
 const RateService: React.FC<RateServiceProps> = ({ trigger, service, onAction }) => {
-    const [rating, setRating] = useState<number>(0);
-    const [comment, setComment] = useState<string>('');
+    const [rating, setRating] = useState<number>(service.rate ? service.rate.stars : 0);
+    const [comment, setComment] = useState<string>(service.rate.comment || '');
     const [confirmOpen, setConfirmOpen] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
 
@@ -49,6 +50,7 @@ const RateService: React.FC<RateServiceProps> = ({ trigger, service, onAction })
         if(confirm.status === 200) {
             onAction();
             setModalOpen(false);
+            toast.success('Avaliação enviada com sucesso!');
         }
 
         setConfirmOpen(false);

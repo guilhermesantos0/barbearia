@@ -28,6 +28,12 @@ export class UserController {
     }
 
     @UseGuards(AuthGuard('jwt'))
+    @Get('discount/history')
+    async getDiscountHistory(@Request() req) {
+        return this.userService.getDiscountHistory(req.user.sub, true);
+    }
+
+    @UseGuards(AuthGuard('jwt'))
     @Get('history')
     async getHistory(@Request() req) {
         return this.userService.getHistory(req.user.sub);

@@ -6,6 +6,8 @@ import api from '@services/api';
 import { IScheduledService } from '@types/ScheduledService';
 
 import { parseISO, format, getDay, differenceInMinutes } from 'date-fns';
+import Modal from '@components/Modal';
+import ServiceActions from '@components/ServiceActions';
 
 const Schedules = () => {
     
@@ -76,21 +78,24 @@ const Schedules = () => {
                                         const slotsToOccupy = duration / SLOT_DURATION;
 
                                         return (
-                                            <div
-                                                key={idx}
-                                                className={style.ServiceCard}
-                                                style={{
-                                                    height: `${slotsToOccupy * 100}%`,
-                                                }}
-                                            >
-                                                <div className={style.ServiceDetails}>
-                                                    <span className={style.ServiceName}>{service.service.name}</span>
-                                                    <div className={style.DetailsLowerLine}>
-                                                        <span className={style.ClientName}>{service.costumer.name}</span>
-                                                        <span className={style.Duration}>{service.service.duration} min</span>
+                                            <ServiceActions trigger={
+                                                <div
+                                                    key={idx}
+                                                    className={style.ServiceCard}
+                                                    style={{
+                                                        height: `${slotsToOccupy * 100}%`,
+                                                    }}
+                                                >
+                                                    <div className={style.ServiceDetails}>
+                                                        <span className={style.ServiceName}>{service.service.name}</span>
+                                                        <div className={style.DetailsLowerLine}>
+                                                            <span className={style.ClientName}>{service.costumer.name} {service.costumer.name} {service.costumer.name} {service.costumer.name}</span>
+                                                            <span className={style.Duration}>{service.service.duration} min</span>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            } 
+                                            service={service} />
                                         );
                                     })}
                                 </div>

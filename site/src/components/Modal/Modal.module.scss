@@ -6,6 +6,7 @@
     inset: 0;
     animation: fadeIn 0.25s ease-out;
     backdrop-filter: blur(3px);
+    z-index: 9998;
 }
 
 .Container {
@@ -25,6 +26,8 @@
     gap: 1.5rem;
 
     animation: slideUp 0.3s ease-out;
+
+    z-index: 9999;
 }
 
 .Close {

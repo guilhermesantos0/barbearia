@@ -6,8 +6,9 @@ import api from '@services/api';
 import { IScheduledService } from '@types/ScheduledService';
 
 import { parseISO, format, getDay, differenceInMinutes } from 'date-fns';
-import Modal from '@components/Modal';
+// import Modal from '@components/Modal';
 import ServiceActions from '@components/ServiceActions';
+import { fomratTimeDuration } from '@utils/formatTimeDuration';
 
 const Schedules = () => {
     
@@ -89,8 +90,8 @@ const Schedules = () => {
                                                     <div className={style.ServiceDetails}>
                                                         <span className={style.ServiceName}>{service.service.name}</span>
                                                         <div className={style.DetailsLowerLine}>
-                                                            <span className={style.ClientName}>{service.costumer.name} {service.costumer.name} {service.costumer.name} {service.costumer.name}</span>
-                                                            <span className={style.Duration}>{service.service.duration} min</span>
+                                                            <span className={style.ClientName}>{service.costumer.name}</span>
+                                                            <span className={style.Duration}>{fomratTimeDuration(service.service.duration)}</span>
                                                         </div>
                                                     </div>
                                                 </div>

@@ -1,0 +1,49 @@
+@use '@assets/scss/variables' as *;
+@use '@assets/scss/mixins' as *;
+
+.Container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    width: 20rem;
+
+    .Details {
+        display: flex;
+        flex-direction: column;
+        gap: .3rem;
+
+        .Detail {
+            display: flex;
+            justify-content: space-between;
+
+            font-size: 0.9rem;
+
+            .DetailLabel {
+                color: $light-gray;
+            }
+
+            .DetailValue {
+                font-weight: 600;
+            }
+        }
+    }
+
+    .Actions {
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+
+        margin-top: 1.5rem;
+
+        .Action {
+            @include button-secondary;
+            width: 100%;
+            height: 3rem;
+
+            &.Start {
+                @include button-primary;
+            }
+        }
+    }
+}

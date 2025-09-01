@@ -19,6 +19,7 @@ import * as utc from 'dayjs/plugin/utc';
 import { Service } from '../service/schemas/service.schema';
 import { PlanService } from '../plan/plan.service';
 import { Benefit } from '../plan/schemas/plan.schema';
+import { isIn } from 'class-validator';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -113,6 +114,75 @@ export class UserService {
     async getNextServices(userId: string) {
         const now = new Date();
         return this.scheduledServiceService.findNextByUser(userId, now);
+    }
+
+    async getWorkTimes(userId: string): Promise<string[]> {
+        const user = await this.userModel.findById(userId).exec();
+
+        if(!user || !user.work) {
+            throw new NotFoundException('Usuário não encontrado ou não possui agenda configurada')
+        }
+
+        const currentDate = dayjs().tz('America/Sao_Paulo');
+
+        const startOfDay = dayjs
+            .tz(currentDate, 'America/Sao_Paulo')
+            .hour(Number(user.work.time.start.split(':')[0]))
+            .minute(Number(user.work.time.start.split(':')[1]))
+
+        const endOfDay = dayjs
+            .tz(currentDate, 'America/Sao_Paulo')
+            .hour(Number(user.work.time.end.split(':')[0]))
+            .minute(Number(user.work.time.end.split(':')[1]))
+
+        let slots: string[] = [];
+        let current = startOfDay;
+
+        while ( current.add(30, 'minute').isBefore(endOfDay) || current.add(30, 'minute').isSame(endOfDay) ) {
+            const slotStart = current;
+            const slotEnd = current.add(30, 'minute');
+
+            const isInInterval = user.work.time.intervals?.some(interval => {
+                const intervalStart = dayjs(currentDate)
+                    .tz('America/Sao_Paulo')
+                    .hour(Number(interval.start.split(':')[0]))
+                    .minute(Number(interval.start.split(':')[1]))
+
+                const intervalEnd = dayjs(currentDate)
+                    .tz('America/Sao_Paulo')
+                    .hour(Number(interval.end.split(':')[0]))
+                    .minute(Number(interval.end.split(':')[1]))
+
+                return slotStart.isBefore(intervalEnd) && slotEnd.isAfter(intervalStart)
+            })
+
+            if (!isInInterval) {    
+                slots.push(slotStart.format('HH:mm'))
+            }
+            current = current.add(30, 'minute');
+        }
+
+        return slots;
+    }
+
+    async getWorkingDays(userId: string): Promise<string[]> {
+
+        const user = await this.userModel.findById(userId).exec();
+        if(!user || !user.work) {
+            throw new NotFoundException('Usuário não encontrado ou não possui agenda configurada')
+        }
+        
+        const labels = {
+            'segunda-feira': 'Seg',
+            'terça-feira': 'Ter',
+            'quarta-feira': 'Qua',
+            'quinta-feira': 'Qui',
+            'sexta-feira': 'Sex',
+            'sábado': 'Sáb',
+            'domingo': 'Dom',
+        };
+
+        return user.work.days.map(day => labels[day]);
     }
 
     async findByEmail(email: string): Promise<User | null> {

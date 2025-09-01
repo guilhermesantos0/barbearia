@@ -40,9 +40,13 @@ export class UserController {
     }
 
     @UseGuards(AuthGuard('jwt'))
-    @Get('next-services')
+    @Get('barbers/next-services')
     async getNextServices(@Request() req) {
-        return this.userService.getNextServices(req.user.sub);
+        const times = await this.userService.getWorkTimes(req.user.sub);
+        const nextServices = await this.userService.getNextServices(req.user.sub);
+        const days = await this.userService.getWorkingDays(req.user.sub);
+
+        return { days, nextServices, times };
     }
 
     @Get()

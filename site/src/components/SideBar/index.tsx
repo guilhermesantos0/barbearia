@@ -125,7 +125,7 @@ const Sidebar: React.FC<Props> = ({ setOpenedTab }) => {
                         <ul className={style.NavList}>
                             <li className={style.Option} onClick={() => navigate('/home/barbeiro/confirmar-agendamentos')}>
                                 <ConfirmSchedule className={`${style.Icon} ${style.Greater1}`} />
-                                { unConfirmedSchedules.length > 0 && (
+                                { unConfirmedSchedules?.length > 0 && (
                                     <div className={style.NotificationBadge}>
                                         {unConfirmedSchedules.length}
                                     </div>

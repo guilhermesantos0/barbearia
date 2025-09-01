@@ -47,6 +47,26 @@ export class ScheduledServiceService {
         }).populate('costumer').populate('barber').populate('service').exec();
     }
 
+    async findNextByUser(userId: string, fromDate: Date): Promise<ScheduledService[]> {
+        const day = fromDate.getDay();
+
+        const startOfWeek = new Date(fromDate);
+        const diffToMonday = (day === 0 ? -6 : 1) - day;
+        startOfWeek.setDate(fromDate.getDate() + diffToMonday);
+        startOfWeek.setHours(0, 0, 0, 0);
+
+        const endOfWeek = new Date(startOfWeek);
+        endOfWeek.setDate(startOfWeek.getDate() + 6);
+        endOfWeek.setHours(23, 59, 59, 999);
+
+        const services = await this.scheduledServiceModel.find({ 
+            barber: userId,
+            date: { $gte: startOfWeek, $lte: endOfWeek }
+        }).populate('costumer').populate('barber').populate('service').exec();
+
+        return services;
+    }
+
     async update(id: string, data: Partial<ScheduledService>): Promise<ScheduledService | null> {
         return this.scheduledServiceModel.findByIdAndUpdate(id, data, { new: true }).exec();
     }

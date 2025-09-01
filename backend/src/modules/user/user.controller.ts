@@ -39,6 +39,12 @@ export class UserController {
         return this.userService.getHistory(req.user.sub);
     }
 
+    @UseGuards(AuthGuard('jwt'))
+    @Get('next-services')
+    async getNextServices(@Request() req) {
+        return this.userService.getNextServices(req.user.sub);
+    }
+
     @Get()
     findAll() {
         return this.userService.findAll();

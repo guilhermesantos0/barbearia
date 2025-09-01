@@ -16,24 +16,30 @@ library.add(fas, far, fab)
 
 import { ToastContainer } from 'react-toastify';
 
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
+
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
         <BrowserRouter>
-            <UserProvider>
-                <App />
-                <ToastContainer
-                    position="top-right"
-                    autoClose={3000}
-                    hideProgressBar={false}
-                    newestOnTop={true}
-                    closeOnClick
-                    rtl={false}
-                    pauseOnFocusLoss
-                    draggable
-                    pauseOnHover
-                    theme="dark"
-                />
-            </UserProvider>
+            <QueryClientProvider client={queryClient}>
+                <UserProvider>
+                    <App />
+                    <ToastContainer
+                        position="top-right"
+                        autoClose={3000}
+                        hideProgressBar={false}
+                        newestOnTop={true}
+                        closeOnClick
+                        rtl={false}
+                        pauseOnFocusLoss
+                        draggable
+                        pauseOnHover
+                        theme="dark"
+                    />
+                </UserProvider>
+            </QueryClientProvider>
         </BrowserRouter>
     </StrictMode>,
 )

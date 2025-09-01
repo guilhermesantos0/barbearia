@@ -14,6 +14,8 @@ import Pencil from '@assets/icons/pencil.svg?react';
 import Badge from '@assets/icons/badge.svg?react'
 import ConfirmSchedule from '@assets/icons/confirm-schedule.svg?react';
 
+import { useQuery } from '@tanstack/react-query';
+
 // @ts-ignore
 import api from '@services/api';
 
@@ -24,6 +26,7 @@ interface Props {
 const Sidebar: React.FC<Props> = ({ setOpenedTab }) => {
 
     const [isBarber, setIsBarber] = useState<boolean>(false);
+    // const [unconfirmedSchedulesAmount, setUnconfirmedSchedulesAmount] = useState<number>(0);
 
     const { logout, user } = useUser()
     const [isExpanded, setIsExpanded] = useState(false);
@@ -36,11 +39,28 @@ const Sidebar: React.FC<Props> = ({ setOpenedTab }) => {
         const fetchData = async () => {
             const isBarberResult = await api.get(`/roles/${user?.role}/isBarber`);
             setIsBarber(isBarberResult.data);
+
+            // if(isBarberResult.data) {
+            //     const unConfirmedScheduled = await api.get(`/scheduledservices/${(user as any).sub}/unconfirmed`);
+            //     setUnconfirmedSchedulesAmount(unConfirmedScheduled.data.length);
+            // }
         }
 
+        
         fetchData()
-
+        
     }, [user])
+
+    const { data: unConfirmedSchedules } = useQuery({
+        queryKey: ['unconfirmedSchedules', user?.sub],
+        queryFn: async () => {
+            const response = await api.get(`/scheduledservices/${(user as any).sub}/unconfirmed`);
+            return response.data;
+        },
+        enabled: !!user && isBarber
+    })
+
+    console.log(unConfirmedSchedules)
 
     return (
         <Collapsible.Root
@@ -105,6 +125,11 @@ const Sidebar: React.FC<Props> = ({ setOpenedTab }) => {
                         <ul className={style.NavList}>
                             <li className={style.Option} onClick={() => navigate('/home/barbeiro/confirmar-agendamentos')}>
                                 <ConfirmSchedule className={`${style.Icon} ${style.Greater1}`} />
+                                { unConfirmedSchedules.length > 0 && (
+                                    <div className={style.NotificationBadge}>
+                                        {unConfirmedSchedules.length}
+                                    </div>
+                                )}
                                 <Collapsible.Content asChild>
                                     <span className={style.Label}>Confirmar</span>
                                 </Collapsible.Content>

@@ -110,6 +110,11 @@ export class UserService {
             });
     }
 
+    async getNextServices(userId: string) {
+        const now = new Date();
+        return this.scheduledServiceService.findNextByUser(userId, now);
+    }
+
     async findByEmail(email: string): Promise<User | null> {
         return this.userModel.findOne({ email }).exec();
     }

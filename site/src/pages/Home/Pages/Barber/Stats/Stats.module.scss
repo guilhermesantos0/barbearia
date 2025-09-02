@@ -1,0 +1,118 @@
+@use '@assets/scss/variables' as *;
+
+.Container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 2rem;
+
+    .InfosCard {
+        width: 20rem;
+        background: $dark-blue;
+        padding: .5rem 1rem;
+        border-radius: 8px;
+    }
+
+    .FilterSelectorConteiner {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+        
+        width: 100%;
+     
+        .FilterSelector {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            width: 30%;
+            position: relative;
+
+            &::after {
+                content: '';
+                position: absolute;
+                left: 0;
+                height: 100%;
+                width: 33%;
+    
+                background: red;
+            }
+        }
+
+    }
+
+    .ChartsContent {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        gap: 4rem;
+        padding: 2rem;
+        width: 100%;
+        
+        border-radius: 20px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+        
+        @media (max-width: 768px) {
+            grid-template-columns: 1fr;
+            padding: 1rem;
+            gap: 1.5rem;
+        }
+    }
+    
+    .ChartCard {
+        border-radius: 16px;
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+        h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #e4e9f2;
+            margin-bottom: 1.2rem;
+            text-align: center;
+        }
+
+        &:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+        }
+    }
+
+    .CartesianGrid {
+        stroke: #1f2a40;
+        opacity: 0.5;
+    }
+
+    .ChartBar {
+        fill: $light-blue;
+        transition: 0.3s ease;
+
+        &:hover {
+            opacity: 0.85;
+        }
+    }
+
+    .Tooltip {
+        background: #111c44;
+        color: #e4e9f2;
+        padding: 8px 12px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+        font-size: 0.9rem;
+    }
+
+    .TooltipLabel {
+        margin: 0;
+        font-weight: 600;
+    }
+
+    .TooltipValue {
+        margin: 0;
+    }
+}

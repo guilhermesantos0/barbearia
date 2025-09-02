@@ -20,7 +20,7 @@ interface RateServiceProps {
 
 const RateService: React.FC<RateServiceProps> = ({ trigger, service, onAction }) => {
     const [rating, setRating] = useState<number>(service.rate ? service.rate.stars : 0);
-    const [comment, setComment] = useState<string>(service.rate.comment || '');
+    const [comment, setComment] = useState<string>( service.rate ? service.rate.comment : '');
     const [confirmOpen, setConfirmOpen] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
 

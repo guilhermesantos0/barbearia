@@ -148,3 +148,18 @@
         height: 1.5rem;
     }
 }
+
+@mixin barGradient($startColor, $endColor, $startOpacity: 0.9, $endOpacity: 1) {
+    defs {
+        linearGradient#barGradient {
+            stop:first-child {
+                stop-color: $startColor;
+                stop-opacity: $startOpacity;
+            }
+            stop:last-child {
+                stop-color: $endColor;
+                stop-opacity: $endOpacity;
+            }
+        }
+    }
+}

@@ -40,10 +40,12 @@ export class CreateUserDto {
 
     @IsOptional()
     work?: any;
-
+    
+    @IsOptional()
     @IsNumber()
-    averageRating: number;
-
+    averageRating?: number;
+    
+    @IsOptional()
     @IsNumber()
-    ratingCount: number;
+    ratingCount?: number;
 }

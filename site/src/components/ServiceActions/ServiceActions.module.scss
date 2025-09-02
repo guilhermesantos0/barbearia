@@ -42,9 +42,10 @@
             height: 3rem;
 
             border-radius: 5px;
-
+            
             &.Start {
                 @include button-primary;
+                border-radius: 5px;
             }
         }
     }

@@ -87,10 +87,10 @@ export class User {
     work?: Work;
 
     @Prop({ type: Number })
-    averageRating: number;
+    averageRating?: number;
 
     @Prop({ type: Number })
-    ratingCount: number;
+    ratingCount?: number;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

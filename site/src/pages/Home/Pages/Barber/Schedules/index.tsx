@@ -8,63 +8,76 @@ import { IScheduledService } from '@types/ScheduledService';
 import { parseISO, format, getDay, differenceInMinutes } from 'date-fns';
 // import Modal from '@components/Modal';
 import ServiceActions from '@components/ServiceActions';
+// @ts-ignore
 import { fomratTimeDuration } from '@utils/formatTimeDuration';
+import { useQuery } from '@tanstack/react-query';
+import { useUser } from '@contexts/UserContext';
+
+interface ResponseType {
+    days: string[],
+    nextServices: IScheduledService[],
+    times: string[]
+}
 
 const Schedules = () => {
     
-    const [userNextServices, setUserNextServices] = useState<IScheduledService[]>([]);
-    const [userTimes, setUserTimes] = useState<string[]>([]);
-    const [userWorkingDays, setUserWorkingDays] = useState<number[]>([]);
+    const { user } = useUser();
 
-    const SLOT_DURATION = 30; // minutos
+    const SLOT_DURATION = 30; 
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const result = await api.get('/users/barbers/next-services')
-            setUserNextServices(result.data.nextServices);
-            setUserTimes(result.data.times);
-            setUserWorkingDays(result.data.days);
-        }
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         const result = await api.get('/users/barbers/next-services')
+    //         setUserNextServices(result.data.nextServices);
+    //         setUserTimes(result.data.times);
+    //         setUserWorkingDays(result.data.days);
+    //     }
 
-        fetchData();
-    }, []);
+    //     fetchData();
+    // }, [])
+
+    const { data: nextServices } = useQuery<ResponseType>({
+        // @ts-ignore
+        queryKey: ['nextServices', user?.sub],
+        queryFn: async () => {
+            console.log('teste')
+            const response = await api.get(`/users/barbers/next-services`);
+            console.log(response)
+            return response.data;
+        },
+        enabled: true
+    })
 
     return (
         <div className={style.Container}>
-            {/* Cabeçalho com dias da semana */}
             <div
                 className={style.Header}
-                style={{ gridTemplateColumns: `5rem repeat(${userWorkingDays.length}, 1fr)` }}
+                style={{ gridTemplateColumns: `5rem repeat(${nextServices?.days.length}, 1fr)` }}
             >
                 <div className={style.TimeColumn}></div>
-                {userWorkingDays.map((day, i) => (
+                {nextServices?.days.map((day, i) => (
                     <div key={i} className={style.DayHeader}>
                         {day}
                     </div>
                 ))}
             </div>
 
-            {/* Corpo da agenda */}
-            <div className={style.Body} style={{ gridTemplateColumns: `5rem repeat(${userWorkingDays.length}, 1fr)` }} >
-                {/* Coluna com horários */}
+            <div className={style.Body} style={{ gridTemplateColumns: `5rem repeat(${nextServices?.days.length}, 1fr)` }} >
                 <div className={style.TimeColumn}>
-                    {userTimes.map((time, i) => (
+                    {nextServices?.times.map((time, i) => (
                         <div key={i} className={style.TimeSlot}>
                             {time}
                         </div>
                     ))}
                 </div>
 
-                {/* Colunas da semana */}
-                {userWorkingDays.map((_, dayIndex) => (
+                {nextServices?.days.map((_, dayIndex) => (
                     <div key={dayIndex} className={style.DayColumn}>
-                        {userTimes.map((time, i) => {
-                            // filtra serviços desse dia e horário
-                            const servicesAtThisTime = userNextServices.filter(service => {
+                        {nextServices?.times.map((time, i) => {
+                            const servicesAtThisTime = nextServices?.nextServices?.filter(service => {
+                                // @ts-ignore
                                 const serviceDate = parseISO(service.date);
 
-                                // getDay: 0 = domingo, 1 = segunda ... 
-                                // ajustando para começar na segunda (0 = seg, 6 = dom)
                                 const weekday = (getDay(serviceDate) + 6) % 7;
 
                                 const serviceTime = format(serviceDate, "HH:mm");

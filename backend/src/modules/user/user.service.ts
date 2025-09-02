@@ -16,16 +16,25 @@ import * as dayjs from 'dayjs';
 import 'dayjs/locale/pt-br';
 import * as timezone from 'dayjs/plugin/timezone';
 import * as utc from 'dayjs/plugin/utc';
-import { Service } from '../service/schemas/service.schema';
+import { Service, ServiceDocument } from '../service/schemas/service.schema';
 import { PlanService } from '../plan/plan.service';
 import { Benefit } from '../plan/schemas/plan.schema';
 import { isIn } from 'class-validator';
+import { ScheduledServiceDocument } from '../scheduledservice/schemas/scheduledservice.schema';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
 dayjs.locale('pt-br');
 
+type Period = "week" | "month" | "year";
+const TZ = "America/Sao_Paulo";
+
+type PopulatedScheduleService = Omit<ScheduledServiceDocument, 'costumer' | 'barber' | 'service'> & {
+    costumer: UserDocument,
+    barber: UserDocument,
+    service: ServiceDocument,
+}
 @Injectable()
 export class UserService {
     constructor(
@@ -183,6 +192,190 @@ export class UserService {
         };
 
         return user.work.days.map(day => labels[day]);
+    }
+
+    async getStats(userId: string, type: Period): Promise<Object> {
+
+        function getPeriodStart(filter: Period) {
+            return dayjs().tz(TZ).startOf(filter);
+        }
+
+        function isInPeriod(dateISO: string | Date, filter: Period) {
+            const start = getPeriodStart(filter);
+            return dayjs(dateISO).tz(TZ).isSame(start) || dayjs(dateISO).tz(TZ).isAfter(start);
+        }
+
+        const currentDate = dayjs().tz('America/Sao_Paulo');
+        const startOfMonth = currentDate.startOf('month');
+
+        const userData = await this.userModel
+            .findById(userId)
+            .populate({
+                path: 'history',
+                populate: [ { path: 'service' }, { path: 'costumer' } ]
+            }) as unknown as {
+                history: PopulatedScheduleService[]
+            };
+
+        const returnUserData = await this.userModel.findById(userId).exec();
+
+        if(!userData) {
+            throw new NotFoundException('Usuário não encontrado')
+        }
+
+        const monthlyService = userData?.history.filter((service) => dayjs(service.date).isAfter(startOfMonth));
+        const generatedIncome = monthlyService.reduce((acc, service) => { return acc + service.service.price }, 0);
+        
+        const groupAppointments = (filter: 'week' | 'month' | 'year') => {
+            const startDate = currentDate.startOf(filter);
+
+            const filteredAppointments = userData.history.filter((service) => dayjs(service.date).isAfter(startDate));
+
+            const groupedPerDay = filteredAppointments.reduce((acc: Record<number, number>, service) => {
+                const dayOfWeek = dayjs(service.date).day();
+                acc[dayOfWeek] = (acc[dayOfWeek] || 0) + 1;
+                return acc;
+            }, {});
+
+            const groupedPerService = filteredAppointments.reduce((acc: Record<string, number>, service) => {
+                const serviceName = service.service.name;
+                acc[serviceName] = (acc[serviceName] || 0) + 1
+                return acc
+            }, {})
+
+            const groupedPerRate = filteredAppointments.reduce((acc: Record<number, number>, service) => {
+                if (!service.rate?.stars) return acc
+                const rateStars = service.rate?.stars;
+                acc[rateStars] = (acc[rateStars] || 0) + 1;
+                return acc;
+            }, {})
+
+            return { groupedPerDay, groupedPerService, groupedPerRate };
+        }
+
+        const getUniqueCustomersCount = (filter: Period): number => {
+            const set = new Set<string>();
+
+            userData.history.forEach(service => {
+                if (service.status === 'Finalizado' && isInPeriod(service.date, filter)) {
+                    set.add(service.costumer._id)
+                }
+            })
+
+            return set.size;
+        }
+
+        const getNewvsReturning = (filter: Period): { newClients: number, returningClients: number } => {
+            const start = getPeriodStart(filter);
+            const firstSeenByClient = new Map<string, dayjs.Dayjs>();
+
+            userData.history
+                .filter(service => service.status === 'Finalizado')
+                .forEach(service => {
+                    const date = dayjs(service.date).tz(TZ);
+                    const prev = firstSeenByClient.get(service.costumer._id);
+                    if (!prev || date.isBefore(prev)) {
+                        firstSeenByClient.set(service.costumer._id, date);
+                    }
+                })
+                
+            const clientsThisPeriod = new Set<string>();
+            userData.history
+                .filter(service => service.status === "Finalizado" && (when => when.isSame(start) || when.isAfter(start))(dayjs(service.date).tz(TZ)))
+                .forEach(service => clientsThisPeriod.add(service.costumer._id));
+
+            let newClients = 0, returningClients = 0;
+            clientsThisPeriod.forEach(clientId => {
+                const firstSeen = firstSeenByClient.get(clientId);
+                if (firstSeen && (firstSeen.isSame(start) || firstSeen.isAfter(start))) {
+                    newClients++;
+                } else {
+                    returningClients++;
+                }
+            });
+
+            return { newClients, returningClients };
+        }
+
+        const getHighestPeriods = (): { morning: number, afternoon: number, night: number }  => {
+            let morning = 0, afternoon = 0, night = 0;
+
+            userData.history.forEach(service => {
+                if( service.status !== 'Finalizado' || !isInPeriod(service.date, type)) return;
+
+                const hour = dayjs(service.date).tz(TZ).hour();
+                if (hour >= 6 && hour <= 11) morning++;
+                else if (hour >= 12 && hour <= 17) afternoon++;
+                else if (hour >= 18 && hour <= 23) night++;
+            })
+
+            return { morning, afternoon, night }
+        }
+
+        const getAverageRatingByService = (): Record<string, number> => {
+            const ratings: Record<string, { total: number; count: number }> = {};
+
+            userData.history.forEach(service => {
+                if (service.status !== 'Finalizado' || !service.rate?.stars) return;
+
+                const name = service.service.name;
+
+                if (!ratings[name]) {
+                    ratings[name] = { total: 0, count: 0 };
+                }
+
+                ratings[name].total += service.rate.stars;
+                ratings[name].count++;
+            });
+
+            const result: Record<string, number> = {};
+            Object.keys(ratings).forEach(name => {
+                result[name] = parseFloat((ratings[name].total / ratings[name].count).toFixed(2));
+            });
+
+            return result;
+        };
+
+        const getLoyaltyRate = (): number => {
+            const clients: Record<string, number> = {};
+
+            userData.history.forEach(service => {
+                if (service.status !== 'Finalizado') return;
+
+                const clientId = service.costumer._id;
+
+                if (!clients[clientId]) {
+                    clients[clientId] = 0;
+                }
+                clients[clientId]++;
+            });
+
+            const totalClients = Object.keys(clients).length;
+            const returningClients = Object.values(clients).filter(count => count > 1).length;
+
+            if (totalClients === 0) return 0;
+
+            return parseFloat(((returningClients / totalClients) * 100).toFixed(2));
+        };
+
+        const groupedAppointments = groupAppointments(type);
+        const uniqueCustomersCount = getUniqueCustomersCount(type);
+        const newVsReturning = getNewvsReturning(type);
+        const highestPeriods = getHighestPeriods();
+        const averageRatingByService = getAverageRatingByService();
+        const loyaltyRate = getLoyaltyRate();
+
+        return {
+            userData: returnUserData,
+            generatedIncome,
+            groupedAppointments,
+            uniqueCustomersCount,
+            newVsReturning,
+            highestPeriods,
+            averageRatingByService,
+            loyaltyRate
+        }
+
     }
 
     async findByEmail(email: string): Promise<User | null> {

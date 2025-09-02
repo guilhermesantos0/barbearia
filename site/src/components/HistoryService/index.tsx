@@ -36,7 +36,11 @@ const HistoryService:React.FC<Props> = ({ service, onAction, view }) => {
             }
             setStarsComponent(<div className={style.Stars}>{stars}</div>)
         } else {
-            setStarsComponent(<p>Toque para avaliar...</p>);
+            if( view === 'customer') {
+                setStarsComponent(<p>Toque para avaliar...</p>);
+            } else {
+                setStarsComponent(<p>Serviço não avaliado</p>)
+            }
         }
     }, [service])
 

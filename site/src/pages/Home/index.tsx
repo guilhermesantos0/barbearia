@@ -17,7 +17,7 @@ import CostumerPlan from "./Pages/Customer/Premium";
 import ConfirmSchedules from "./Pages/Barber/ConfirmSchedules";
 import History from "./Pages/Barber/History";
 import Schedules from "./Pages/Barber/Schedules";
-
+import Stats from "./Pages/Barber/Stats";
 
 const Home = () => {
     const { user } = useUser();
@@ -76,6 +76,11 @@ const Home = () => {
                                 {
                                     openedTab === "barbeiro_agendamentos" && (
                                         <Schedules />   
+                                    )
+                                }
+                                {
+                                    openedTab === "barbeiro_estatisticas" && (
+                                        <Stats />
                                     )
                                 }
                             </>

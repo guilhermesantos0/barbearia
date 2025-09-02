@@ -52,6 +52,7 @@ const Sidebar: React.FC<Props> = ({ setOpenedTab }) => {
     }, [user])
 
     const { data: unConfirmedSchedules } = useQuery({
+        // @ts-ignore
         queryKey: ['unconfirmedSchedules', user?.sub],
         queryFn: async () => {
             const response = await api.get(`/scheduledservices/${(user as any).sub}/unconfirmed`);
@@ -59,8 +60,6 @@ const Sidebar: React.FC<Props> = ({ setOpenedTab }) => {
         },
         enabled: !!user && isBarber
     })
-
-    console.log(unConfirmedSchedules)
 
     return (
         <Collapsible.Root

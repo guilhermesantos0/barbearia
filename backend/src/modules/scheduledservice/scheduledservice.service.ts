@@ -61,7 +61,7 @@ export class ScheduledServiceService {
 
         const services = await this.scheduledServiceModel.find({ 
             barber: userId,
-            date: { $gte: startOfWeek, $lte: endOfWeek }
+            date: { $gte: startOfWeek, $lte: endOfWeek },
         }).populate('costumer').populate('barber').populate('service').exec();
 
         return services;

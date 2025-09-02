@@ -19,6 +19,8 @@
 
     gap: 1rem;
 
+    outline: none;
+
     &:disabled {
         opacity: .5;
         cursor: not-allowed;
@@ -52,6 +54,8 @@
     justify-content: center;
 
     gap: 1rem;
+
+    outline: none;
 
     &:disabled {
         opacity: .5;
@@ -89,6 +93,8 @@
     justify-content: center;
 
     gap: 1rem;
+
+    outline: none;
 
     &:disabled {
         opacity: .5;

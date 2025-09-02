@@ -41,6 +41,8 @@
             width: 100%;
             height: 3rem;
 
+            border-radius: 5px;
+
             &.Start {
                 @include button-primary;
             }

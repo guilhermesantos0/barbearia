@@ -11,7 +11,7 @@ import Modal from '@components/Modal';
 import * as Dialog from '@radix-ui/react-dialog';
 import { useState } from 'react';
 
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { useUser } from '@contexts/UserContext';
 
 interface PendingScheduleProps {
@@ -32,6 +32,7 @@ const PendingSchedule: React.FC<PendingScheduleProps> = ({ schedule, onConfirm }
         if(confirmed.status === 200) {
             toast.success('Agendamento confirmado com sucesso!');
             onConfirm && onConfirm();
+            // @ts-ignore
             queryClient.invalidateQueries(['unconfirmedSchedules', user?.sub]);
         }
         else { 
@@ -54,6 +55,7 @@ const PendingSchedule: React.FC<PendingScheduleProps> = ({ schedule, onConfirm }
             toast.success('Agendamento cancelado com sucesso!');
             onConfirm && onConfirm();
             setModalOpen(false);
+            // @ts-ignore
             queryClient.invalidateQueries(['unconfirmedSchedules', user?.sub]);
         }
         else { 

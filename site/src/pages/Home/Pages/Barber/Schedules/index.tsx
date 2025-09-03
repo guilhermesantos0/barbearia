@@ -78,7 +78,7 @@ const Schedules = () => {
                                 // @ts-ignore
                                 const serviceDate = parseISO(service.date);
 
-                                const weekday = (getDay(serviceDate) + 5) % 7;
+                                const weekday = (getDay(serviceDate) + nextServices?.days.length) % 7;
 
                                 const serviceTime = format(serviceDate, "HH:mm");
 

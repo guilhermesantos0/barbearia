@@ -59,8 +59,8 @@ const ServiceActions:React.FC<ServiceActionsProps> = ({ service, trigger }) => {
                         <span className={style.Detail}><p className={style.DetailLabel}><FontAwesomeIcon icon="clock" /> Horário</p><p className={style.DetailValue}>{formatDate(service.date)}</p></span>
                     </div>
                     <div className={style.Actions}>
-                        <button className={style.Action}><FontAwesomeIcon icon='pencil' /> Editar</button>
-                        <button className={style.Action}><FontAwesomeIcon icon='trash' /> Remover</button>
+                        <button className={style.Action} disabled={service.status === 'Finalizado'}><FontAwesomeIcon icon='pencil' /> Editar</button>
+                        <button className={style.Action} disabled={service.status === 'Finalizado'}><FontAwesomeIcon icon='trash' /> Remover</button>
 
                         {
                             service.status === 'Em andamento' && (

@@ -22,22 +22,48 @@
         width: 100%;
      
         .FilterSelector {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 1rem;
-            width: 30%;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0;
+            width: min(720px, 90%);
             position: relative;
+            padding-bottom: 6px;
 
             &::after {
-                content: '';
+                content: "";
                 position: absolute;
+                bottom: 0;
                 left: 0;
-                height: 100%;
-                width: 33%;
-    
-                background: red;
+                width: calc(100% / 3);
+                height: 3px;
+                background: #2F80ED;
+                border-radius: 3px;
+                transform: translateX(calc(var(--idx, 0) * 100%));
+                transition: transform 0.28s cubic-bezier(.22,.9,.26,1);
             }
+        }
+
+        .FilterButton {
+            background: transparent;
+            border: none;
+            color: #C5C6CC;
+            padding: 0.6rem 0.8rem;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.95rem;
+            text-align: center;
+            transition: color 0.15s ease, transform 0.12s ease;
+            border-radius: 8px;
+        }
+
+        .FilterButton:hover {
+            color: #E4E9F2;
+            transform: translateY(-2px);
+        }
+
+        .Active {
+            color: #2F80ED;
+            font-weight: 700;
         }
 
     }
@@ -61,7 +87,6 @@
     
     .ChartCard {
         border-radius: 16px;
-        padding: 1.5rem;
         display: flex;
         flex-direction: column;
         align-items: center;

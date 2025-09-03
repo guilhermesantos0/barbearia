@@ -53,7 +53,7 @@ const Log:React.FC<logProps> = ({ data }) => {
                     {
                         data.data ? (
                             <Accordion.Trigger className={style.Title}>
-                                <p><span className={style.ActiveUser}>{(data.userId as IUser).name}</span> atualizou <span className={style.Target}>{data.target.name}</span></p>
+                                <p><span className={style.ActiveUser}>{(data.userId as IUser)?.name || 'Não encontrado'}</span> atualizou <span className={style.Target}>{data.target?.name || 'Não encontrado'}</span></p>
                                 <ChevronDownIcon className={style.Icon} />
                             </Accordion.Trigger>
                         ) : (

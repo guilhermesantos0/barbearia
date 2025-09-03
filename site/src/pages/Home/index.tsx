@@ -18,6 +18,7 @@ import ConfirmSchedules from "./Pages/Barber/ConfirmSchedules";
 import History from "./Pages/Barber/History";
 import Schedules from "./Pages/Barber/Schedules";
 import Stats from "./Pages/Barber/Stats";
+import EditProfile from "./Pages/Barber/EditProfile";
 
 const Home = () => {
     const { user } = useUser();
@@ -81,6 +82,11 @@ const Home = () => {
                                 {
                                     openedTab === "barbeiro_estatisticas" && (
                                         <Stats />
+                                    )
+                                }
+                                {
+                                    openedTab === "barbeiro_editar-perfil" && (
+                                        <EditProfile />
                                     )
                                 }
                             </>

@@ -23,6 +23,8 @@ import DetailsSection from '@components/DetailsSection';
 
 const Stats = () => {
 
+    const filterIndexMap = { week: 0, month: 1, year: 2 }; 
+
     const [userStats, setUserStats] = useState<any>(null);
     const [filter, setFilter] = useState<string>('week');
 
@@ -151,16 +153,16 @@ const Stats = () => {
             </div>
 
             <div className={style.FilterSelectorConteiner}>
-                <div className={style.FilterSelector}>
-                    <div className={style.FilterButton} onClick={() => updateFilter('week')}>Última Semana</div>
-                    <div className={style.FilterButton} onClick={() => updateFilter('month')}>Último Mês</div>
-                    <div className={style.FilterButton} onClick={() => updateFilter('year')}>Último Ano</div>
+                <div className={style.FilterSelector} style={{ ['--idx' as any]: filterIndexMap[filter] ?? 0 }}>
+                    <div className={`${style.FilterButton} ${filter === 'week' ? style.Active : ''}`} onClick={() => updateFilter('week')}>Última Semana</div>
+                    <div className={`${style.FilterButton} ${filter === 'month' ? style.Active : ''}`} onClick={() => updateFilter('month')}>Último Mês</div>
+                    <div className={`${style.FilterButton} ${filter === 'year' ? style.Active : ''}`} onClick={() => updateFilter('year')}>Último Ano</div>
                 </div>
             </div>
 
             <div className={style.ChartsContent}>
 
-                <ResponsiveContainer width="100%" height={400}>
+                <ResponsiveContainer width="100%" height={450}>
                     <div className={style.ChartCard}>
                         <h3>Agendamentos por Dia da Semana</h3>
                         <BarChart width={500} height={400} data={groupedPerDay} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
@@ -177,7 +179,7 @@ const Stats = () => {
                     </div>
                 </ResponsiveContainer>
 
-                <ResponsiveContainer width="100%" height={400}>
+                <ResponsiveContainer width="100%" height={450}>
                     <div className={style.ChartCard}>
                         <h3>Agendamentos por Serviço</h3>
                         <BarChart width={600} height={400} data={groupedPerService} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
@@ -194,7 +196,7 @@ const Stats = () => {
                     </div>
                 </ResponsiveContainer>
 
-                <ResponsiveContainer width="100%" height={400}>
+                <ResponsiveContainer width="100%" height={450}>
                     <div className={style.ChartCard}>
                         <h3>Avaliações</h3>
                         <BarChart width={600} height={400} data={groupedPerRate} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
@@ -211,7 +213,7 @@ const Stats = () => {
                     </div>
                 </ResponsiveContainer>
 
-                <ResponsiveContainer width="100%" height={400}>
+                <ResponsiveContainer width="100%" height={450}>
                     <div className={style.ChartCard}>
                         <h3>Novos / Antigos Clientes</h3>
                         <PieChart width={600} height={400} data={newVsReturning} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
@@ -242,7 +244,7 @@ const Stats = () => {
                     </div>
                 </ResponsiveContainer>
 
-                <ResponsiveContainer width="100%" height={400}> 
+                <ResponsiveContainer width="100%" height={450}> 
                     <div className={style.ChartCard}>
                         <h3>Horários de Pico</h3>
                         <BarChart width={600} height={400} data={highestPeriods} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
@@ -259,7 +261,7 @@ const Stats = () => {
                     </div>
                 </ResponsiveContainer>
 
-                <ResponsiveContainer width="100%" height={400}> 
+                <ResponsiveContainer width="100%" height={450}> 
                     <div className={style.ChartCard}>
                         <h3>Avaliações por Serviço</h3>
                         <BarChart width={600} height={400} data={averageRatingByService} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>

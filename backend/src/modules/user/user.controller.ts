@@ -42,7 +42,7 @@ export class UserController {
     @UseGuards(AuthGuard('jwt'))
     @Get('stats')
     async getStats(@Request() req, @Query('type') type: 'week' | 'month' | 'year') {
-        console.log(req.user, type)
+
         return this.userService.getStats(req.user.sub, type);
     }
 

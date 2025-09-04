@@ -1,0 +1,59 @@
+@use '@assets/scss/variables' as *;
+
+.TimeInputContainer {
+    display: flex;
+    align-items: center;
+    gap: .2rem;
+    margin-bottom: 1rem;
+
+    font-size: 1.2rem;
+}
+
+.TimeLabel {
+    color: $white;
+    margin-bottom: 0.3rem;
+    font-weight: 500;
+}
+
+.Trigger {
+    display: flex;
+    align-items: center;
+    gap: .2rem;
+    
+    background-color: $bg-color;
+    color: $white;
+    
+    padding: 0.5rem 0.75rem;
+    border: 0;
+    
+    color: $light-blue;
+    font-size: 1.2rem;
+    font-weight: 500;
+    
+    outline: none;
+
+    cursor: pointer;
+}
+
+.Content {
+    background-color: #111C44;
+    border-radius: 0.5rem;
+    margin-top: 4px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.Item {
+    padding: 0.5rem 0.75rem;
+    cursor: pointer;
+    color: #E4E9F2;
+
+    &[data-highlighted] {
+        background-color: #2F80ED;
+        color: white;
+    }
+}
+
+.ItemIndicator {
+    margin-left: auto;
+}

@@ -17,7 +17,7 @@ import {
     ResponsiveContainer
 } from 'recharts';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { icon } from '@fortawesome/fontawesome-svg-core';
+// @ts-ignore
 import { formatPrice } from '@utils/formatPrice';
 import DetailsSection from '@components/DetailsSection';
 

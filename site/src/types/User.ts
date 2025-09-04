@@ -30,6 +30,7 @@ export interface IUser {
             end: string;
             intervals: Interval[];
         };
+        services: string[];
     };
 
     services?: IService[];

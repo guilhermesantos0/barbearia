@@ -22,3 +22,5 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+src/assets/icons/draw.io-28.1.2-windows-installer.exe

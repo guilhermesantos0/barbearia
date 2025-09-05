@@ -9,10 +9,9 @@ import api from '@services/api';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // @ts-ignore
 import { formatPhoneNumber } from '@utils/formatPhoneNumber';
-import { CheckIcon, LockClosedIcon, ChevronDownIcon, ChevronUpIcon } from '@radix-ui/react-icons';
+import { CheckIcon, LockClosedIcon } from '@radix-ui/react-icons';
 
 import * as Checkbox from '@radix-ui/react-checkbox';
-import * as Select from '@radix-ui/react-select';
 import Modal from '@components/Modal';
 import { toast } from 'react-toastify';
 import TimePicker from '@components/TimePicker';
@@ -79,6 +78,7 @@ const EditProfile = () => {
     ) => {
         if (!userData) return;
 
+        //@ts-ignore
         setUserData((prev) => {
             if (!prev) return prev;
 
@@ -117,6 +117,7 @@ const EditProfile = () => {
     const handleDayToggle = (day: string) => {
         if (!userData) return;
 
+        //@ts-ignore
         setUserData((prev) => {
             if (!prev) return prev;
 
@@ -138,6 +139,7 @@ const EditProfile = () => {
     const handleServiceToggle = (serviceId: string) => {
         if (!userData) return;
 
+        //@ts-ignore
         setUserData((prev) => {
             if (!prev) return prev;
 

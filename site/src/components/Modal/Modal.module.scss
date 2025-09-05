@@ -15,6 +15,8 @@
     padding: 2rem;
     overflow-y: auto;
 
+    outline: none;
+
     &.OverflowYShow {
         overflow-y: visible !important;
     }

@@ -6,7 +6,10 @@
     flex-direction: column;
     gap: 1rem;
 
+    overflow-y: visible;
+
     width: 20rem;
+    height: 20rem;
 
     .Details {
         display: flex;
@@ -35,6 +38,10 @@
         gap: .5rem;
 
         margin-top: 1.5rem;
+
+        &.EditActions {
+            margin-top: 0;
+        }
 
         .Action {
             @include button-secondary;

@@ -4,9 +4,11 @@ import { useState } from 'react';
 import style from './TimePicker.module.scss';
 
 interface TimePickerRadixProps {
-    value: string;
+    value: string | undefined;
     onChange: (val: string) => void;
     label?: string;
+
+    defaultOptions?: string[];
 
     inModal?: boolean;
 
@@ -16,8 +18,10 @@ interface TimePickerRadixProps {
     maxM?: number
 }
 
-const TimePicker:React.FC<TimePickerRadixProps> = ({ value, onChange, label, inModal, minH = 0, minM = 0, maxH = 24, maxM = 60 }) => {
+const TimePicker:React.FC<TimePickerRadixProps> = ({ value, onChange, label, defaultOptions, inModal, minH = 0, minM = 0, maxH = 24, maxM = 60 }) => {
     const generateTimes = () => {
+        if (defaultOptions) return defaultOptions
+
         const times: string[] = [];
         for (let h = minH; h < maxH; h++) {
             for (let m = minM; m < maxM; m += 30) {
@@ -30,6 +34,9 @@ const TimePicker:React.FC<TimePickerRadixProps> = ({ value, onChange, label, inM
     };
 
     const times = generateTimes();
+
+    console.log(`times: ${times}`)
+    console.log(`value: ${value}`)
 
     return (
         <div className={`${style.TimePickerContainer} ${inModal ? style.ModalContext  : ''}`}>

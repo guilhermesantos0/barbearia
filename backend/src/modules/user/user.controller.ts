@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Delete, Put, Request, UseGuards, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Put, Request, UseGuards, Query, Req } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -17,6 +17,18 @@ export class UserController {
     @Get('me')
     getProfile(@Request() req) {
         return this.userService.findById(req.user.sub);
+    }
+
+    @UseGuards(AuthGuard('jwt'))
+    @Get('me/raw')
+    getRawProfile(@Request() req) {
+        return this.userService.findRawById(req.user.sub);
+    }
+
+    @UseGuards(AuthGuard('jwt'))
+    @Post('me/intervals')
+    addInterval(@Request() req, @Body() interval: { name: string, start: string | Date, end: string | Date }) {
+        return this.userService.addInterval(req.user.sub, interval );
     }
 
     @UseGuards(AuthGuard('jwt'))

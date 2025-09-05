@@ -8,13 +8,15 @@ interface TimePickerRadixProps {
     onChange: (val: string) => void;
     label?: string;
 
-    minH?: number,
-    minM?: number,
-    maxH?: number,
+    inModal?: boolean;
+
+    minH?: number;
+    minM?: number;
+    maxH?: number;
     maxM?: number
 }
 
-const TimeInput:React.FC<TimePickerRadixProps> = ({ value, onChange, label, minH = 0, minM = 0, maxH = 24, maxM = 60 }) => {
+const TimePicker:React.FC<TimePickerRadixProps> = ({ value, onChange, label, inModal, minH = 0, minM = 0, maxH = 24, maxM = 60 }) => {
     const generateTimes = () => {
         const times: string[] = [];
         for (let h = minH; h < maxH; h++) {
@@ -30,11 +32,11 @@ const TimeInput:React.FC<TimePickerRadixProps> = ({ value, onChange, label, minH
     const times = generateTimes();
 
     return (
-        <div className={style.TimeInputContainer}>
+        <div className={`${style.TimePickerContainer} ${inModal ? style.ModalContext  : ''}`}>
             {label && <label className={style.TimeLabel}>{label}</label>}
             <Select.Root value={value} onValueChange={onChange}>
                 <Select.Trigger className={style.Trigger}>
-                    <Select.Value placeholder="Escolha um horário" />
+                    <Select.Value placeholder="00:00" />
                     <Select.Icon>
                         <ChevronDownIcon />
                     </Select.Icon>
@@ -42,19 +44,16 @@ const TimeInput:React.FC<TimePickerRadixProps> = ({ value, onChange, label, minH
 
                 <Select.Content 
                 className={style.Content}
-                align="start" 
-                side="bottom" 
-                position="popper" 
-                avoidCollisions={false}
+                align={inModal ? 'start' : undefined}
+                side={inModal ? 'bottom' : undefined}
+                position='popper' 
+                avoidCollisions={inModal ? false : undefined}
                 sideOffset={4}>
                     <Select.ScrollUpButton />
                     <Select.Viewport>
                         {times.map((t) => (
                             <Select.Item key={t} value={t} className={style.Item}>
                                 <Select.ItemText>{t}</Select.ItemText>
-                                <Select.ItemIndicator>
-                                    <CheckIcon />
-                                </Select.ItemIndicator>
                             </Select.Item>
                         ))}
                     </Select.Viewport>
@@ -65,4 +64,4 @@ const TimeInput:React.FC<TimePickerRadixProps> = ({ value, onChange, label, minH
     );
 }
 
-export default TimeInput;
+export default TimePicker;

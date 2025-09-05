@@ -134,6 +134,26 @@
         
         .RecentActions {
             grid-area: recentactions;
+            height: 20rem;
+            overflow-y: auto;
+
+            &::-webkit-scrollbar {
+                width: 4px;
+            }
+
+            &::-webkit-scrollbar-track {
+                background: transparent;
+                border-radius: 4px;
+            }
+
+            &::-webkit-scrollbar-thumb {
+                background-color: #1F2A40; 
+                border-radius: 4px;
+            }
+
+            &::-webkit-scrollbar-thumb:hover {
+                background-color: color.adjust(#1F2A40, $lightness: 5);
+            }
 
             .RecentActionsTitle {
                 font-size: 1.3rem;

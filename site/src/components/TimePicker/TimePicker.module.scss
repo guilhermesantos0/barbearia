@@ -1,10 +1,14 @@
 @use '@assets/scss/variables' as *;
 
-.TimeInputContainer {
+.TimePickerContainer {
     display: flex;
     align-items: center;
     gap: .2rem;
     margin-bottom: 1rem;
+
+    &.ModalContext {
+        position: relative;
+    }
 
     font-size: 1.2rem;
 }
@@ -20,7 +24,7 @@
     align-items: center;
     gap: .2rem;
     
-    background-color: $bg-color;
+    background-color: transparent;
     color: $white;
     
     padding: 0.5rem 0.75rem;
@@ -29,28 +33,51 @@
     color: $light-blue;
     font-size: 1.2rem;
     font-weight: 500;
+
+    width: 5rem;
     
     outline: none;
 
+    
     cursor: pointer;
 }
 
 .Content {
+    
+
+    width: 5rem;
+
     background-color: #111C44;
     border-radius: 0.5rem;
     margin-top: 4px;
-    max-height: 200px;
+    max-height: 15rem !important;
     overflow-y: auto;
+}
+
+.ModalContext .Content {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 10;
+
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
 .Item {
     padding: 0.5rem 0.75rem;
     cursor: pointer;
     color: #E4E9F2;
+    outline: none;
 
     &[data-highlighted] {
         background-color: #2F80ED;
         color: white;
+    }
+
+    &[data-state="checked"] {
+        background-color: rgba(47, 128, 237, 0.2);
+        color: #2F80ED;
+        font-weight: 600;
     }
 }
 

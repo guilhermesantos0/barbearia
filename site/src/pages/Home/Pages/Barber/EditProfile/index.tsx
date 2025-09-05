@@ -15,19 +15,20 @@ import * as Checkbox from '@radix-ui/react-checkbox';
 import * as Select from '@radix-ui/react-select';
 import Modal from '@components/Modal';
 import { toast } from 'react-toastify';
-import TimeInput from '@components/TimePicker';
+import TimePicker from '@components/TimePicker';
 
-// import TestTimeInput from '@components/TimePicker';
-
-interface TimeSelectProps {
-    value: string | undefined;
-    onChange: (value: string) => void;
-    options: string[];
-    placeholder?: string;
-    label?: string;
-}
+const daysOfWeek = [
+    'segunda-feira',
+    'terça-feira',
+    'quarta-feira',
+    'quinta-feira',
+    'sexta-feira',
+    'sábado',
+    'domingo',
+];
 
 const EditProfile = () => {
+    const [originalUserData, setOriginalUserData] = useState<IUser>();
     const [userData, setUserData] = useState<IUser>();
     const [services, setServices] = useState<IService[]>();
 
@@ -36,25 +37,18 @@ const EditProfile = () => {
     const [newIntervalStart, setNewIntervalStart] = useState<string>('');
     const [newIntervalEnd, setNewIntervalEnd] = useState<string>('');
 
-    const handleSaveInterval = () => {
-        if (!newIntervalName || !newIntervalStart || !newIntervalEnd) {
-            toast.error('Por favor, preencha todos os campos do novo intervalo.');
-            return;
-        }
+    const [intervalToRemove, setIntervalToRemove] = useState<number | null>(null);
+    
+    const fetchData = async () => {
+        const userResult = await api.get('/users/me/raw');
+        const servicesResult = await api.get('/services');
 
-        console.log(newIntervalName, newIntervalStart, newIntervalEnd);
-    }
+        setUserData(userResult.data);
+        setOriginalUserData(userResult.data);
+        setServices(servicesResult.data);
+    };
 
     useEffect(() => {
-        const fetchData = async () => {
-            const userResult = await api.get('/users/me');
-            const servicesResult = await api.get('/services');
-
-            console.log(userResult.data);
-
-            setUserData(userResult.data);
-            setServices(servicesResult.data);
-        };
 
         fetchData();
     }, []);
@@ -76,18 +70,6 @@ const EditProfile = () => {
         }
 
         return age;
-    };
-
-    const generateTimeOptions = (minH: number = 0, maxH: number = 24, minM: number = 0, maxM: number = 60) => {
-        const times: string[] = [];
-        for (let h = minH; h < maxH; h++) {
-            for (let m = minM; m < maxM; m += 30) {
-                const hour = h.toString().padStart(2, '0');
-                const minute = m.toString().padStart(2, '0');
-                times.push(`${hour}:${minute}`);
-            }
-        }
-        return times;
     };
 
     const handleTimeChange = (
@@ -171,19 +153,67 @@ const EditProfile = () => {
         });
     }
 
-    const handleOpenModal = () => {
-        setIsModalOpen(true);
+    const handleSaveChanges = async () => {
+        if (!userData) return;
+        const { updatedAt, createdAt, _id, ...filteredData } = userData;
+
+        const result = await api.put(`/users/${userData._id}`, filteredData);
+        if (result.status === 200) {
+            toast.success('Perfil atualizado com sucesso!');
+            setUserData(result.data);
+        } else {
+            toast.error('Erro ao atualizar perfil. Tente novamente.');
+        }
     }
 
-    const daysOfWeek = [
-        'segunda-feira',
-        'terça-feira',
-        'quarta-feira',
-        'quinta-feira',
-        'sexta-feira',
-        'sábado',
-        'domingo',
-    ];
+    const handleUndoChanges = async () => {
+        setUserData(originalUserData);
+    }
+
+    const handleSaveInterval = async () => {
+        if (!newIntervalName || !newIntervalStart || !newIntervalEnd) {
+            toast.error('Por favor, preencha todos os campos do novo intervalo.');
+            return;
+        }
+
+        const intervalPayload = {
+            name: newIntervalName,
+            start: newIntervalStart,
+            end: newIntervalEnd,
+        }
+
+        const newInterval = await api.post('/users/me/intervals', intervalPayload);
+        if (newInterval.status === 201) {
+            toast.success('Intervalo adicionado com sucesso!');
+            setIsModalOpen(false);
+            setNewIntervalName('');
+            setNewIntervalStart('');
+            setNewIntervalEnd('');
+
+            fetchData();
+        }
+    }
+
+    const handleRemoveInterval = (idx: number) => {
+        if (!userData) return;
+
+        setUserData((prev) => {
+            if (!prev?.work?.time?.intervals) return prev;
+
+            const updatedIntervals = prev.work.time.intervals.filter((_, i) => i !== idx);
+
+            return {
+                ...prev,
+                work: {
+                    ...prev.work,
+                    time: {
+                        ...prev.work.time,
+                        intervals: updatedIntervals,
+                    },
+                },
+            };
+        });
+    };
 
     return (
         <>
@@ -221,11 +251,11 @@ const EditProfile = () => {
                                 <button className={`${style.Button} ${style.ChangePassword}`}>
                                     <LockClosedIcon className={style.Icon} /> Alterar Senha
                                 </button>
-                                <button className={`${style.Button} ${style.Save}`}>
+                                <button className={`${style.Button} ${style.Save}`} onClick={handleSaveChanges}>
                                     <FontAwesomeIcon icon="save" /> Salvar Alterações
                                 </button>
-                                <button className={`${style.Button} ${style.Cancel}`}>
-                                    <FontAwesomeIcon icon="xmark-circle" /> Cancelar
+                                <button className={`${style.Button} ${style.Cancel}`} onClick={handleUndoChanges}>
+                                    <FontAwesomeIcon icon="arrow-rotate-left" /> Desfazer
                                 </button>
                             </div>
                         </div>
@@ -269,7 +299,7 @@ const EditProfile = () => {
 
                                 <div className={style.Times}>
                                     <div className={style.TimesShow}>
-                                        <TimeInput
+                                        <TimePicker
                                             label="Entrada"
                                             value={userData.work?.time.start}
                                             onChange={(val) => handleTimeChange('start', val)}
@@ -277,7 +307,7 @@ const EditProfile = () => {
                                             maxH={10}
                                         />
 
-                                        <TimeInput
+                                        <TimePicker
                                             label="Saída"
                                             value={userData.work?.time.end}
                                             onChange={(val) => handleTimeChange('end', val)}
@@ -288,25 +318,32 @@ const EditProfile = () => {
                                     </div>
 
                                     <div className={style.Intervals}>
+                                        <h3 className={style.Title}>Intervalos</h3>
                                         {userData.work?.time.intervals.map((interval, idx) => (
                                             <div key={idx} className={style.Interval}>
-                                                <h4 className={style.IntervalName}>{interval.name}</h4>
+                                                <div className={style.IntervalInfos}>
+                                                    <h4 className={style.IntervalName}>{interval.name}</h4>
+                                                    <button className={style.RemoveInterval} onClick={() => setIntervalToRemove(idx)}>
+                                                        <FontAwesomeIcon icon="trash" className={style.Icon} />
+                                                    </button>
+                                                </div>
                                                 <div className={style.TimesShow}>
-                                                    <TimeInput 
+                                                    <TimePicker 
                                                         label="Início"
                                                         value={interval.start}
                                                         onChange={(val) => handleTimeChange('start', val, idx)}
-                                                        minH={Number(userData.work?.time.start.split(':')[0])}
-                                                        minM={Number(userData.work?.time.start.split(':')[1])}
+                                                        inModal={false}
+                                                        minH={Number(interval.start.split(':')[0])}
+                                                        minM={Number(interval.start.split(':')[1])}
                                                         maxH={Number(userData.work?.time.end.split(':')[0])}
                                                     />
 
-                                                    <TimeInput 
+                                                    <TimePicker 
                                                         label="Final"
-                                                        value={interval.start}
-                                                        onChange={(val) => handleTimeChange('start', val, idx)}
-                                                        minH={Number(interval.start.split(':')[0])}
-                                                        minM={Number(interval.start.split(':')[1])}
+                                                        value={interval.end}
+                                                        onChange={(val) => handleTimeChange('end', val, idx)}
+                                                        minH={Number(interval.end.split(':')[0])}
+                                                        minM={Number(interval.end.split(':')[1])}
                                                         maxH={Number(userData.work?.time.end.split(':')[0])}
                                                     />
                                                 </div>
@@ -354,7 +391,7 @@ const EditProfile = () => {
                     </div>
                 )}
             </div>
-            <Modal open={isModalOpen} onOpenChange={setIsModalOpen} trigger={<></>}>
+            <Modal open={isModalOpen} onOpenChange={setIsModalOpen} trigger={<></>} overflowYShow>
                 <div id="modal-root" className={style.Modal}>
                     <h2 className={style.ModalTitle}>Adicionar Intervalo</h2>
 
@@ -370,19 +407,21 @@ const EditProfile = () => {
                             />
                         </div>
 
-                        <TimeInput 
+                        <TimePicker 
                             label="Início"
                             value={newIntervalStart}
                             onChange={setNewIntervalStart}
+                            inModal
                             minH={Number(userData?.work?.time.start.split(':')[0])}
                             minM={Number(userData?.work?.time.start.split(':')[1])}
                             maxH={Number(userData?.work?.time.end.split(':')[0])}
                         />
 
-                        <TimeInput 
+                        <TimePicker 
                             label="Final"
                             value={newIntervalEnd}
                             onChange={setNewIntervalEnd}
+                            inModal
                             minH={Number(newIntervalStart.split(':')[0])}
                             minM={Number(newIntervalStart.split(':')[1])}
                             maxH={Number(userData?.work?.time.end.split(':')[0])}
@@ -396,69 +435,34 @@ const EditProfile = () => {
                     </div>
                 </div>
             </Modal>
-            {/* <Modal open={isModalOpen} onOpenChange={setIsModalOpen} trigger={<></>}>
+            <Modal open={intervalToRemove !== null} onOpenChange={() => setIntervalToRemove(null)} trigger={<></>}>
                 <div id="modal-root" className={style.Modal}>
-                    <h2 className={style.ModalTitle}>Adicionar Intervalo</h2>
-
-                    <div className={style.ModalContent}>
-                        <div className={style.InputGroup}>
-                            <label className={style.Label} htmlFor="interval-name">
-                                Nome do Intervalo
-                            </label>
-                            <input
-                                type="text"
-                                id="interval-name"
-                                placeholder="Ex: Almoço"
-                                className={style.Input}
-                                value={newIntervalName}
-                                onChange={(e) => setNewIntervalName(e.target.value)}
-                            />
-                        </div>
-
-                        <div className={style.Field}>
-                            <p className={style.Label}>Início</p>
-                            <SelectTimeComponent
-                                value={newIntervalStart}
-                                onChange={setNewIntervalStart}
-                                options={generateTimeOptions(
-                                    Number(userData?.work?.time.start.split(':')[0]),
-                                    Number(userData?.work?.time.end.split(':')[0])
-                                )}
-                                placeholder="Escolha um horário"
-                                portalContainer={document.getElementById("modal-root")}
-                            />
-                        </div>
-
-                        <div className={style.Field}>
-                            <p className={style.Label}>Final</p>
-                            <SelectTimeComponent
-                                value={newIntervalEnd}
-                                onChange={setNewIntervalEnd}
-                                options={generateTimeOptions(
-                                    Number(newIntervalStart.split(':')[0]),
-                                    Number(userData?.work?.time.end.split(':')[0]),
-                                    Number(newIntervalStart.split(':')[1])
-                                )}
-                                placeholder="Escolha um horário"
-                                portalContainer={document.getElementById("modal-root")}
-                            />
-                        </div>
-                    </div>
-
-                    <div className={style.ModalActions}>
-                        <button
-                            className={style.ButtonCancel}
-                            onClick={() => setIsModalOpen(false)}
-                        >
-                            Cancelar
-                        </button>
-                        <button className={style.ButtonSave} onClick={handleSaveInterval}>
-                            Salvar
-                        </button>
-                    </div>
+                    {
+                        intervalToRemove !== null && (
+                            <>
+                                <h2 className={style.ModalTitle}> Remover o intervalo {userData?.work?.time.intervals[intervalToRemove]?.name}?</h2>
+                                <div className={style.ModalActions}>
+                                    <button
+                                        className={style.ButtonCancel}
+                                        onClick={() => setIntervalToRemove(null)}
+                                    >
+                                        Cancelar
+                                    </button>
+                                    <button
+                                        className={style.ButtonSave}
+                                        onClick={() => {
+                                            handleRemoveInterval(intervalToRemove);
+                                            setIntervalToRemove(null);
+                                        }}
+                                    >
+                                        Remover
+                                    </button>
+                                </div>
+                            </>
+                        )
+                    }
                 </div>
-            </Modal> */}
-
+            </Modal>
         </>
     );
 };

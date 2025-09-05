@@ -62,6 +62,7 @@ export class ScheduledServiceService {
         const services = await this.scheduledServiceModel.find({ 
             barber: userId,
             date: { $gte: startOfWeek, $lte: endOfWeek },
+            status: { $nin: ['Pendente', 'Cancelado'] }
         }).populate('costumer').populate('barber').populate('service').exec();
 
         return services;

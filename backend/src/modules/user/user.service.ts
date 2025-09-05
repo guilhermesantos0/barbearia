@@ -77,6 +77,10 @@ export class UserService {
         .exec();
     }
 
+    async findRawById(id: string): Promise<User | null> {
+        return this.userModel.findById(id).exec();
+    }
+
     async findOne(id: string): Promise<User> {
         const user = await this.userModel.findById(id).exec();
         if (!user) {
@@ -192,6 +196,18 @@ export class UserService {
         };
 
         return user.work.days.map(day => labels[day]);
+    }
+
+    async addInterval(userId: string, interval: any): Promise<User> {
+        const newInterval = await this.userModel.findByIdAndUpdate(
+            userId,
+            { $addToSet: { 'work.time.intervals': interval } },
+        ).exec();
+        if(!newInterval || !newInterval.work) {
+            throw new NotFoundException('Usuário não encontrado ou não possui agenda configurada')
+        }
+
+        return newInterval;
     }
 
     async getStats(userId: string, type: Period): Promise<Object> {

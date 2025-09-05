@@ -15,6 +15,10 @@
     padding: 2rem;
     overflow-y: auto;
 
+    &.OverflowYShow {
+        overflow-y: visible !important;
+    }
+
     position: fixed;
     top: 50%;
     left: 50%;

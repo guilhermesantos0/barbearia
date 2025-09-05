@@ -48,4 +48,7 @@ export class CreateUserDto {
     @IsOptional()
     @IsNumber()
     ratingCount?: number;
+
+    @IsOptional()
+    subscription?: any;
 }

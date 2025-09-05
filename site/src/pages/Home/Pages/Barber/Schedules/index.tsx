@@ -12,6 +12,8 @@ import ServiceActions from '@components/ServiceActions';
 import { fomratTimeDuration } from '@utils/formatTimeDuration';
 import { useQuery } from '@tanstack/react-query';
 import { useUser } from '@contexts/UserContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 interface ResponseType {
     days: string[],
@@ -25,16 +27,14 @@ const Schedules = () => {
 
     const SLOT_DURATION = 30; 
 
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         const result = await api.get('/users/barbers/next-services')
-    //         setUserNextServices(result.data.nextServices);
-    //         setUserTimes(result.data.times);
-    //         setUserWorkingDays(result.data.days);
-    //     }
-
-    //     fetchData();
-    // }, [])
+    const statusMap: Record<string, string> = {
+        'Pendente': style.Pending,
+        'Confirmado': style.Confirmed,
+        'Cancelado': style.Canceld,
+        'Atrasado': style.Delayed,
+        'Em andamento': style.Running,
+        'Finalizado': style.Complete
+    };
 
     const { data: nextServices } = useQuery<ResponseType>({
         // @ts-ignore
@@ -101,7 +101,23 @@ const Schedules = () => {
                                                     }}
                                                 >
                                                     <div className={style.ServiceDetails}>
-                                                        <span className={style.ServiceName}>{service.service.name}</span>
+                                                        <div className={style.MainDetails}>
+                                                            <span className={style.ServiceName}>{service.service.name}</span>
+                                                            <p className={`${style.Status} ${statusMap[service.status] || style.Pending}`}>
+                                                                <FontAwesomeIcon
+                                                                    icon={{
+                                                                        'Pendente': 'clock' as IconProp,
+                                                                        'Confirmado': 'calendar-check' as IconProp,
+                                                                        'Cancelado': 'times' as IconProp,
+                                                                        'Atrasado': 'running' as IconProp,
+                                                                        'Em andamento': 'spinner' as IconProp,
+                                                                        'Finalizado': 'check' as IconProp
+                                                                    }[service.status] || 'question'} 
+
+                                                                    spin={service.status === 'Em andamento'}
+                                                                /> 
+                                                            </p>
+                                                        </div>
                                                         <div className={style.DetailsLowerLine}>
                                                             <span className={style.ClientName}>{service.costumer.name}</span>
                                                             <span className={style.Duration}>{fomratTimeDuration(service.service.duration)}</span>

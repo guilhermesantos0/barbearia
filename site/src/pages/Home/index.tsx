@@ -14,11 +14,14 @@ import CostumerEditProfile from "./Pages/Customer/EditProfile";
 import CostumerPlan from "./Pages/Customer/Premium";
 
 // BARBER
-import ConfirmSchedules from "./Pages/Barber/ConfirmSchedules";
-import History from "./Pages/Barber/History";
-import Schedules from "./Pages/Barber/Schedules";
-import Stats from "./Pages/Barber/Stats";
-import EditProfile from "./Pages/Barber/EditProfile";
+import BarberConfirmSchedules from "./Pages/Barber/ConfirmSchedules";
+import BarberHistory from "./Pages/Barber/History";
+import BarberSchedules from "./Pages/Barber/Schedules";
+import BarberStats from "./Pages/Barber/Stats";
+import BarberEditProfile from "./Pages/Barber/EditProfile";
+
+// ADMIN
+import AdminSchdules from "./Pages/Admin/Schedules";
 
 const Home = () => {
     const { user } = useUser();
@@ -66,27 +69,33 @@ const Home = () => {
 
                                 {
                                     openedTab === "barbeiro_confirmar-agendamentos" && (
-                                        <ConfirmSchedules />
+                                        <BarberConfirmSchedules />
                                     )
                                 }
                                 {
                                     openedTab === "barbeiro_historico" && (
-                                        <History />
+                                        <BarberHistory />
                                     )
                                 }
                                 {
                                     openedTab === "barbeiro_agendamentos" && (
-                                        <Schedules />   
+                                        <BarberSchedules />   
                                     )
                                 }
                                 {
                                     openedTab === "barbeiro_estatisticas" && (
-                                        <Stats />
+                                        <BarberStats />
                                     )
                                 }
                                 {
                                     openedTab === "barbeiro_editar-perfil" && (
-                                        <EditProfile />
+                                        <BarberEditProfile />
+                                    )
+                                }
+
+                                {
+                                    openedTab === 'admin_agendamentos' && (
+                                        <AdminSchdules />
                                     )
                                 }
                             </>

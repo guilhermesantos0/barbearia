@@ -36,4 +36,12 @@ export class CreateRoleDto {
 
     @IsObject()
     permissions: Record<string, PermissionDto>;
+
+    @IsBoolean()
+    @IsOptional()
+    isBarber?: boolean;
+
+    @IsBoolean()
+    @IsOptional()
+    isAdmin?: boolean
 }

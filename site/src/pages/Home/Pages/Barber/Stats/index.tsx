@@ -21,7 +21,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { formatPrice } from '@utils/formatPrice';
 import DetailsSection from '@components/DetailsSection';
 
-const Stats = () => {
+const BarberStats = () => {
 
     const filterIndexMap = { week: 0, month: 1, year: 2 }; 
 
@@ -282,4 +282,4 @@ const Stats = () => {
     )
 }
 
-export default Stats;
+export default BarberStats;

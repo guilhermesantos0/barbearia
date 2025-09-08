@@ -31,6 +31,9 @@ export class Role {
     @Prop({ default: false })
     isBarber: boolean;
 
+    @Prop({ default: false})
+    isAdmin: boolean;
+
     @Prop({
         type: Object,
         required: true,

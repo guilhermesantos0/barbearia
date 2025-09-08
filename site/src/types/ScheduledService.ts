@@ -7,7 +7,7 @@ export interface IScheduledService {
     barber: IUser,
     service: IService,
     date: Date,
-    status: string,
+    status: 'Pendente' | 'Confirmado' | 'Cancelado' | 'Atrasado' | 'Em andamento' | 'Finalizado',
     completedAt?: Date,
     rated: boolean,
     rate: {

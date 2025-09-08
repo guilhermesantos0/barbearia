@@ -10,7 +10,7 @@ import { IUser } from '@types/User';
 // @ts-ignore
 import api from '@services/api';
 
-const History = () => {
+const BarberHistory = () => {
     const [user, setUser] = useState<IUser | null>(null);
 
     const fetchData = async () => {
@@ -194,4 +194,4 @@ const History = () => {
     );
 };
 
-export default History;
+export default BarberHistory;

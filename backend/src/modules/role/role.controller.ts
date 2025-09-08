@@ -29,6 +29,11 @@ export class RoleController {
         return this.roleService.findIsBarber(id);
     }
 
+    @Get(':id/type')
+    async getRoleType(@Param('id') id: number) {
+        return this.roleService.getRoleType(id);
+    }
+
     @Put(':id')
     async update(@Param('id') id: number, @Body() data: Partial<Role>) {
         return this.roleService.update(id, data);

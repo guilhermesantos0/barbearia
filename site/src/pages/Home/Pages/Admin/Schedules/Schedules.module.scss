@@ -1,0 +1,33 @@
+@use '@assets/scss/variables' as *;
+@use '@assets/scss/mixins' as *;
+
+.Container {
+    display: flex;
+    flex-direction: column;
+    
+    .PageContent {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        margin-top: .5rem;
+        
+        .Options {
+            display: flex;
+            justify-content: flex-end;
+            gap: 2rem;
+
+            padding-right: 5rem;
+
+            .SelectMenu {
+                width: 15vw;
+            }
+
+            .AddService {
+                @include button-primary;
+                padding: 0 .5rem;
+
+                border-radius: 5px;
+            }
+        }
+    }
+}

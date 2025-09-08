@@ -35,7 +35,7 @@ export class ScheduledService {
     @Prop({ type: Date, required: true })
     date: Date;
 
-    @Prop({ default: 'Pendente' })
+    @Prop({ enum: ['Pendente', 'Confirmado', 'Cancelado', 'Atrasado', 'Em andamento', 'Finalizado'], default: 'Pendente' })
     status: string;
 
     @Prop()

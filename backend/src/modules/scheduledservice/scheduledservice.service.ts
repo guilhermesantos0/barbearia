@@ -21,8 +21,10 @@ export class ScheduledServiceService {
         return newService.save();
     }
 
-    async findAll(): Promise<ScheduledService[]> {
-        return this.scheduledServiceModel.find().populate('costumer').populate('barber').populate('service').exec();
+    async findAll(full: boolean = false): Promise<ScheduledService[]> {
+        if (full) return this.scheduledServiceModel.find().populate('costumer').populate('barber').populate('service').exec();
+
+        return this.scheduledServiceModel.find().exec();
     }
 
     async findById(id: string): Promise<ScheduledService | null> {

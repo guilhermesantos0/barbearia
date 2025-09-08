@@ -74,14 +74,13 @@ export class User {
     @Prop({ type: Number, default: 0, ref: 'Role' })
     role: number;
 
-    @Prop({ type: [String], ref: 'Subscription', default: [] })
-    subscription: string[];
+    @Prop({ type: [String], ref: 'Subscription' })
+    subscription?: string[];
 
     @Prop({
-        type: [{ type: String, ref: 'ScheduledService' }],
-        default: []
+        type: [{ type: String, ref: 'ScheduledService' }]
     })
-    history: string[];
+    history?: string[];
 
     @Prop({ type: WorkSchema })
     work?: Work;

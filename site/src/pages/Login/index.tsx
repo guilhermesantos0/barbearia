@@ -123,7 +123,12 @@ const Login = () => {
 
             const user = response.data;
 
-            navigate(user.role === 0 ? `/home/cliente/agendamentos` : `/home/barbeiro/agendamentos`);
+            const roleTypeResult = await api.get(`/roles/${user.role}/type`)
+            const roleType = roleTypeResult.data;
+
+            const finalRoute = roleType !== 'admin' ? `/home/${roleType}/agendamentos` : `/home/admin/estatisticas`
+
+            navigate(finalRoute);
 
         } catch (error: any) {
             if (error.response) {

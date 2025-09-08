@@ -108,9 +108,9 @@ export class UserController {
         return this.userService.getUserDiscount(userId, serviceId);
     }
 
-    // @Get('fix')
-    // fix() {
-    //     return this.userService.fix();
+    // @Get('fix/:id')
+    // fix(@Param('id') id: string) {
+    //     return this.userService.fix(id);
     // }
 
     @Get(':id')

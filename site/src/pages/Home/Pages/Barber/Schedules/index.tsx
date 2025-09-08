@@ -21,7 +21,7 @@ interface ResponseType {
     times: string[]
 }
 
-const Schedules = () => {
+const BarberSchedules = () => {
     
     const { user } = useUser();
 
@@ -138,4 +138,4 @@ const Schedules = () => {
     );
 }
 
-export default Schedules;
+export default BarberSchedules;

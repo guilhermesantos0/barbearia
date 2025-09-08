@@ -13,6 +13,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Pencil from '@assets/icons/pencil.svg?react';
 import Badge from '@assets/icons/badge.svg?react'
 import ConfirmSchedule from '@assets/icons/confirm-schedule.svg?react';
+import BarbersList from '@assets/icons/barbers-list.svg?react';
 
 import { useQuery } from '@tanstack/react-query';
 
@@ -25,7 +26,7 @@ interface Props {
 
 const Sidebar: React.FC<Props> = ({ setOpenedTab }) => {
 
-    const [isBarber, setIsBarber] = useState<boolean>(false);
+    const [roleType, setRoleType] = useState<string>('');
     // const [unconfirmedSchedulesAmount, setUnconfirmedSchedulesAmount] = useState<number>(0);
 
     const { logout, user } = useUser()
@@ -37,13 +38,10 @@ const Sidebar: React.FC<Props> = ({ setOpenedTab }) => {
         if(!user) return
 
         const fetchData = async () => {
-            const isBarberResult = await api.get(`/roles/${user?.role}/isBarber`);
-            setIsBarber(isBarberResult.data);
+            const isBarberResult = await api.get(`/roles/${user?.role}/type`);
+            setRoleType(isBarberResult.data);
 
-            // if(isBarberResult.data) {
-            //     const unConfirmedScheduled = await api.get(`/scheduledservices/${(user as any).sub}/unconfirmed`);
-            //     setUnconfirmedSchedulesAmount(unConfirmedScheduled.data.length);
-            // }
+            
         }
 
         
@@ -58,7 +56,7 @@ const Sidebar: React.FC<Props> = ({ setOpenedTab }) => {
             const response = await api.get(`/scheduledservices/${(user as any).sub}/unconfirmed`);
             return response.data;
         },
-        enabled: !!user && isBarber
+        enabled: !!user && roleType === 'barbeiro'
     })
 
     return (
@@ -79,7 +77,7 @@ const Sidebar: React.FC<Props> = ({ setOpenedTab }) => {
 
             <nav className={style.NavMenu}>
                 {
-                    user && user.role === 0 && (
+                    user && roleType === 'cliente' && (
                         <ul className={style.NavList}>
                             <li className={style.Option} onClick={() => navigate('/home/cliente/agendamentos')}>
                                 <FontAwesomeIcon icon={['far', 'calendar']} className={style.Icon} />
@@ -120,7 +118,7 @@ const Sidebar: React.FC<Props> = ({ setOpenedTab }) => {
                 }
 
                 {
-                    user && isBarber && (
+                    user && roleType === 'barbeiro' && (
                         <ul className={style.NavList}>
                             <li className={style.Option} onClick={() => navigate('/home/barbeiro/confirmar-agendamentos')}>
                                 <ConfirmSchedule className={`${style.Icon} ${style.Greater1}`} />
@@ -161,6 +159,62 @@ const Sidebar: React.FC<Props> = ({ setOpenedTab }) => {
                                     <span className={style.Label}>Editar Perfil</span>
                                 </Collapsible.Content>
                             </li>
+                        </ul>
+                    )
+                }
+
+                {
+                    user && roleType === 'admin' && (
+                        <ul className={style.NavList}>
+                            <li className={style.Option} onClick={() => navigate('/home/admin/estatisticas')}>
+                                <FontAwesomeIcon icon='chart-line' className={style.Icon} />
+                                <Collapsible.Content asChild>
+                                    <span className={style.Label}>Estatísticas</span>
+                                </Collapsible.Content>
+                            </li>
+
+                            <li className={style.Option} onClick={() => navigate('/home/admin/agendamentos')}>
+                                <FontAwesomeIcon icon={['far', 'calendar']} className={style.Icon} />
+                                <Collapsible.Content asChild>
+                                    <span className={style.Label}>Agendamentos</span>
+                                </Collapsible.Content>
+                            </li>
+
+                            <li className={style.Option} onClick={() => navigate('/home/admin/servicos')}>
+                                <FontAwesomeIcon icon='scissors' className={style.Icon} />
+                                <Collapsible.Content asChild>
+                                    <span className={style.Label}>Seriços</span>
+                                </Collapsible.Content>
+                            </li>
+
+                            <li className={style.Option} onClick={() => navigate('/home/admin/barbeiros')}>
+                                <BarbersList className={style.Icon} />
+                                <Collapsible.Content asChild>
+                                    <span className={style.Label}>Barbeiros</span>
+                                </Collapsible.Content>
+                            </li>
+
+                            <li className={style.Option} onClick={() => navigate('/home/admin/clientes')}>
+                                <FontAwesomeIcon icon='users' className={style.Icon} />
+                                <Collapsible.Content asChild>
+                                    <span className={style.Label}>Clientes</span>
+                                </Collapsible.Content>
+                            </li>
+
+                            <li className={style.Option} onClick={() => navigate('/home/admin/horarios')}>
+                                <FontAwesomeIcon icon={['far', 'clock']} className={style.Icon} />
+                                <Collapsible.Content asChild>
+                                    <span className={style.Label}>Horários</span>
+                                </Collapsible.Content>
+                            </li>
+
+                            <li className={style.Option} onClick={() => navigate('/home/admin/planos')}>
+                                <Badge className={style.Icon} />
+                                <Collapsible.Content asChild>
+                                    <span className={style.Label}>Assinatura</span>
+                                </Collapsible.Content>
+                            </li>
+
                         </ul>
                     )
                 }

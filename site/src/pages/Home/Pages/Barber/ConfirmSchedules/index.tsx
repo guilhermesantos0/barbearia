@@ -8,7 +8,7 @@ import { IScheduledService } from '@types/ScheduledService';
 
 import PendingSchedule from '@components/PendingSchedule';
 
-const ConfirmSchedules = () => {
+const BarberConfirmSchedules = () => {
     const { user } = useUser();
 
     const [pendingSchedules, setPendingSchedules] = useState<IScheduledService[]>([]);
@@ -43,4 +43,4 @@ const ConfirmSchedules = () => {
     );
 };
 
-export default ConfirmSchedules;
+export default BarberConfirmSchedules;

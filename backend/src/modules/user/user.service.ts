@@ -614,11 +614,10 @@ export class UserService {
         };
     }
 
-    async fix(): Promise<string | null> {
-        const result = await this.userModel.updateMany(
-            {}, 
-            { $unset: { premium: '', premiumTier: '' } },
-            { strict: false }
+    async fix(id: string): Promise<string | null> {
+        const result = await this.userModel.updateOne(
+            { _id: id }, 
+            { $unset: { history: '', subscription: '' } }
         );
         return `${result.modifiedCount} usuários modificados`
     }

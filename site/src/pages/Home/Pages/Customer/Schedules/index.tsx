@@ -13,19 +13,31 @@ import { useEffect, useState } from 'react';
 //@ts-ignore
 import api from '@services/api';
 import { Link } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 
 const CostumerSchedules = () => {
 
-    const [user, setUser] = useState<IUser | null>();
+    // const [user, setUser] = useState<IUser | null>();
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const result = await api.get('/users/me')
-            setUser(result.data);
-        }
+    const { user } = useUser();
 
-        fetchData();
-    }, [])
+    const { data: userData } = useQuery<IUser>({
+        queryKey: ['nextServices', user?.sub],
+        queryFn: async () => {
+            const response = await api.get('/users/me');
+            return response.data
+        },
+        enabled: true
+    })
+
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         const result = await api.get('/users/me')
+    //         setUser(result.data);
+    //     }
+
+    //     fetchData();
+    // }, [])
 
     const isCostumer = (user: IUser) => {
         return user.role === 0
@@ -34,19 +46,19 @@ const CostumerSchedules = () => {
     return (
         <div className={style.Container}>
             {
-                user && isCostumer(user) && (
+                userData && isCostumer(userData) && (
                     <>
-                        <h1 className={style.Welcome}>Olá, {user.name.split(' ')[0]}</h1>
+                        <h1 className={style.Welcome}>Olá, {userData.name.split(' ')[0]}</h1>
                         <div className={style.InlineElements}>
                             <h3 className={style.Subtitle}>Confira seus agendamentos</h3>
                             <Link to='/agendar-servico' className={style.ScheduleNew}><PlusIcon className={style.Icon} /> Agendar Serviço</Link>
                         </div>
                         <div className={style.PageContent}>
                             {
-                                user.history.length > 0 ? (
+                                userData.history.length > 0 ? (
                                     <div className={style.UserServices}>
                                         {
-                                            user.history.map((service: IScheduledService, idx: number) => (
+                                            userData.history.map((service: IScheduledService, idx: number) => (
                                                 <>
                                                     {
                                                         service.status !== 'Finalizado' && (

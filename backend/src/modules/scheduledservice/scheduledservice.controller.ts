@@ -14,6 +14,7 @@ import { CreateScheduledServiceDto } from './dto/create-scheduledservice.dto';
 import { ScheduledService } from './schemas/scheduledservice.schema';
 import { UserService } from '../user/user.service';
 import { UpdateScheduledServiceDto } from './dto/update-scheduledservice.dto';
+import { Permissions } from 'src/common/decorators/permissions.decorator';
 
 @Controller('/scheduledservices')
 export class ScheduledServiceController {
@@ -34,6 +35,12 @@ export class ScheduledServiceController {
     @Get()
     async findAll(): Promise<ScheduledService[]> {
         return this.scheduledService.findAll();
+    }
+    
+    @Get('/full')
+    @Permissions({ module: 'Services', action: 'read' })
+    findAllFull(): Promise<ScheduledService[]> {
+        return this.scheduledService.findAll(true);
     }
 
     @Get(':id')

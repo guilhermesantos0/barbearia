@@ -26,7 +26,7 @@ const daysOfWeek = [
     'domingo',
 ];
 
-const EditProfile = () => {
+const BarberEditProfile = () => {
     const [originalUserData, setOriginalUserData] = useState<IUser>();
     const [userData, setUserData] = useState<IUser>();
     const [services, setServices] = useState<IService[]>();
@@ -469,4 +469,4 @@ const EditProfile = () => {
     );
 };
 
-export default EditProfile;
+export default BarberEditProfile;

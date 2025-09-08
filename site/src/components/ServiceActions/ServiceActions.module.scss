@@ -9,7 +9,7 @@
     overflow-y: visible;
 
     width: 20rem;
-    height: 20rem;
+    min-height: 20rem;
 
     .Details {
         display: flex;
@@ -56,4 +56,57 @@
             }
         }
     }
+}
+
+
+.ModalTitle {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: $light-blue;
+}
+
+.ConfirmButtons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.Warning {
+    color: $yellow;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+.ReasonInput {
+    width: 100%;
+    height: 10rem;
+    padding: .5rem;
+    border-radius: 10px;
+    background-color: $gray;
+    color: $white;
+    resize: none;
+    margin-top: 1rem;
+    outline: none;
+    border: 0;
+
+    &::placeholder {
+        color: $light-gray;
+    }
+}
+
+.CancelActions {
+    display: flex;
+    gap: 2rem;
+}
+
+.ConfirmButton {
+    @include button-primary;
+    height: 2.5rem;
+    width: 9rem;
+}
+
+.CancelButton {
+    @include button-error;
+    height: 2.5rem;
+    width: 9rem;
 }

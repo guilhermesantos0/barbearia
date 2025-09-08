@@ -1,7 +1,7 @@
 // @ts-ignore
 import { IScheduledService } from '@types/ScheduledService';
 import style from './AdminScheduledService.module.scss';
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import BarberIcon from '@assets/icons/barber.svg?react';
@@ -11,6 +11,7 @@ import { formatDate } from '@utils/formatDate';
 import { fomratTimeDuration } from '@utils/formatTimeDuration';
 // @ts-ignore
 import { formatPrice } from '@utils/formatPrice';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 interface AdminScheduledServiceProps {
     appointment: IScheduledService
@@ -24,15 +25,33 @@ interface ServiceInfosProps {
 
 const AdminScheduledService: React.FC<AdminScheduledServiceProps> = ({ appointment }) => {
     
+    const [serviceStatusStyle, setServiceStatusStyle] = useState<string>();
+
     const ServiceInfos:React.FC<ServiceInfosProps> = ({ icon, label, value }) => {
         return (
             <div className={style.ServiceInfo}>
-                {icon}
-                <h4 className={style.ServiceInfoLabel}>{label}</h4>
+                <div className={style.ServiceInfoLabelSection}>
+                    {icon}
+                    <h4 className={style.ServiceInfoLabel}>{label}</h4>
+                </div>
                 <h3 className={style.ServiceInfoValue}>{value}</h3>
             </div>
         )
     }
+
+    useEffect(() => {
+        
+        const statusMap: Record<string, string> = {
+            'Pendente': style.Pending,
+            'Confirmado': style.Confirmed,
+            'Cancelado': style.Canceld,
+            'Atrasado': style.Delayed,
+            'Em andamento': style.Running,
+            'Finalizado': style.Complete
+        };
+        
+        setServiceStatusStyle(statusMap[appointment.status] || style.Pending);
+    }, [appointment]);
 
     const serviceInfosArray = [
         {
@@ -69,7 +88,37 @@ const AdminScheduledService: React.FC<AdminScheduledServiceProps> = ({ appointme
 
     return (
         <div className={style.Container}>
-            <h2>{appointment.service.name}</h2>
+            <div className={style.MainInfos}>
+                <div className={style.Left}>
+                    <h2>{appointment.service.name}</h2>
+                    <div className={`${style.Status} ${serviceStatusStyle}`}>
+                        <FontAwesomeIcon 
+                                                                
+                            icon={{
+                                'Pendente': 'clock' as IconProp,
+                                'Confirmado': 'check' as IconProp,
+                                'Cancelado': 'times' as IconProp,
+                                'Atrasado': 'running' as IconProp,
+                                'Em andamento': 'spinner' as IconProp,
+                                'Finalizado': 'calendar-check' as IconProp
+                            }[appointment.status] || 'question'} 
+
+                            spin={appointment.status === 'Em andamento'}
+                        /> {appointment.status}
+                    </div>
+                </div>
+                <div className={style.Actions}>
+                    <button className={style.ActionButton}><FontAwesomeIcon className={style.Icon} icon={['far', 'eye']} /></button>
+                    <button className={style.ActionButton}><FontAwesomeIcon className={style.Icon} icon='pencil' /></button>
+                    {
+                        appointment.status === 'Cancelado' ? (
+                            <button className={`${style.ActionButton} ${style.Red}`}><FontAwesomeIcon className={style.Icon} icon='trash' /></button>
+                        ) : (
+                            <button className={`${style.ActionButton} ${style.Red}`}><FontAwesomeIcon className={style.Icon} icon='xmark' /></button>
+                        )
+                    }
+                </div>
+            </div>
             <div className={style.ServiceInfos}>
                 {
                     serviceInfosArray.map((serviceInfo, idx) => (

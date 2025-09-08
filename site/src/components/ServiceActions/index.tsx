@@ -16,6 +16,7 @@ import api from "@services/api";
 import DatePicker from "@components/DatePicker";
 import TimePicker from "@components/TimePicker";
 import { format } from "date-fns";
+import { toast } from "react-toastify";
 
 interface ServiceActionsProps {
     service: IScheduledService,
@@ -23,12 +24,13 @@ interface ServiceActionsProps {
 }
 
 const ServiceActions:React.FC<ServiceActionsProps> = ({ service, trigger }) => {
-    const [page, setPage] = useState<'main' | 'edit'>('main')
+    const [page, setPage] = useState<'main' | 'edit' | 'cancel'>('main')
 
     const { user } = useUser();
     const queryClient = useQueryClient();
 
     const [availableTimes, setAvailableTimes] = useState<string[]>([]);
+    const [reason, setReason] = useState<string>('');
 
     useEffect(() => {
         setPage('main')
@@ -42,7 +44,11 @@ const ServiceActions:React.FC<ServiceActionsProps> = ({ service, trigger }) => {
         const createAvailableTimes = [ ...barberTimesResult.data, onlyServiceTime ].map(t => { const [h, m] = t.split(":").map(Number); return { original: t, minutes: h * 60 + m }; }).sort((a, b) => a.minutes - b.minutes).map(t => t.original)
         setAvailableTimes(createAvailableTimes);
         setPage('edit');
-    } 
+    };
+
+    const handleCancel = async () => {
+        setPage('cancel');
+    }
 
     const handleFinish = async () => {
         const response = await api.put(`/scheduledservices/${service._id}`, { status: 'Finalizado' })
@@ -76,6 +82,23 @@ const ServiceActions:React.FC<ServiceActionsProps> = ({ service, trigger }) => {
         setAvailableTimes([])
     }    
 
+    const handleConfirmAndCancel = async () => {
+        if(reason.trim().length === 0) {
+            toast.error('Por favor, insira um motivo para o cancelamento.');
+            return;
+        }
+        
+        const canceled = await api.put(`/scheduledservices/${service._id}`, { status: 'Cancelado', cancelReason: reason });
+        if(canceled.status === 200) {
+            toast.success('Agendamento cancelado com sucesso!');
+            // @ts-ignore
+            queryClient.invalidateQueries(['nextServices', user.sub]);
+        }
+        else { 
+            toast.error('Erro ao cancelar agendamento. Tente novamente mais tarde.');
+        }
+    }
+
     return (
         <>
             <Modal trigger={trigger} overflowYShow={page === 'edit'} >
@@ -89,7 +112,7 @@ const ServiceActions:React.FC<ServiceActionsProps> = ({ service, trigger }) => {
                         page == 'main' && (
                             <div className={style.Actions}>
                                 <button className={style.Action} disabled={service.status === 'Finalizado'} onClick={handleOpenEdit}><FontAwesomeIcon icon='pencil' /> Editar</button>
-                                <button className={style.Action} disabled={service.status === 'Finalizado'}><FontAwesomeIcon icon='xmark' /> Cancelar</button>
+                                <button className={style.Action} disabled={service.status === 'Finalizado'} onClick={handleCancel}><FontAwesomeIcon icon='xmark' /> Cancelar</button>
 
                                 {
                                     service.status === 'Em andamento' && (
@@ -132,6 +155,19 @@ const ServiceActions:React.FC<ServiceActionsProps> = ({ service, trigger }) => {
                                 <div className={`${style.Actions} ${style.EditActions}`}>
                                     <button className={style.Action} onClick={handleBack}><FontAwesomeIcon icon='arrow-left' /> Voltar</button>
                                     <button className={`${style.Action} ${style.Start}`}><FontAwesomeIcon icon='check' /> Confirmar</button>
+                                </div>
+                            </>
+                        )
+                    }
+                    {
+                        page === 'cancel' && (
+                            <>
+                                <h2 className={style.ModalTitle}>Motivo do cancelamento</h2>
+                                <textarea className={style.ReasonInput} placeholder="Descreva o motivo do cancelamento..." value={reason} onChange={(e) => setReason(e.target.value)} />
+                                <p className={style.Warning}>O cliente será notificado sobre o cancelamento.</p>
+                                <div className={style.CancelActions}>
+                                    <button className={style.ConfirmButton} onClick={handleConfirmAndCancel}>Confirmar</button>
+                                    <button className={style.CancelButton} onClick={() => setPage('main')}>Voltar</button>
                                 </div>
                             </>
                         )

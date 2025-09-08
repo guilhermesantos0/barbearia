@@ -3,6 +3,7 @@ import { CheckIcon, ChevronDownIcon } from '@radix-ui/react-icons';
 import style from './SelectMenu.module.scss';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useState } from 'react';
 
 type Option = {
     value: string;
@@ -14,7 +15,8 @@ interface SelectMenuProps {
     placeholder?: string;
     onChange: (value: string | undefined) => void;
     value?: string | undefined;
-    className?: string
+    className?: string;
+    searchable?: boolean; 
 }
 
 export const SelectMenu: React.FC<SelectMenuProps> = ({
@@ -22,48 +24,89 @@ export const SelectMenu: React.FC<SelectMenuProps> = ({
     placeholder = 'Selecione uma opção',
     onChange,
     value,
-    className
+    className,
+    searchable = false
 }) => {
+    const [search, setSearch] = useState('');
+
+    const filteredOptions = searchable
+        ? options.filter((option) =>
+              option.label.toLowerCase().includes(search.toLowerCase())
+          )
+        : options;
+
     return (
-        <Select.Root value={value} onValueChange={(val) => { onChange(val === '' ? undefined : val) }}>
-            <Select.Trigger className={`${style.SelectTrigger} ${className ? className : ''}`}>
-                <Select.Value placeholder={placeholder} />
+        <Select.Root
+            value={value ?? ''}
+            onValueChange={(val) => {
+                if (val === '__CLEAR__') {
+                    onChange(undefined);
+                } else {
+                    onChange(val)
+                }
+                setSearch(''); 
+            }}
+        >
+            <Select.Trigger
+                className={`${style.SelectTrigger} ${className ? className : ''}`}
+            >
+                <Select.Value placeholder={value ? value : placeholder} />
                 <Select.Icon>
                     <ChevronDownIcon className={style.Icon} />
                 </Select.Icon>
             </Select.Trigger>
 
             <Select.Portal>
-                <Select.Content 
-                className={style.SelectContent}
-                align="start" 
-                side="bottom" 
-                position="popper" 
-                avoidCollisions={false}
-                sideOffset={4}>
+                <Select.Content
+                    className={style.SelectContent}
+                    align="start"
+                    side="bottom"
+                    position="popper"
+                    avoidCollisions={false}
+                    sideOffset={4}
+                >
                     <Select.Viewport className={style.SelectViewport}>
-                        {
-                            value && (
-                                // @ts-ignore
-                                <Select.Item value={undefined} className={`${style.SelectItem} ${style.ClearSelection}`}>
-                                    <Select.ItemText>Limpar Seleção</Select.ItemText>
-                                    <FontAwesomeIcon icon="trash"  />
-                                </Select.Item>
-                            )
-                        }
+                        {searchable && (
+                            <div className={style.SearchBox}>
+                                <input
+                                    type="text"
+                                    placeholder="Pesquisar..."
+                                    value={search}
+                                    onChange={(e) => setSearch(e.target.value)}
+                                    onKeyDown={(e) => e.stopPropagation()}
+                                    className={style.SearchInput}
+                                />
+                            </div>
+                        )}
 
-                        {options.map((option) => (
+                        {value && (
+                            <Select.Item
+                                value="__CLEAR__"
+                                className={`${style.SelectItem} ${style.ClearSelection}`}
+                            >
+                                <Select.ItemText>Limpar Seleção</Select.ItemText>
+                                <FontAwesomeIcon icon="trash" />
+                            </Select.Item>
+                        )}
+
+                        {filteredOptions.map((option) => (
                             <Select.Item
                                 key={option.value}
                                 value={option.value}
                                 className={style.SelectItem}
                             >
                                 <Select.ItemText>{option.label}</Select.ItemText>
-                                <Select.ItemIndicator className={style.SelectItemIndicator}>
+                                <Select.ItemIndicator
+                                    className={style.SelectItemIndicator}
+                                >
                                     <CheckIcon className={style.Icon} />
                                 </Select.ItemIndicator>
                             </Select.Item>
                         ))}
+
+                        {filteredOptions.length === 0 && (
+                            <div className={style.NoResults}>Nenhum resultado</div>
+                        )}
                     </Select.Viewport>
                 </Select.Content>
             </Select.Portal>

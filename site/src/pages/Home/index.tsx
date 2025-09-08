@@ -22,6 +22,7 @@ import BarberEditProfile from "./Pages/Barber/EditProfile";
 
 // ADMIN
 import AdminSchdules from "./Pages/Admin/Schedules";
+import AdminServices from "./Pages/Admin/Services";
 
 const Home = () => {
     const { user } = useUser();
@@ -96,6 +97,11 @@ const Home = () => {
                                 {
                                     openedTab === 'admin_agendamentos' && (
                                         <AdminSchdules />
+                                    )
+                                }
+                                {
+                                    openedTab === 'admin_servicos' && (
+                                        <AdminServices />
                                     )
                                 }
                             </>

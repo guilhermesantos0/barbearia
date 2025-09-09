@@ -1,0 +1,14 @@
+.Container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .TopInfos {
+        display: flex;
+        align-items: center;
+    }
+
+    .ServiceInfos {
+        display: flex;
+    }
+}

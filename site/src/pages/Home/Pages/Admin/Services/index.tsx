@@ -36,19 +36,21 @@ const AdminServices = () => {
                 isAllowed ? (
                     <div className={style.PageContent}>
                         <h1>Serviços disponíveis</h1>
-                        {
-                            allServices && allServices.length > 0 ? (
-                                <>
-                                    { 
-                                        allServices.map((service, idx) => (
-                                            <AdminService key={idx} service={service} />
-                                        ))
-                                    }
-                                </>
-                            ) : (
-                                <div>Nenhum serviço criado</div>
-                            )
-                        }
+                        <div className={style.Services}>
+                            {
+                                allServices && allServices.length > 0 ? (
+                                    <>
+                                        { 
+                                            allServices.map((service, idx) => (
+                                                <AdminService key={idx} service={service} />
+                                            ))
+                                        }
+                                    </>
+                                ) : (
+                                    <div>Nenhum serviço criado</div>
+                                )
+                            }
+                        </div>
                     </div>
                 ) : (
                     <p>Você não vai achar nada aqui...</p>

@@ -4,9 +4,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 import MustacheIcon from '@assets/icons/mustache.svg?react';
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import { fomratTimeDuration } from '@utils/formatTimeDuration';
 import { formatPrice } from '@utils/formatPrice';
+import { toast } from 'react-toastify';
+import api from '@services/api';
+
+import * as Dialog from '@radix-ui/react-dialog';
+import { Switch } from '@radix-ui/react-switch';
+import Modal from '@components/Modal';
 
 interface AdminServiceProps {
     service: IService;
@@ -15,27 +21,22 @@ interface AdminServiceProps {
 interface ServiceInfosProps {
     icon: ReactNode,
     label: string,
-    value?: string,
-    children?: ReactNode
+    value?: string
 }
 
 const AdminService:React.FC<AdminServiceProps> = ({ service }) => {
 
-    const ServiceInfos:React.FC<ServiceInfosProps> = ({ icon, label, value, children }) => {
+    const [isActive, setIsActive] = useState<boolean>(service.active); 
+    const [confirmOpen, setConfirmOpen] = useState<boolean>(false);
+
+    const ServiceInfos:React.FC<ServiceInfosProps> = ({ icon, label, value }) => {
         return (
             <div className={style.ServiceInfo}>
                 <div className={style.ServiceInfoLabelSection}>
                     {icon}
-                    <h4 className={style.ServiceInfoLabel}>{label}</h4>
+                    <h4 className={style.ServiceInfoLabel}>{label}:</h4>
                 </div>
-                {
-                    value && (
-                        <h3 className={style.ServiceInfoValue}>{value}</h3>
-                    )
-                }
-                {
-                    children && ( children )
-                }
+                <h3 className={style.ServiceInfoValue}>{value}</h3>
             </div>
         )
     }
@@ -51,12 +52,34 @@ const AdminService:React.FC<AdminServiceProps> = ({ service }) => {
             label: 'Preço',
             value: formatPrice(service.price)
         },
-        {
-            icon: <FontAwesomeIcon icon='staff' />,
-            label: 'Status',
-            children: <div className={`${style.Status} ${service.active ? style.Active : style.Inactive}`} > {service.active ? 'Ativo' : 'Inativo'} </div>
-        }
     ]
+
+    const handleToggle = async () => {
+        if (isActive) {
+            setConfirmOpen(true)
+        } else {
+            const activateResult = await api.patch(`/services/${service._id}/status`, { "active": true });
+
+            if (activateResult.status === 200) {
+                setIsActive(true);
+                toast.success('Serviço ativado com sucesso!')
+            } else {
+                toast.warn('Houve um erro ao ativar o serviço!')
+            }
+        }
+    }
+
+    const confirmDisable = async () => {
+        const disableResult = await api.patch(`/services/${service._id}/status`, { "active": false });
+
+        if (disableResult.status === 200) {
+            setIsActive(false);
+            setConfirmOpen(false);
+            toast.info('Serviço desativado com sucesso!');
+        } else {
+            toast.warn('Houve um erro ao desativar o serviço!')
+        }
+    }
 
     return (
         <div className={style.Container}>
@@ -70,8 +93,8 @@ const AdminService:React.FC<AdminServiceProps> = ({ service }) => {
                                 'hair_services': 'scissors' as IconProp,
                                 'stetic_services': 'droplet' as IconProp,
                                 'combo_services': 'gift' as IconProp,
-                                'other_services': 'tool' as IconProp
-                                }[service.category] || 'question'} 
+                                'other_services': 'gear' as IconProp
+                                }[service.category] || 'power-off'} 
                             />
                         )
                     }
@@ -84,10 +107,39 @@ const AdminService:React.FC<AdminServiceProps> = ({ service }) => {
             <div className={style.ServiceInfos}>
                 {
                     serviceInfosArray.map((serviceInfo, idx) => (
-                        <ServiceInfos icon={serviceInfo.icon} label={serviceInfo.label} value={serviceInfo.value || undefined} children={serviceInfo.children || undefined} />
+                        <ServiceInfos key={idx} icon={serviceInfo.icon} label={serviceInfo.label} value={serviceInfo.value} />
                     ))
                 }
             </div>
+            <span className={`${style.StatusInfo} ${isActive ? style.Active : style.Inactive}`}>
+                <div className={style.StatusIndicator}></div>
+                { isActive ? 'Ativo' : 'Inativo' }
+            </span>
+            <div className={style.SwitchWrapper}>
+                <Switch
+                    checked={isActive}
+                    onCheckedChange={handleToggle}
+                    className={style.Switch}
+                />
+                <div className={style.Status}>
+            </div>
+
+                <Modal open={confirmOpen} onOpenChange={setConfirmOpen} trigger={<></>}>
+                    <h2 className={style.ModalTitle}>Desativar serviço</h2>
+                    <div className={style.ModalDescription}>
+                        Tem certeza que deseja desativar o serviço <b>{service.name}</b>?<br/>Ele não poderá mais ser agendado.
+                    </div>
+                    <div className={style.Actions}>
+                            <button onClick={() => setConfirmOpen(false)} className={style.Cancel}>
+                                Cancelar
+                            </button>
+                            <button onClick={confirmDisable} className={style.Confirm}>
+                                Confirmar
+                            </button>
+                        </div>
+                </Modal>
+            </div>
+
         </div>
     )
 }

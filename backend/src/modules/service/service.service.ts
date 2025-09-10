@@ -27,6 +27,10 @@ export class ServiceService {
         return this.serviceModel.findByIdAndUpdate(id, data, { new: true }).exec();
     }
 
+    async updateStatus(id: string, data: Partial<Service>): Promise<Service | null> {
+        return this.serviceModel.findByIdAndUpdate(id, data, { new: true }).exec();
+    }
+
     async delete(id: string): Promise<Service | null> {
         return this.serviceModel.findByIdAndDelete(id).exec();
     }

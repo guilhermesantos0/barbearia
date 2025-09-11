@@ -78,39 +78,47 @@
         .Status {
             margin-top: .2rem;
             width: fit-content;
-            padding: .2rem .5rem;
+            padding: .2rem .75rem;
             border-radius: 100vw;
             font-size: 0.8rem;
             font-weight: 600;
-            
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+
             &.Pending {
-                background: $yellow;
-                color: color.adjust($yellow, $lightness: 40%);
+                background: rgba($yellow, 0.15);
+                color: color.adjust($yellow, $lightness: 30%);
+                border: 1px solid rgba($yellow, 0.4);
             }
-            
+
             &.Confirmed {
-                background: $green;
-                color: color.adjust($green, $lightness: 40%);
+                background: rgba($green, 0.15);
+                color: color.adjust($green, $lightness: 35%);
+                border: 1px solid rgba($green, 0.4);
             }
-            
+
             &.Canceld {
-                background: $red;
-                color: white;
+                background: rgba($red, 0.15);
+                color: $red;
+                border: 1px solid rgba($red, 0.4);
             }
-            
+
             &.Delayed {
-                background: $orange;
-                color: white;
+                background: rgba($orange, 0.15);
+                color: $orange;
+                border: 1px solid rgba($orange, 0.4);
             }
-            
+
             &.Running {
-                background: $light-blue;
-                color: white;
+                background: rgba($light-blue, 0.15);
+                color: $light-blue;
+                border: 1px solid rgba($light-blue, 0.4);
             }
-            
+
             &.Complete {
-                background: $purple;
-                color: white;
+                background: rgba($purple, 0.15);
+                color: $purple;
+                border: 1px solid rgba($purple, 0.4);
             }
         }
     }

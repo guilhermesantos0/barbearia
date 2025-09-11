@@ -1,16 +1,16 @@
-import { IService } from '@types/Service';
+import { IService } from '../../types/Service';
 import style from './AdminService.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 import MustacheIcon from '@assets/icons/mustache.svg?react';
 import { ReactNode, useState } from 'react';
-import { fomratTimeDuration } from '@utils/formatTimeDuration';
-import { formatPrice } from '@utils/formatPrice';
+import { fomratTimeDuration } from '../../utils/formatTimeDuration';
+import { formatPrice } from '../../utils/formatPrice';
 import { toast } from 'react-toastify';
-import api from '@services/api';
+import api from '../../services/api';
+import { useNavigate } from 'react-router-dom';
 
-import * as Dialog from '@radix-ui/react-dialog';
 import { Switch } from '@radix-ui/react-switch';
 import Modal from '@components/Modal';
 
@@ -25,6 +25,8 @@ interface ServiceInfosProps {
 }
 
 const AdminService:React.FC<AdminServiceProps> = ({ service }) => {
+
+    const navigate = useNavigate();
 
     const [isActive, setIsActive] = useState<boolean>(service.active); 
     const [confirmOpen, setConfirmOpen] = useState<boolean>(false);
@@ -81,6 +83,10 @@ const AdminService:React.FC<AdminServiceProps> = ({ service }) => {
         }
     }
 
+    const handleEdit = () => {
+        navigate(`/home/admin/editar-servico?serviceId=${service._id}`);
+    }
+
     return (
         <div className={style.Container}>
             <div className={style.TopInfos}>
@@ -115,12 +121,14 @@ const AdminService:React.FC<AdminServiceProps> = ({ service }) => {
                 <div className={style.StatusIndicator}></div>
                 { isActive ? 'Ativo' : 'Inativo' }
             </span>
-            <div className={style.SwitchWrapper}>
+            <div className={style.BottomOptions}>
                 <Switch
                     checked={isActive}
                     onCheckedChange={handleToggle}
                     className={style.Switch}
                 />
+                <button className={style.Button} onClick={handleEdit}><FontAwesomeIcon className={style.Icon} icon='pencil' /></button>
+                <button className={style.Button}><FontAwesomeIcon className={`${style.Icon} ${style.Delete}`} icon='trash' /></button>
                 <div className={style.Status}>
             </div>
 
@@ -138,6 +146,7 @@ const AdminService:React.FC<AdminServiceProps> = ({ service }) => {
                             </button>
                         </div>
                 </Modal>
+
             </div>
 
         </div>

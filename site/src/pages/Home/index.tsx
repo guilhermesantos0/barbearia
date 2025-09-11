@@ -23,6 +23,8 @@ import BarberEditProfile from "./Pages/Barber/EditProfile";
 // ADMIN
 import AdminSchdules from "./Pages/Admin/Schedules";
 import AdminServices from "./Pages/Admin/Services";
+import EditService from "./Pages/Admin/EditService";
+import BarbersList from "./Pages/Admin/BarbersList";
 
 const Home = () => {
     const { user } = useUser();
@@ -31,6 +33,7 @@ const Home = () => {
 
     useEffect(() => {
         setOpenedTab(`${userType}_${page}`)
+        console.log(`${userType}_${page}`);
     },[ userType, page ])
     
     return (
@@ -102,6 +105,16 @@ const Home = () => {
                                 {
                                     openedTab === 'admin_servicos' && (
                                         <AdminServices />
+                                    )
+                                }
+                                {
+                                    openedTab === 'admin_editar-servico' && (
+                                        <EditService />
+                                    )
+                                }
+                                {
+                                    openedTab === 'admin_barbeiros' && (
+                                        <BarbersList />
                                     )
                                 }
                             </>

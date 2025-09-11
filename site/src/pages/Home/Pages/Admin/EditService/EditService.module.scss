@@ -1,0 +1,443 @@
+@use '@assets/scss/variables' as *;
+@use '@assets/scss/mixins' as *;
+@use 'sass:color';
+
+.Container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 90vw;
+    background: $bg-color;
+    overflow: hidden;
+}
+
+.Header {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding: 2rem 3rem;
+}
+
+.BackButton {
+    @include button-secondary;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+}
+
+.Title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: $white;
+    margin: 0;
+}
+
+.Content {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 3rem;
+    padding: 3rem;
+    overflow-y: auto;
+}
+
+.ServicePreview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    padding: 3rem;
+    background: $dark-blue;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    height: fit-content;
+    position: sticky;
+    top: 3rem;
+}
+
+.ServiceIcon {
+    width: 8rem;
+    height: 8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: $light-blue;
+    border-radius: 50%;
+
+    .Icon {
+        width: 4rem;
+        height: 4rem;
+        color: $white;
+    }
+}
+
+.ServiceInfo {
+    text-align: center;
+    width: 100%;
+}
+
+.ServiceName {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: $white;
+    margin: 0 0 1rem 0;
+    line-height: 1.2;
+}
+
+.ServiceDescription {
+    font-size: 1rem;
+    color: $light-gray;
+    line-height: 1.6;
+    margin: 0;
+    opacity: 0.8;
+}
+
+.FormContainer {
+    background: $dark-blue;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 3rem;
+    height: fit-content;
+
+    &::-webkit-scrollbar {
+        width: 0;
+    }
+}
+
+.FormGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto auto auto auto;
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.FormField {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    position: relative;
+
+    &:nth-child(1) {
+        grid-column: 1 / -1;
+    }
+
+    &:nth-child(2) {
+        grid-column: 1 / -1;
+    }
+
+    &:nth-child(3) {
+        grid-column: 1;
+    }
+
+    &:nth-child(4) {
+        grid-column: 2;
+    }
+
+    &:nth-child(5) {
+        grid-column: 1 / -1;
+    }
+
+    &:nth-child(6) {
+        grid-column: 1 / -1;
+    }
+}
+
+.FormLabel {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: $white;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.25rem;
+}
+
+.FormInput {
+    height: 3.5rem;
+    padding: 1rem 1.25rem;
+    background: $gray;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: $white;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    &[type=number] {
+        -moz-appearance: textfield;
+        appearance: textfield;
+    }
+
+    &:focus {
+        outline: none;
+        border-color: $light-blue;
+        box-shadow: 0 0 0 3px rgba(47, 128, 237, 0.1);
+        transform: translateY(-1px);
+    }
+
+    &:hover {
+        border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    &::placeholder {
+        color: $light-gray;
+        font-weight: 400;
+    }
+}
+
+.FormTextarea {
+    width: 100%;
+    height: 8rem;
+    padding: 1rem 1.25rem;
+    border-radius: 8px;
+    background: $gray;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    color: $white;
+    font-size: 1rem;
+    font-weight: 500;
+    resize: none;
+    outline: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-family: inherit;
+
+    &:focus {
+        border-color: $light-blue;
+        box-shadow: 0 0 0 3px rgba(47, 128, 237, 0.1);
+        transform: translateY(-1px);
+    }
+
+    &:hover {
+        border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    &::placeholder {
+        color: $light-gray;
+        font-weight: 400;
+    }
+}
+
+.FormSelect {
+    width: 100%;
+    height: 3.5rem;
+    
+    :global(.SelectTrigger) {
+        height: 3.5rem;
+        padding: 1rem 1.25rem;
+        background: $gray;
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        color: $white;
+        font-size: 1rem;
+        font-weight: 500;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+        &:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        &:focus {
+            border-color: $light-blue;
+            box-shadow: 0 0 0 3px rgba(47, 128, 237, 0.1);
+            transform: translateY(-1px);
+        }
+    }
+}
+
+.StatusToggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.25rem;
+    background: $gray;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+}
+
+.StatusLabel {
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+
+    &.Active {
+        color: $green;
+    }
+
+    &.Inactive {
+        color: $red;
+    }
+}
+
+.ToggleButton {
+    position: relative;
+    width: 4rem;
+    height: 2rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 100vw;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    &.Active {
+        background: $green;
+        border-color: $green;
+    }
+
+    &:hover {
+        transform: scale(1.05);
+    }
+}
+
+.ToggleSlider {
+    position: absolute;
+    top: 50%;
+    left: 0.25rem;
+    transform: translateY(-50%);
+    width: 1.25rem;
+    height: 1.25rem;
+    background: $white;
+    border-radius: 50%;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+
+    .ToggleButton.Active & {
+        transform: translate(1.75rem, -50%);
+    }
+}
+
+.Actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.CancelButton {
+    @include button-secondary;
+    padding: 1rem 2.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+
+    &:hover:not(:disabled) {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    &:active:not(:disabled) {
+        transform: translateY(0);
+    }
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+}
+
+.SaveButton {
+    @include button-primary;
+    padding: 1rem 2.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+
+    &:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(47, 128, 237, 0.4);
+    }
+
+    &:active:not(:disabled) {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(47, 128, 237, 0.3);
+    }
+
+    &:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+        transform: none;
+    }
+}
+
+.Loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    gap: 2rem;
+    color: $white;
+
+    p {
+        font-size: 1.2rem;
+        font-weight: 500;
+        margin: 0;
+    }
+}
+
+// Responsive Design
+@media (max-width: 1200px) {
+    .Content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .ServicePreview {
+        position: static;
+        order: 2;
+    }
+
+    .FormContainer {
+        order: 1;
+    }
+}
+
+@media (max-width: 768px) {
+    .Header {
+        padding: 1.5rem 2rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .Title {
+        font-size: 2rem;
+    }
+
+    .Content {
+        padding: 2rem;
+    }
+
+    .FormGrid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+
+        .FormField {
+            grid-column: 1 !important;
+        }
+    }
+
+    .Actions {
+        flex-direction: column;
+        gap: 1rem;
+
+        .CancelButton,
+        .SaveButton {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+}

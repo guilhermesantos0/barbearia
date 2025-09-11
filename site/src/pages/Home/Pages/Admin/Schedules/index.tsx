@@ -79,6 +79,10 @@ const AdminSchedules = () => {
             updated = updated.filter((appt) => appt.costumer?._id === filterCustomer);
         }
 
+        if (filterBarber) {
+            updated = updated.filter((appt) => appt.barber._id === filterBarber);
+        }
+
         if (filterService) {
             updated = updated.filter((appt) => appt.service?._id === filterService);
         }

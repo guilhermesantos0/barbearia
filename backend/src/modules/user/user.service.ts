@@ -405,6 +405,14 @@ export class UserService {
         return barberUsers;
     }
 
+    async getBarbersFull(): Promise<User[] | null> {
+        const barberRoles = await this.roleService.findBarberRoles();
+        const barberUsers = await this.userModel.find({ role: { $in: barberRoles } }).populate('work.services').populate('history').exec();
+
+        return barberUsers;
+    }
+
+
     async getAvailableSlots(barberId: string, dateString: Date, serviceDuration: number) {
         const barber = await this.userModel.findById(barberId).exec();
         if(!barber?.work) return [];

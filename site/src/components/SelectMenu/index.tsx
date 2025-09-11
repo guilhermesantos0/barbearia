@@ -3,11 +3,12 @@ import { CheckIcon, ChevronDownIcon } from '@radix-ui/react-icons';
 import style from './SelectMenu.module.scss';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useState } from 'react';
+import { ReactNode, useState } from 'react';
 
 type Option = {
     value: string;
     label: string;
+    icon?: ReactNode
 };
 
 interface SelectMenuProps {
@@ -16,7 +17,8 @@ interface SelectMenuProps {
     onChange: (value: string | undefined) => void;
     value?: string | undefined;
     className?: string;
-    searchable?: boolean; 
+    searchable?: boolean;
+    viewPortClassName?: string;
 }
 
 export const SelectMenu: React.FC<SelectMenuProps> = ({
@@ -25,7 +27,8 @@ export const SelectMenu: React.FC<SelectMenuProps> = ({
     onChange,
     value,
     className,
-    searchable = false
+    searchable = false,
+    viewPortClassName
 }) => {
     const [search, setSearch] = useState('');
 
@@ -65,7 +68,7 @@ export const SelectMenu: React.FC<SelectMenuProps> = ({
                     avoidCollisions={false}
                     sideOffset={4}
                 >
-                    <Select.Viewport className={style.SelectViewport}>
+                    <Select.Viewport className={`${style.SelectViewport} ${viewPortClassName ? viewPortClassName : ''}`}>
                         {searchable && (
                             <div className={style.SearchBox}>
                                 <input
@@ -95,7 +98,7 @@ export const SelectMenu: React.FC<SelectMenuProps> = ({
                                 value={option.value}
                                 className={style.SelectItem}
                             >
-                                <Select.ItemText>{option.label}</Select.ItemText>
+                                <Select.ItemText> {option.icon ? option.icon : null} {option.label}</Select.ItemText>
                                 <Select.ItemIndicator
                                     className={style.SelectItemIndicator}
                                 >

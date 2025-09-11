@@ -3,6 +3,7 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { Permissions } from 'src/common/decorators/permissions.decorator';
 
 @Controller('users')
 export class UserController {
@@ -76,6 +77,12 @@ export class UserController {
     @Get('barbers')
     async getBarbers() {
         return this.userService.getBarbers();
+    }
+
+    @Get('barbers/admin')
+    @Permissions({ module: 'Users', action: 'read' })
+    async getBarbersFull() {
+        return this.userService.getBarbersFull();
     }
 
     @Get('barbers/:barberId/available-today')

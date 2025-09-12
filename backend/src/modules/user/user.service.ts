@@ -412,6 +412,11 @@ export class UserService {
         return barberUsers;
     }
 
+    async getCustomersFull(): Promise<User[] | null> {
+        const customerUsers = await this.userModel.find({ role: 0 }).populate({ path: 'history', populate: [{ path: 'service' }, { path: 'barber' }] }).exec();
+
+        return customerUsers;
+    }
 
     async getAvailableSlots(barberId: string, dateString: Date, serviceDuration: number) {
         const barber = await this.userModel.findById(barberId).exec();

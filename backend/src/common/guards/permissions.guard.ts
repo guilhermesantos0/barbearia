@@ -26,7 +26,7 @@ export class PermissionsGuard implements CanActivate {
 
         const { user } = context.switchToHttp().getRequest();
 
-        const role = await this.rolesService.findById(user.roleId);
+        const role = await this.rolesService.findById(user.role);
         if (!role) {
             throw new ForbiddenException('Role não encontrada');
         }

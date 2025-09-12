@@ -70,7 +70,7 @@ const BarbersList = () => {
     };
 
     const formatTime = (time: string) => {
-        return time.substring(0, 5); // Format HH:MM
+        return time.substring(0, 5);
     };
 
     const actionOptions = [

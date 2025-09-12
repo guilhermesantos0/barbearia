@@ -1,0 +1,497 @@
+@use '@assets/scss/variables' as *;
+@use '@assets/scss/mixins' as *;
+
+.Container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background: $bg-color;
+    overflow: hidden;
+}
+
+.PageContent {
+    flex: 1;
+    padding: .5rem 2rem;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+        width: 0;
+    }
+}
+
+.TableContainer {
+    margin-top: 2rem;
+
+    // overflow: hidden;
+
+    width: 100%;
+
+    // height: 37rem;
+}
+
+.TableHeader {
+    display: grid;
+    grid-template-columns: 80px 1fr 1fr 150px 120px 120px 120px;
+    gap: 1rem;
+    padding: 1.5rem 2rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+    width: 75rem;
+
+    border-radius: 8px 8px 0 0;
+}
+
+.ViewPortClassName {
+    width: 12rem;
+}
+
+.HeaderCell {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: $light-blue;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+}
+
+.TableBody {
+    display: flex;
+    flex-direction: column;
+}
+
+.TableRow {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: background-color 0.2s ease;
+
+    width: 75rem;
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.02);
+        cursor: pointer;
+    }
+
+    &:last-child {
+        border-bottom: none;
+    }
+}
+
+.RowContent {
+    display: grid;
+    grid-template-columns: 80px 1fr 1fr 150px 120px 120px 120px;
+    gap: 1rem;
+    padding: 1.5rem 2rem;
+    align-items: center;
+}
+
+.Cell {
+    display: flex;
+    align-items: center;
+    min-height: 2rem;
+}
+
+.ProfilePic {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: $gray;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .Icon {
+        color: $light-gray;
+        font-size: 1.5rem;
+    }
+}
+
+.BarberName {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: $white;
+}
+
+.Email {
+    font-size: 0.9rem;
+    color: $light-gray;
+}
+
+.Phone {
+    font-size: 0.9rem;
+    color: $light-gray;
+}
+
+.Status {
+    padding: 0.25rem 0.75rem;
+    border-radius: 100vw;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+
+    &.green {
+        background: rgba(39, 174, 96, 0.2);
+        color: $green;
+        border: 1px solid rgba(39, 174, 96, 0.3);
+    }
+
+    &.yellow {
+        background: rgba(242, 201, 76, 0.2);
+        color: $yellow;
+        border: 1px solid rgba(242, 201, 76, 0.3);
+    }
+
+    &.red {
+        background: rgba(235, 87, 87, 0.2);
+        color: $red;
+        border: 1px solid rgba(235, 87, 87, 0.3);
+    }
+}
+
+.Rating {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: $yellow;
+
+    .Icon {
+        font-size: 0.9rem;
+    }
+
+    span {
+        font-size: 0.9rem;
+        font-weight: 600;
+    }
+}
+
+.Actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.ActionMenu {
+    flex: 1;
+}
+
+.ExpandedContent {
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(47, 128, 237, 0.3);
+    padding: 2.5rem;
+    margin: 0 1rem;
+    border-radius: 0 0 12px 12px;
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    animation: slideDown 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, $light-blue, transparent);
+    }
+
+    &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at 20% 20%, rgba(47, 128, 237, 0.1) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 80%, rgba(47, 128, 237, 0.05) 0%, transparent 50%);
+        pointer-events: none;
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        max-height: 0;
+        transform: translateY(-20px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        max-height: 500px;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.DetailsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    position: relative;
+    z-index: 1;
+}
+
+.DetailSection {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(47, 128, 237, 0.1);
+    border-radius: 8px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, $light-blue, transparent);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.05);
+        border-color: rgba(47, 128, 237, 0.2);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 20px rgba(47, 128, 237, 0.1);
+
+        &::before {
+            opacity: 1;
+        }
+    }
+
+
+    h4 {
+        font-size: 1rem;
+        font-weight: 600;
+        color: $light-blue;
+        margin: 0 0 0.75rem 0;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        &::before {
+            content: '';
+            width: 4px;
+            height: 4px;
+            background: $light-blue;
+            border-radius: 50%;
+            box-shadow: 0 0 8px $light-blue;
+        }
+    }
+
+    p {
+        font-size: 0.9rem;
+        color: $light-gray;
+        margin: 0;
+        line-height: 1.4;
+    }
+}
+
+.SummaryRow {
+    display: flex;
+    gap: 1rem;
+    margin: 0 0 1rem 0;
+}
+
+.SummaryItem {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .5rem .75rem;
+    border: 1px solid rgba(47, 128, 237, 0.2);
+    background: rgba(47, 128, 237, 0.08);
+    border-radius: 8px;
+    color: $light-blue;
+}
+
+.IntervalsList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.IntervalItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background: rgba(47, 128, 237, 0.08);
+    border-radius: 6px;
+    border: 1px solid rgba(47, 128, 237, 0.15);
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+        background: $light-blue;
+        transform: scaleY(0);
+        transition: transform 0.2s ease;
+    }
+
+    &:hover {
+        background: rgba(47, 128, 237, 0.12);
+        border-color: rgba(47, 128, 237, 0.25);
+        transform: translateX(4px);
+
+        &::before {
+            transform: scaleY(1);
+        }
+    }
+}
+
+.IntervalName {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: $white;
+}
+
+.IntervalTime {
+    font-size: 0.8rem;
+    color: $light-gray;
+}
+
+.ServicesList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+
+}
+
+.ServiceTags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.ServiceTag {
+    padding: 0.4rem 1rem;
+    background: linear-gradient(135deg, rgba(47, 128, 237, 0.15) 0%, rgba(47, 128, 237, 0.25) 100%);
+    color: $light-blue;
+    border: 1px solid rgba(47, 128, 237, 0.3);
+    border-radius: 100vw;
+    font-size: 0.8rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+        transition: left 0.5s ease;
+    }
+
+    &:hover {
+        background: linear-gradient(135deg, rgba(47, 128, 237, 0.25) 0%, rgba(47, 128, 237, 0.35) 100%);
+        border-color: rgba(47, 128, 237, 0.5);
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(47, 128, 237, 0.2);
+
+        &::before {
+            left: 100%;
+        }
+    }
+}
+
+.AccessDenied {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    gap: 2rem;
+    color: $light-gray;
+
+    .Icon {
+        color: $red;
+    }
+
+    p {
+        font-size: 1.2rem;
+        font-weight: 500;
+        margin: 0;
+    }
+}
+
+// Responsive Design
+@media (max-width: 1200px) {
+    .TableHeader,
+    .RowContent {
+        grid-template-columns: 60px 1fr 1fr 120px 100px 100px 100px;
+        gap: 0.75rem;
+        padding: 1rem 1.5rem;
+    }
+
+    .ProfilePic {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+@media (max-width: 768px) {
+    .PageContent {
+        padding: 1rem;
+    }
+
+    .TableHeader,
+    .RowContent {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .HeaderCell {
+        display: none;
+    }
+
+    .Cell {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+
+        &::before {
+            content: attr(data-label);
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: $light-blue;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+    }
+
+    .DetailsGrid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .Actions {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+}

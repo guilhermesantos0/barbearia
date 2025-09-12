@@ -13,6 +13,7 @@ import { RoleModule } from '../role/role.module';
 import { ScheduledserviceModule } from '../scheduledservice/scheduledservice.module';
 import { ServiceModule } from '../service/service.module';
 import { PlanModule } from '../plan/plan.module';
+import { PermissionsGuard } from 'src/common/guards/permissions.guard';
 
 @Module({
     imports: [
@@ -26,7 +27,7 @@ import { PlanModule } from '../plan/plan.module';
         PlanModule
     ],
     controllers: [UserController],
-    providers: [UserService],
+    providers: [UserService, PermissionsGuard],
     exports: [UserService]
 })
 export class UserModule {}

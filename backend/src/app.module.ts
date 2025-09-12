@@ -13,6 +13,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { UserModule } from './modules/user/user.module';
 import { LogsModule } from './modules/logs/logs.module';
 import { SubscriptionModule } from './modules/subscription/subscription.module';
+import { BarbershopModule } from './modules/barbershop/barbershop.module';
 
 @Module({
     imports: [
@@ -33,7 +34,8 @@ import { SubscriptionModule } from './modules/subscription/subscription.module';
         AuthModule,
         UserModule,
         LogsModule,
-        SubscriptionModule
+        SubscriptionModule,
+        BarbershopModule
     ],
     controllers: [AppController],
     providers: [AppService],

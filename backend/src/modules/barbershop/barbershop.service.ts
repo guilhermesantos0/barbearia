@@ -1,39 +1,39 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
-import { BarberShop, BarberShopDocument } from "./schemas/barbershop.schema";
-import { CreateBarberShopDto } from "./dto/create-barbershop.dto";
-import { UpdateBarberShopDto } from "./dto/update-barbershop.dto";
+import { Barbershop, BarbershopDocument } from "./schemas/barbershop.schema";
+import { CreateBarbershopDto } from "./dto/create-barbershop.dto";
+import { UpdateBarbershopDto } from "./dto/update-barbershop.dto";
 
 @Injectable()
-export class BarberShopService {
+export class BarbershopService {
     constructor(
-        @InjectModel(BarberShop.name) private barberShopModel: Model<BarberShopDocument>,
+        @InjectModel(Barbershop.name) private barbershopModel: Model<BarbershopDocument>,
     ) {}
 
-    async create(createBarberShopDto: CreateBarberShopDto): Promise<BarberShop> {
-        const barberShop = new this.barberShopModel(createBarberShopDto);
+    async create(createBarbershopDto: CreateBarbershopDto): Promise<Barbershop> {
+        const barberShop = new this.barbershopModel(createBarbershopDto);
         return barberShop.save();
     }
 
-    async getInfo(): Promise<BarberShop | null> {
-        return this.barberShopModel.findOne().exec();
+    async getInfo(): Promise<Barbershop | null> {
+        return this.barbershopModel.findOne().exec();
     }
 
-    async findAll(): Promise<BarberShop[]> {
-        return this.barberShopModel.find().exec();
+    async findAll(): Promise<Barbershop[]> {
+        return this.barbershopModel.find().exec();
     }
 
-    async findOne(id: string): Promise<BarberShop> {
-        const barberShop = await this.barberShopModel.findById(id).exec();
+    async findOne(id: string): Promise<Barbershop> {
+        const barberShop = await this.barbershopModel.findById(id).exec();
         if (!barberShop) {
             throw new NotFoundException(`BarberShop with id ${id} not found`);
         }
         return barberShop;
     }
 
-    async update(id: string, updateBarberShopDto: UpdateBarberShopDto): Promise<BarberShop> {
-        const updated = await this.barberShopModel.findByIdAndUpdate(id, updateBarberShopDto, {
+    async update(id: string, updateBarbershopDto: UpdateBarbershopDto): Promise<Barbershop> {
+        const updated = await this.barbershopModel.findByIdAndUpdate(id, updateBarbershopDto, {
             new: true,
         });
         if (!updated) {
@@ -43,7 +43,7 @@ export class BarberShopService {
     }
 
     async remove(id: string): Promise<void> {
-        const deleted = await this.barberShopModel.findByIdAndDelete(id);
+        const deleted = await this.barbershopModel.findByIdAndDelete(id);
         if (!deleted) {
             throw new NotFoundException(`BarberShop with id ${id} not found`);
         }

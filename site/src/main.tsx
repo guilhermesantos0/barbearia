@@ -17,6 +17,7 @@ library.add(fas, far, fab)
 import { ToastContainer } from 'react-toastify';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { BarberShopProvider } from '@contexts/BarberShopContext.tsx';
 
 const queryClient = new QueryClient();
 
@@ -24,21 +25,23 @@ createRoot(document.getElementById('root')!).render(
     <StrictMode>
         <BrowserRouter>
             <QueryClientProvider client={queryClient}>
-                <UserProvider>
-                    <App />
-                    <ToastContainer
-                        position="top-right"
-                        autoClose={3000}
-                        hideProgressBar={false}
-                        newestOnTop={true}
-                        closeOnClick
-                        rtl={false}
-                        pauseOnFocusLoss
-                        draggable
-                        pauseOnHover
-                        theme="dark"
-                    />
-                </UserProvider>
+                <BarberShopProvider>
+                    <UserProvider>
+                        <App />
+                        <ToastContainer
+                            position="top-right"
+                            autoClose={3000}
+                            hideProgressBar={false}
+                            newestOnTop={true}
+                            closeOnClick
+                            rtl={false}
+                            pauseOnFocusLoss
+                            draggable
+                            pauseOnHover
+                            theme="dark"
+                        />
+                    </UserProvider>
+                </BarberShopProvider>
             </QueryClientProvider>
         </BrowserRouter>
     </StrictMode>,

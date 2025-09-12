@@ -1,5 +1,5 @@
-// BarberShopContext.tsx
 import { createContext, useContext, useEffect, useState } from "react";
+import api from "@services/api";
 
 interface BarberShop {
     _id: string;
@@ -37,9 +37,9 @@ export const BarberShopProvider = ({ children }: { children: React.ReactNode }) 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await fetch("http://localhost:3000/barbershop");
-                const data = await res.json();
-                setBarberShop(data);
+                const res = await api.get("/barbershop");
+                setBarberShop(res.data);
+
             } catch (err) {
                 console.error("Erro ao buscar dados da barbearia:", err);
             } finally {

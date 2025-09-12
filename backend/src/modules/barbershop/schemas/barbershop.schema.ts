@@ -1,10 +1,10 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { v4 as uuidv4 } from "uuid";
 
-export type BarberShopDocument = BarberShop & Document;
+export type BarbershopDocument = Barbershop & Document;
 
 @Schema({ versionKey: false })
-export class BarberShop {
+export class Barbershop {
     @Prop({
         type: String,
         default: () => uuidv4(),
@@ -72,4 +72,4 @@ export class BarberShop {
     emailDomain?: string
 }
 
-export const BarberShopSchema = SchemaFactory.createForClass(BarberShop);
+export const BarbershopSchema = SchemaFactory.createForClass(Barbershop);

@@ -35,7 +35,14 @@ export const useCheckoutStore = create<CheckoutState>((set) => ({
     discount: undefined,
     type: undefined,
     userId: undefined,
-    setCheckout: (checkout) => set(checkout),
+    setCheckout: (checkout) => set(() => ({
+        price: undefined,
+        product: undefined,
+        discount: undefined,
+        type: undefined,
+        userId: undefined,
+        ...checkout
+    })),
     clearCheckout: () => set({
         price: undefined,
         product: undefined,

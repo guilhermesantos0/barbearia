@@ -221,8 +221,8 @@ export class UserService {
             return dayjs(dateISO).tz(TZ).isSame(start) || dayjs(dateISO).tz(TZ).isAfter(start);
         }
 
-        const currentDate = dayjs().tz('America/Sao_Paulo');
-        const startOfMonth = currentDate.startOf('month');
+        const currentDate = dayjs().tz(TZ);
+        const periodStart = currentDate.startOf(type);
 
         const userData = await this.userModel
             .findById(userId)
@@ -239,16 +239,22 @@ export class UserService {
             throw new NotFoundException('Usuário não encontrado')
         }
 
-        const monthlyService = userData?.history.filter((service) => dayjs(service.date).isAfter(startOfMonth));
-        const generatedIncome = monthlyService.reduce((acc, service) => { return acc + service.service.price }, 0);
+        const servicesInPeriod = userData?.history.filter((service) => {
+            const when = dayjs(service.date).tz(TZ);
+            return service.status === 'Finalizado' && (when.isSame(periodStart) || when.isAfter(periodStart));
+        });
+        const generatedIncome = servicesInPeriod.reduce((acc, service) => { return acc + service.service.price }, 0);
         
         const groupAppointments = (filter: 'week' | 'month' | 'year') => {
             const startDate = currentDate.startOf(filter);
 
-            const filteredAppointments = userData.history.filter((service) => dayjs(service.date).isAfter(startDate));
+            const filteredAppointments = userData.history.filter((service) => {
+                const when = dayjs(service.date).tz(TZ);
+                return service.status === 'Finalizado' && (when.isSame(startDate) || when.isAfter(startDate));
+            });
 
             const groupedPerDay = filteredAppointments.reduce((acc: Record<number, number>, service) => {
-                const dayOfWeek = dayjs(service.date).day();
+                const dayOfWeek = dayjs(service.date).tz(TZ).day();
                 acc[dayOfWeek] = (acc[dayOfWeek] || 0) + 1;
                 return acc;
             }, {});

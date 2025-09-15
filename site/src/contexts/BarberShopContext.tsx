@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
+//@ts-ignore
 import api from "@services/api";
 
 interface BarberShop {

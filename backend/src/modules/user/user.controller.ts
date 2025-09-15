@@ -56,8 +56,8 @@ export class UserController {
     @UseGuards(AuthGuard('jwt'))
     @Get('stats')
     async getStats(@Request() req, @Query('type') type: 'week' | 'month' | 'year') {
-
-        return this.userService.getStats(req.user.sub, type);
+        const safeType: 'week' | 'month' | 'year' = (type ?? 'week');
+        return this.userService.getStats(req.user.sub, safeType);
     }
 
     @UseGuards(AuthGuard('jwt'))

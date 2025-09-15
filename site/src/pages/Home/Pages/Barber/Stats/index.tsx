@@ -13,23 +13,21 @@ import {
     XAxis,
     YAxis,
     CartesianGrid,
-    Legend,
     ResponsiveContainer
 } from 'recharts';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // @ts-ignore
 import { formatPrice } from '@utils/formatPrice';
 import DetailsSection from '@components/DetailsSection';
 
 const BarberStats = () => {
 
-    const filterIndexMap = { week: 0, month: 1, year: 2 }; 
+    const filterIndexMap: Record<'week' | 'month' | 'year', number> = { week: 0, month: 1, year: 2 }; 
 
     const [userStats, setUserStats] = useState<any>(null);
     const [filter, setFilter] = useState<string>('week');
 
     const fetchData = async (filter: string) => {
-        const response = await api.get('/users/stats');
+        const response = await api.get(`/users/stats`, { params: { type: filter } });
         setUserStats(response.data);
     }
 
@@ -62,32 +60,32 @@ const BarberStats = () => {
     
     const weekDays = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
     
-    const groupedPerDay = Object.entries(userStats.groupedAppointments.groupedPerDay).map(([name, value]) => ({
+    const groupedPerDay = Object.entries(userStats?.groupedAppointments?.groupedPerDay ?? {}).map(([name, value]) => ({
         name: weekDays[Number(name)],
         value
     }));
 
-    const groupedPerService = Object.entries(userStats.groupedAppointments.groupedPerService).map(([name, value]) => ({
+    const groupedPerService = Object.entries(userStats?.groupedAppointments?.groupedPerService ?? {}).map(([name, value]) => ({
         name,
         value
     }));
 
-    const groupedPerRate = Object.entries(userStats.groupedAppointments.groupedPerRate).map(([name, value]) => ({
+    const groupedPerRate = Object.entries(userStats?.groupedAppointments?.groupedPerRate ?? {}).map(([name, value]) => ({
         name: `${name} Estrelas`,
         value
     }));
 
-    const newVsReturning = Object.entries(userStats.newVsReturning).map(([name, value]) => ({
+    const newVsReturning = Object.entries(userStats?.newVsReturning ?? {}).map(([name, value]) => ({
         name: name === 'newClients' ? 'Novos Clientes' : 'Clientes Retornando',
         value
     }));
 
-    const highestPeriods = Object.entries(userStats.highestPeriods).map(([name, value]) => ({
+    const highestPeriods = Object.entries(userStats?.highestPeriods ?? {}).map(([name, value]) => ({
         name: name.charAt(0).toUpperCase() + name.slice(1),
         value
     }));
 
-    const averageRatingByService = Object.entries(userStats.averageRatingByService).map(([name, value]) => ({
+    const averageRatingByService = Object.entries(userStats?.averageRatingByService ?? {}).map(([name, value]) => ({
         name,
         value
     }));
@@ -97,17 +95,17 @@ const BarberStats = () => {
     const topCardDetails = [
         { 
             label: 'Avaliação',
-            value: userStats.userData.averageRating,
+            value: userStats?.userData?.averageRating,
             icon: 'star'
         },
         {
             label: 'Serviços Realizados',
-            value: userStats.userData.history.length,
+            value: Object.values(userStats?.groupedAppointments?.groupedPerService ?? {}).reduce((a: any, b: any) => (a as number) + (b as number), 0),
             icon: 'scissors'
         },
         {
             label: 'Receita gerada',
-            value: formatPrice(userStats.generatedIncome),
+            value: formatPrice(userStats?.generatedIncome ?? 0),
             icon: 'dollar-sign'
         }
     ]
@@ -153,7 +151,7 @@ const BarberStats = () => {
             </div>
 
             <div className={style.FilterSelectorConteiner}>
-                <div className={style.FilterSelector} style={{ ['--idx' as any]: filterIndexMap[filter] ?? 0 }}>
+                <div className={style.FilterSelector} style={{ ['--idx' as any]: filterIndexMap[(filter as 'week' | 'month' | 'year')] ?? 0 }}>
                     <div className={`${style.FilterButton} ${filter === 'week' ? style.Active : ''}`} onClick={() => updateFilter('week')}>Última Semana</div>
                     <div className={`${style.FilterButton} ${filter === 'month' ? style.Active : ''}`} onClick={() => updateFilter('month')}>Último Mês</div>
                     <div className={`${style.FilterButton} ${filter === 'year' ? style.Active : ''}`} onClick={() => updateFilter('year')}>Último Ano</div>

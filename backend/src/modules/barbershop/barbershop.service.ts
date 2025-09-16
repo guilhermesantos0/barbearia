@@ -48,4 +48,30 @@ export class BarbershopService {
             throw new NotFoundException(`BarberShop with id ${id} not found`);
         }
     }
+
+    async addHoliday(date: string): Promise<Barbershop> {
+        const barbershop = await this.barbershopModel.findOne().exec();
+        if (!barbershop) {
+            throw new NotFoundException('BarberShop not found');
+        }
+        
+        if (!barbershop.holidays.includes(date)) {
+            barbershop.holidays.push(date);
+            await barbershop.save();
+        }
+        
+        return barbershop;
+    }
+
+    async removeHoliday(date: string): Promise<Barbershop> {
+        const barbershop = await this.barbershopModel.findOne().exec();
+        if (!barbershop) {
+            throw new NotFoundException('BarberShop not found');
+        }
+        
+        barbershop.holidays = barbershop.holidays.filter(holiday => holiday !== date);
+        await barbershop.save();
+        
+        return barbershop;
+    }
 }

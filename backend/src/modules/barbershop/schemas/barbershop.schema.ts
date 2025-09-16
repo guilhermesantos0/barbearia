@@ -70,6 +70,12 @@ export class Barbershop {
 
     @Prop()
     emailDomain?: string
+
+    @Prop({
+        type: [String],
+        default: [],
+    })
+    holidays: string[];
 }
 
 export const BarbershopSchema = SchemaFactory.createForClass(Barbershop);

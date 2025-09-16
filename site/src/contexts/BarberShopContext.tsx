@@ -19,6 +19,7 @@ interface BarberShop {
     socialMedia: Record<string, string>;
     cancellationPolicy?: string;
     delayTolerance: number;
+    holidays: string[];
 }
 
 interface BarberShopContextProps {

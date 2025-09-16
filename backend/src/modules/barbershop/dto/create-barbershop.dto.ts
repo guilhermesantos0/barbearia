@@ -47,4 +47,8 @@ export class CreateBarbershopDto {
     @IsOptional()
     @IsString()
     emailDomain?: string
+
+    @IsOptional()
+    @IsArray()
+    holidays?: string[];
 }

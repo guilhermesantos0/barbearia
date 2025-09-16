@@ -26,6 +26,7 @@ import AdminServices from "./Pages/Admin/Services";
 import EditService from "./Pages/Admin/EditService";
 import BarbersList from "./Pages/Admin/BarbersList";
 import CustomersList from "./Pages/Admin/CustomersList";
+import Times from "./Pages/Admin/Times";
 
 const Home = () => {
     const { user } = useUser();
@@ -121,6 +122,11 @@ const Home = () => {
                                 {
                                     openedTab === 'admin_clientes' && (
                                         <CustomersList />
+                                    )
+                                }
+                                {
+                                    openedTab === 'admin_horarios' && (
+                                        <Times />
                                     )
                                 }
                             </>

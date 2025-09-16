@@ -1,0 +1,464 @@
+@use '@assets/scss/variables' as *;
+@use '@assets/scss/mixins' as *;
+@use 'sass:color';
+
+.Container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background: $bg-color;
+    overflow: hidden;
+}
+
+.PageContent {
+    flex: 1;
+    padding: 0.5rem 2rem;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+        width: 0;
+    }
+}
+
+.Header {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding: 2rem 0;
+    
+    h1 {
+        color: $white;
+        font-size: 2.5rem;
+        margin: 0;
+        font-weight: 800;
+    }
+    
+    p {
+        color: $light-gray;
+        font-size: 1.1rem;
+        margin: 0;
+        opacity: 0.8;
+    }
+}
+
+.Content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.Section {
+    background: $dark-blue;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+    
+    h2 {
+        color: $white;
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+        font-weight: 700;
+    }
+}
+
+.SectionHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.WorkingHours {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.WorkingDay {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    transition: all 0.3s ease;
+    
+    &:hover {
+        border-color: $light-blue;
+        background: rgba(255, 255, 255, 0.08);
+    }
+}
+
+.DayHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.DayName {
+    font-weight: 600;
+    color: $white;
+    font-size: 1.1rem;
+}
+
+.DayActions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.TimeInputs {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.TimeInput {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    
+    label {
+        font-weight: 500;
+        color: $light-gray;
+        font-size: 0.9rem;
+    }
+    
+    input {
+        padding: 0.75rem;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 8px;
+        font-size: 1rem;
+        width: 120px;
+        background: rgba(255, 255, 255, 0.05);
+        color: $white;
+        
+        &:focus {
+            outline: none;
+            border-color: $light-blue;
+            box-shadow: 0 0 0 2px rgba(47, 128, 237, 0.25);
+        }
+        
+        &:disabled {
+            background-color: rgba(255, 255, 255, 0.02);
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+        
+        &::placeholder {
+            color: $light-gray;
+            opacity: 0.6;
+        }
+    }
+}
+
+.AddButton {
+    @include button-primary;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+}
+
+.EditButton {
+    @include button-secondary;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+}
+
+.SaveButton {
+    @include button-primary;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    width: 100%;
+    font-size: 0.9rem;
+    
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+}
+
+.RemoveButton {
+    @include button-error;
+    padding: 0.5rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+}
+
+.AddHolidayButton {
+    @include button-primary;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    background: $purple;
+    
+    &:hover {
+        background: color.adjust($purple, $lightness: -10%);
+    }
+}
+
+.CalendarContainer {
+    margin-top: 1rem;
+}
+
+.CalendarHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    
+    h3 {
+        color: $white;
+        font-size: 1.3rem;
+        font-weight: 600;
+        text-transform: capitalize;
+    }
+}
+
+.CalendarNavButton {
+    @include button-tertiary;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    min-width: 40px;
+}
+
+.Calendar {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.WeekDays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    background: rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.WeekDay {
+    padding: 0.75rem;
+    text-align: center;
+    font-weight: 600;
+    color: $light-blue;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.CalendarDays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+}
+
+.CalendarDay {
+    padding: 0.75rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    min-height: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: $white;
+    
+    &:nth-child(7n) {
+        border-right: none;
+    }
+    
+    &:hover {
+        background: rgba(255, 255, 255, 0.08);
+    }
+    
+    &.Selected {
+        background: $light-blue;
+        color: $white;
+        
+        .DayNumber {
+            color: $white;
+        }
+    }
+    
+    &.Today {
+        background: rgba(242, 201, 76, 0.2);
+        border-color: $yellow;
+        
+        .DayNumber {
+            font-weight: 700;
+            color: $yellow;
+        }
+    }
+    
+    &.Weekend {
+        background: rgba(255, 255, 255, 0.02);
+        color: $light-gray;
+    }
+    
+    &.Holiday {
+        background: rgba(235, 87, 87, 0.2);
+        color: $red;
+        border-color: $red;
+        
+        .DayNumber {
+            color: $red;
+            font-weight: 700;
+        }
+    }
+}
+
+.DayNumber {
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.RemoveHolidayButton {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    @include button-error;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    min-width: 20px;
+    font-size: 0.7rem;
+    
+    &:hover {
+        transform: scale(1.1);
+    }
+}
+
+.ModalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.Modal {
+    background: $dark-blue;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    
+    h3 {
+        color: $white;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        font-weight: 700;
+    }
+    
+    p {
+        color: $light-gray;
+        margin-bottom: 1.5rem;
+    }
+}
+
+.ModalActions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+}
+
+.CancelButton {
+    @include button-tertiary;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+}
+
+.ConfirmButton {
+    @include button-primary;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+}
+
+.AccessDenied {
+    text-align: center;
+    padding: 3rem;
+    background: $dark-blue;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    
+    h2 {
+        color: $red;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        font-weight: 700;
+    }
+    
+    p {
+        color: $light-gray;
+        font-size: 1.1rem;
+    }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+    .PageContent {
+        padding: 0.5rem 1rem;
+    }
+    
+    .Header {
+        padding: 1rem 0;
+        
+        h1 {
+            font-size: 1.8rem;
+        }
+    }
+    
+    .Section {
+        padding: 1.5rem;
+    }
+    
+    .TimeInputs {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .TimeInput input {
+        width: 100%;
+    }
+    
+    .SectionHeader {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+    
+    .CalendarDay {
+        min-height: 50px;
+        padding: 0.5rem;
+    }
+    
+    .DayNumber {
+        font-size: 0.9rem;
+    }
+    
+    .Modal {
+        margin: 1rem;
+        padding: 1.5rem;
+    }
+    
+    .ModalActions {
+        flex-direction: column;
+    }
+}

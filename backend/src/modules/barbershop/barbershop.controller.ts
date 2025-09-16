@@ -32,4 +32,14 @@ export class BarbershopController {
     remove(@Param("id") id: string) {
         return this.barberShopService.remove(id);
     }
+
+    @Post("holidays")
+    addHoliday(@Body() body: { date: string }) {
+        return this.barberShopService.addHoliday(body.date);
+    }
+
+    @Delete("holidays/:date")
+    removeHoliday(@Param("date") date: string) {
+        return this.barberShopService.removeHoliday(date);
+    }
 }

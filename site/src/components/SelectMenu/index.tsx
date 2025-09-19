@@ -19,6 +19,7 @@ interface SelectMenuProps {
     className?: string;
     searchable?: boolean;
     viewPortClassName?: string;
+    freePosition?: boolean;
 }
 
 export const SelectMenu: React.FC<SelectMenuProps> = ({
@@ -28,7 +29,8 @@ export const SelectMenu: React.FC<SelectMenuProps> = ({
     value,
     className,
     searchable = false,
-    viewPortClassName
+    viewPortClassName,
+    freePosition
 }) => {
     const [search, setSearch] = useState('');
 
@@ -62,9 +64,9 @@ export const SelectMenu: React.FC<SelectMenuProps> = ({
             <Select.Portal>
                 <Select.Content
                     className={style.SelectContent}
-                    align="start"
+                    align='start'
                     side="bottom"
-                    position="popper"
+                    position={freePosition ? undefined : 'popper'}
                     avoidCollisions={false}
                     sideOffset={4}
                 >

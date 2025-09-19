@@ -6,7 +6,6 @@
     display: flex;
     flex-direction: column;
     height: 100vh;
-    background: $bg-color;
     overflow: hidden;
 }
 
@@ -24,20 +23,9 @@
     display: flex;
     align-items: center;
     gap: 2rem;
-    padding: 2rem 0;
     
-    h1 {
+    .Title {
         color: $white;
-        font-size: 2.5rem;
-        margin: 0;
-        font-weight: 800;
-    }
-    
-    p {
-        color: $light-gray;
-        font-size: 1.1rem;
-        margin: 0;
-        opacity: 0.8;
     }
 }
 
@@ -45,20 +33,12 @@
     display: flex;
     flex-direction: column;
     gap: 2rem;
+    margin-top: 2rem;
 }
 
 .Section {
-    background: $dark-blue;
     border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
     padding: 2rem;
-    
-    h2 {
-        color: $white;
-        font-size: 1.5rem;
-        margin-bottom: 1.5rem;
-        font-weight: 700;
-    }
 }
 
 .SectionHeader {
@@ -77,13 +57,39 @@
 .WorkingDay {
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 8px;
-    padding: 1.5rem;
-    background: rgba(255, 255, 255, 0.05);
+    padding: 1rem 1.5rem;
+    background: $dark-blue;
     transition: all 0.3s ease;
-    
+    backdrop-filter: blur(10px);
+
     &:hover {
-        border-color: $light-blue;
-        background: rgba(255, 255, 255, 0.08);
+        background: color.adjust($dark-blue, $lightness: 3%);
+    }
+    
+    &.ClosedDay {
+        border-color: rgba(235, 87, 87, 0.3);
+        background: rgba(235, 87, 87, 0.1);
+        
+        &:hover {
+            border-color: $red;
+            background: rgba(235, 87, 87, 0.15);
+        }
+    }
+}
+
+.ClosedStatus {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background: rgba(235, 87, 87, 0.1);
+    border-radius: 8px;
+    border: 1px solid rgba(235, 87, 87, 0.2);
+    
+    span {
+        color: $red;
+        font-weight: 600;
+        font-size: 1rem;
     }
 }
 
@@ -103,6 +109,54 @@
 .DayActions {
     display: flex;
     gap: 0.5rem;
+    align-items: center;
+}
+
+.ToggleButton {
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 80px;
+    
+    &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    &:active {
+        transform: translateY(0);
+    }
+}
+
+.OpenButton {
+    background: $green;
+    color: $white;
+    
+    &:hover {
+        background: color.adjust($green, $lightness: -10%);
+    }
+}
+
+.CloseButton {
+    background: $red;
+    color: $white;
+    
+    &:hover {
+        background: color.adjust($red, $lightness: -10%);
+    }
+}
+
+.AddButton {
+    background: $light-blue;
+    color: $white;
+    
+    &:hover {
+        background: color.adjust($light-blue, $lightness: -10%);
+    }
 }
 
 .TimeInputs {
@@ -162,6 +216,18 @@
     padding: 0.5rem 1rem;
     border-radius: 8px;
     font-size: 0.9rem;
+    
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        background: rgba(255, 255, 255, 0.1);
+        color: $light-gray;
+        
+        &:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: none;
+        }
+    }
 }
 
 .SaveButton {
@@ -309,11 +375,31 @@
             font-weight: 700;
         }
     }
+    
+    &.Closed {
+        background: rgba(128, 128, 128, 0.2);
+        color: $light-gray;
+        border-color: rgba(128, 128, 128, 0.3);
+        
+        .DayNumber {
+            color: $light-gray;
+            font-weight: 500;
+        }
+    }
 }
 
 .DayNumber {
     font-size: 1rem;
     font-weight: 500;
+}
+
+.ClosedLabel {
+    font-size: 0.7rem;
+    color: $light-gray;
+    font-weight: 500;
+    margin-top: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .RemoveHolidayButton {
@@ -460,5 +546,18 @@
     
     .ModalActions {
         flex-direction: column;
+    }
+}
+
+.OtherMonth {
+    opacity: 0.3;
+    color: #999;
+    
+    .DayNumber {
+      color: #999;
+    }
+    
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.05);
     }
 }

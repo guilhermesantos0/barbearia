@@ -1,18 +1,20 @@
 import { useUser } from '@contexts/UserContext';
 import style from './Times.module.scss';
 import { useEffect, useState } from 'react';
-//@ts-expect-error - API service import path resolution
+//@ts-expect-error
 import api from '@services/api';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { format, addDays, isSameDay, startOfMonth, endOfMonth, eachDayOfInterval, isWeekend } from 'date-fns';
+import { format, addDays, isSameDay, startOfMonth, endOfMonth, eachDayOfInterval, isWeekend, startOfWeek, endOfWeek, isSameMonth  } from 'date-fns';
 import { ptBR } from 'date-fns/locale/pt-BR';
-import { ChevronLeftIcon, ChevronRightIcon, PlusIcon, TrashIcon, CalendarIcon } from '@radix-ui/react-icons';
+import { ChevronLeftIcon, ChevronRightIcon, TrashIcon, CalendarIcon } from '@radix-ui/react-icons';
+import { toast } from 'react-toastify';
 
 interface WorkingHours {
     day: string;
-    open?: string;
-    close?: string;
+    open?: string | null;
+    close?: string | null;
     breaks?: { start: string; end: string }[];
+    _id?: string;
 }
 
 const Times = () => {
@@ -25,6 +27,16 @@ const Times = () => {
     const queryClient = useQueryClient();
 
     const daysOfWeek = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+    
+    const reverseDayMapping: Record<string, string> = {
+        'Domingo': 'domingo',
+        'Segunda': 'segunda-feira',
+        'Terça': 'terça-feira',
+        'Quarta': 'quarta-feira',
+        'Quinta': 'quinta-feira',
+        'Sexta': 'sexta-feira',
+        'Sábado': 'sábado'
+    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -81,25 +93,62 @@ const Times = () => {
     });
 
     const handleWorkingHoursChange = (day: string, field: 'open' | 'close', value: string) => {
+        const apiDayName = reverseDayMapping[day];
         const updatedHours = workingHours.map(wh => 
-            wh.day === day ? { ...wh, [field]: value } : wh
+            wh.day === apiDayName ? { ...wh, [field]: value } : wh
         );
         setWorkingHours(updatedHours);
     };
 
-    const handleAddWorkingDay = (day: string) => {
-        const newWorkingDay: WorkingHours = {
-            day,
-            open: '08:00',
-            close: '18:00',
-            breaks: []
-        };
-        setWorkingHours([...workingHours, newWorkingDay]);
+    const handleRemoveWorkingDay = (day: string) => {
+        const apiDayName = reverseDayMapping[day];
+        setWorkingHours(workingHours.filter(wh => wh.day !== apiDayName));
     };
 
-    const handleRemoveWorkingDay = (day: string) => {
-        setWorkingHours(workingHours.filter(wh => wh.day !== day));
+    const handleToggleDayStatus = (day: string) => {
+        if (!barbershopData?._id) {
+            toast.error('Dados da barbearia não carregados.');
+            return;
+        }
+    
+        const apiDayName = reverseDayMapping[day];
+        const existingDay = workingHours.find(wh => wh.day === apiDayName);
+    
+        let updatedHours: WorkingHours[];
+    
+        if (existingDay) {
+            if (existingDay.open === null || existingDay.close === null) {
+                updatedHours = workingHours.map(wh =>
+                    wh.day === apiDayName ? { ...wh, open: '08:00', close: '18:00' } : wh
+                );
+            } else {
+                updatedHours = workingHours.map(wh =>
+                    wh.day === apiDayName ? { ...wh, open: null, close: null } : wh
+                );
+            }
+        } else {
+            const newWorkingDay: WorkingHours = {
+                day: apiDayName,
+                open: '08:00',
+                close: '18:00',
+                breaks: []
+            };
+            updatedHours = [...workingHours, newWorkingDay];
+        }
+    
+        setWorkingHours(updatedHours);
+    
+        updateWorkingHoursMutation.mutate(updatedHours, {
+            onSuccess: () => {
+                toast.success('Alteração de status salva!');
+            },
+            onError: (err: any) => {
+                console.error('Erro ao salvar workingHours', err);
+                toast.error('Não foi possível salvar. Tente novamente.');
+            }
+        });
     };
+    
 
     const handleSaveWorkingHours = () => {
         updateWorkingHoursMutation.mutate(workingHours);
@@ -122,11 +171,22 @@ const Times = () => {
     const getCalendarDays = () => {
         const start = startOfMonth(selectedDate);
         const end = endOfMonth(selectedDate);
-        return eachDayOfInterval({ start, end });
+        
+        const calendarStart = startOfWeek(start, { weekStartsOn: 0 });
+        
+        const calendarEnd = endOfWeek(end, { weekStartsOn: 0 });
+        
+        return eachDayOfInterval({ start: calendarStart, end: calendarEnd });
     };
 
     const getWorkingDay = (day: string) => {
-        return workingHours.find(wh => wh.day === day);
+        const apiDayName = reverseDayMapping[day];
+        return workingHours.find(wh => wh.day === apiDayName);
+    };
+
+    const isDayClosed = (day: string) => {
+        const workingDay = getWorkingDay(day);
+        return workingDay && (workingDay.open === null || workingDay.close === null);
     };
 
     if (!isAllowed) {
@@ -144,72 +204,89 @@ const Times = () => {
         <div className={style.Container}>
             <div className={style.PageContent}>
                 <div className={style.Header}>
-                    <h1>Gerenciar Horários de Funcionamento</h1>
-                    <p>Configure os horários de funcionamento e feriados da barbearia</p>
+                    <h1 className={style.Title}>Horários de Funcionamento</h1>
                 </div>
 
                 <div className={style.Content}>
-                {/* Working Hours Section */}
                 <div className={style.Section}>
-                    <h2>Horários de Funcionamento</h2>
                     <div className={style.WorkingHours}>
                         {daysOfWeek.map(day => {
                             const workingDay = getWorkingDay(day);
                             const isEditing = editingDay === day;
+                            const isClosed = isDayClosed(day);
+                            const hasWorkingDay = !!workingDay;
 
                             return (
-                                <div key={day} className={style.WorkingDay}>
+                                <div key={day} className={`${style.WorkingDay} ${isClosed ? style.ClosedDay : ''}`}>
                                     <div className={style.DayHeader}>
                                         <span className={style.DayName}>{day}</span>
-                                        {workingDay ? (
-                                            <div className={style.DayActions}>
-                                                <button 
-                                                    onClick={() => setEditingDay(isEditing ? null : day)}
-                                                    className={style.EditButton}
-                                                >
-                                                    {isEditing ? 'Salvar' : 'Editar'}
-                                                </button>
-                                                <button 
-                                                    onClick={() => handleRemoveWorkingDay(day)}
-                                                    className={style.RemoveButton}
-                                                >
-                                                    <TrashIcon />
-                                                </button>
-                                            </div>
-                                        ) : (
-                                            <button 
-                                                onClick={() => handleAddWorkingDay(day)}
-                                                className={style.AddButton}
-                                            >
-                                                <PlusIcon /> Adicionar
-                                            </button>
-                                        )}
+                                        <div className={style.DayActions}>
+                                        <button
+                                            onClick={() => handleToggleDayStatus(day)}
+                                            className={`${style.ToggleButton} ${
+                                                !hasWorkingDay
+                                                    ? style.AddButton
+                                                    : isClosed
+                                                        ? style.OpenButton
+                                                        : style.CloseButton
+                                            }`}
+                                            disabled={updateWorkingHoursMutation.isLoading}
+                                        >
+                                            {!hasWorkingDay ? 'Adicionar' : isClosed ? 'Abrir' : 'Fechar'}
+                                        </button>
+
+                                            {hasWorkingDay && (
+                                                <>
+                                                    <button 
+                                                        onClick={() => setEditingDay(isEditing ? null : day)}
+                                                        className={style.EditButton}
+                                                        disabled={isClosed}
+                                                    >
+                                                        {isEditing ? 'Salvar' : 'Editar'}
+                                                    </button>
+                                                    <button 
+                                                        onClick={() => handleRemoveWorkingDay(day)}
+                                                        className={style.RemoveButton}
+                                                    >
+                                                        <TrashIcon />
+                                                    </button>
+                                                </>
+                                            )}
+                                        </div>
                                     </div>
 
                                     {workingDay && (
                                         <div className={style.TimeInputs}>
-                                            <div className={style.TimeInput}>
-                                                <label>Abertura:</label>
-                                                <input
-                                                    type="time"
-                                                    value={workingDay.open || ''}
-                                                    onChange={(e) => handleWorkingHoursChange(day, 'open', e.target.value)}
-                                                    disabled={!isEditing}
-                                                />
-                                            </div>
-                                            <div className={style.TimeInput}>
-                                                <label>Fechamento:</label>
-                                                <input
-                                                    type="time"
-                                                    value={workingDay.close || ''}
-                                                    onChange={(e) => handleWorkingHoursChange(day, 'close', e.target.value)}
-                                                    disabled={!isEditing}
-                                                />
-                                            </div>
+                                            {isClosed ? (
+                                                <div className={style.ClosedStatus}>
+                                                    <span>Fechado</span>
+                                                </div>
+                                            ) : (
+                                                <>
+                                                    <div className={style.TimeInput}>
+                                                        <label>Abertura:</label>
+                                                        <input
+                                                            type="time"
+                                                            value={workingDay.open || ''}
+                                                            onChange={(e) => handleWorkingHoursChange(day, 'open', e.target.value)}
+                                                            disabled={!isEditing}
+                                                        />
+                                                    </div>
+                                                    <div className={style.TimeInput}>
+                                                        <label>Fechamento:</label>
+                                                        <input
+                                                            type="time"
+                                                            value={workingDay.close || ''}
+                                                            onChange={(e) => handleWorkingHoursChange(day, 'close', e.target.value)}
+                                                            disabled={!isEditing}
+                                                        />
+                                                    </div>
+                                                </>
+                                            )}
                                         </div>
                                     )}
 
-                                    {isEditing && (
+                                    {isEditing && !isClosed && (
                                         <button 
                                             onClick={handleSaveWorkingHours}
                                             className={style.SaveButton}
@@ -224,7 +301,6 @@ const Times = () => {
                     </div>
                 </div>
 
-                {/* Holidays Section */}
                 <div className={style.Section}>
                     <div className={style.SectionHeader}>
                         <h2>Feriados e Dias de Fechamento</h2>
@@ -260,46 +336,56 @@ const Times = () => {
                                 ))}
                             </div>
                             <div className={style.CalendarDays}>
-                                {getCalendarDays().map(date => {
-                                    const isHolidayDate = isHoliday(date);
-                                    const isWeekendDay = isWeekend(date);
-                                    const isToday = isSameDay(date, new Date());
-                                    const isSelected = isSameDay(date, selectedDate);
+                            {getCalendarDays().map(date => {
+                                const isHolidayDate = isHoliday(date);
+                                const isToday = isSameDay(date, new Date());
+                                const isSelected = isSameDay(date, selectedDate);
+                                const isCurrentMonth = isSameMonth(date, selectedDate);
+                                
+                                const dayName = format(date, 'EEEE', { locale: ptBR });
+                                const dayNameCapitalized = dayName.charAt(0).toUpperCase() + dayName.slice(1);
+                                const isClosedDay = isDayClosed(dayNameCapitalized);
 
-                                    return (
-                                        <div 
-                                            key={date.toString()}
-                                            className={`${style.CalendarDay} ${
-                                                isHolidayDate ? style.Holiday : ''
-                                            } ${isWeekendDay ? style.Weekend : ''} ${
-                                                isToday ? style.Today : ''
-                                            } ${isSelected ? style.Selected : ''}`}
-                                            onClick={() => setSelectedDate(date)}
-                                        >
-                                            <span className={style.DayNumber}>
-                                                {format(date, 'd')}
-                                            </span>
-                                            {isHolidayDate && (
-                                                <button
-                                                    onClick={(e) => {
-                                                        e.stopPropagation();
-                                                        handleRemoveHoliday(format(date, 'yyyy-MM-dd'));
-                                                    }}
-                                                    className={style.RemoveHolidayButton}
-                                                >
-                                                    <TrashIcon />
-                                                </button>
-                                            )}
-                                        </div>
-                                    );
-                                })}
+                                return (
+                                    <div 
+                                        key={date.toString()}
+                                        className={`${style.CalendarDay} ${
+                                            isHolidayDate ? style.Holiday : ''
+                                        } ${
+                                            isToday ? style.Today : ''
+                                        } ${isSelected ? style.Selected : ''} ${
+                                            isClosedDay ? style.Closed : ''
+                                        } ${
+                                            !isCurrentMonth ? style.OtherMonth : ''
+                                        }`}
+                                        onClick={() => setSelectedDate(date)}
+                                    >
+                                        <span className={style.DayNumber}>
+                                            {format(date, 'd')}
+                                        </span>
+                                        {isHolidayDate && (
+                                            <button
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleRemoveHoliday(format(date, 'yyyy-MM-dd'));
+                                                }}
+                                                className={style.RemoveHolidayButton}
+                                            >
+                                                <TrashIcon />
+                                            </button>
+                                        )}
+                                        {isClosedDay && !isHolidayDate && (
+                                            <span className={style.ClosedLabel}>Fechado</span>
+                                        )}
+                                    </div>
+                                );
+                            })}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            {/* Holiday Modal */}
             {showHolidayModal && (
                 <div className={style.ModalOverlay}>
                     <div className={style.Modal}>

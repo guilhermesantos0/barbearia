@@ -159,7 +159,7 @@
                                 .ExpandedContent {
                                     backdrop-filter: blur(10px);
                                     border-top: 1px solid rgba(47, 128, 237, 0.3);
-                                    padding: 2.5rem;
+                                    padding: 2.5rem 1.5rem;
                                     border-radius: 0 0 12px 12px;
                                     box-shadow: 
                                         0 8px 32px rgba(0, 0, 0, 0.4),
@@ -251,12 +251,28 @@
                                                     box-shadow: 0 0 8px $light-blue;
                                                 }
                                             }
-                                        
-                                            p {
-                                                font-size: 0.9rem;
-                                                color: $light-gray;
-                                                margin: 0;
-                                                line-height: 1.4;
+
+                                            .Conditions {
+                                                display: flex;
+                                                flex-wrap: wrap;
+                                                justify-content: space-evenly;
+
+                                                .Condition {
+                                                    display: flex;
+                                                    gap: .5rem;
+                                                    width: 50%;
+
+                                                    .Input {
+                                                        background: transparent;
+                                                        border: 0;
+                                                        color: $white;
+                                                        width: 6rem;
+
+                                                        position: relative;
+
+
+                                                    }
+                                                }
                                             }
                                         }
                                     }
@@ -268,6 +284,40 @@
             }
         }
     }
+}
+
+.Checkbox {
+
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    .CheckboxRoot {
+        all: unset;
+        width: 20px;
+        height: 20px;
+        background-color: #111C44;
+        border: 2px solid #2F80ED;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: box-shadow 0.3s;
+    }
+
+    .CheckboxIndicator {
+        color: #2F80ED;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        width: 20px;
+        height: 20px;
+    }
+
+    .Label {
+        font-size: 1.2rem;
+        color: $white;
+    }
+    
 }
 
 .ViewPortClassName {

@@ -11,6 +11,7 @@ import { icon, IconProp } from '@fortawesome/fontawesome-svg-core';
 import { SelectMenu } from '@components/SelectMenu';
 import * as Checkbox from '@radix-ui/react-checkbox';
 import { CheckIcon } from '@radix-ui/react-icons';
+import DatePicker from '@components/DatePicker';
 
 interface ConditionValue {
     type: string,
@@ -44,6 +45,14 @@ const AdminPlans = () => {
         },
         enabled: isAllowed
     })
+
+    useEffect(() => {
+        premiumPlans?.forEach((plan) => {
+            plan.benefits.forEach((benefit) => {
+                console.log(`${plan.name}_${benefit.label} - ${JSON.stringify(benefit.conditions)}`)
+            })
+        })
+    }, [premiumPlans])
 
     /* 
         'percentage': 'percentage' as IconProp,
@@ -192,28 +201,47 @@ const AdminPlans = () => {
                                                                                 <div className={style.DetailsGrid}>
                                                                                     <section className={style.DetailSection}>
                                                                                         <h4>Condições</h4>
-                                                                                        {
-                                                                                            Object.entries(conditionsArray).map(([k, v]) => (
-                                                                                                <div className={style.Condition}>
-                                                                                                    <div className={style.Checkbox}>
-                                                                                                        <Checkbox.Root
-                                                                                                            checked={!!benefit.conditions[k]}
-                                                                                                            onCheckedChange={() => toggleCondition(k)}
-                                                                                                            id={k}
-                                                                                                            name={k}
-                                                                                                        >
-                                                                                                            <Checkbox.Indicator className={style.CheckboxIndicator}>
-                                                                                                                <CheckIcon width={16} height={16} />
-                                                                                                            </Checkbox.Indicator>
-                                                                                                        </Checkbox.Root>
-                                                                                                        
-                                                                                                        <label htmlFor={k}>{v.label}</label>
+                                                                                        <div className={style.Conditions}>
+                                                                                            {
+                                                                                                Object.entries(conditionsArray).map(([k, v]) => (
+                                                                                                    <div className={style.Condition}>
+                                                                                                        <div className={style.Checkbox}>
+                                                                                                            <Checkbox.Root
+                                                                                                                className={style.CheckboxRoot}
+                                                                                                                checked={!!benefit.conditions[k]}
+                                                                                                                onCheckedChange={() => toggleCondition(k)}
+                                                                                                                id={k}
+                                                                                                                name={k}
+                                                                                                            >
+                                                                                                                <Checkbox.Indicator className={style.CheckboxIndicator}>
+                                                                                                                    <CheckIcon width={16} height={16} />
+                                                                                                                </Checkbox.Indicator>
+                                                                                                            </Checkbox.Root>
+                                                                                                            
+                                                                                                            <label htmlFor={k}>{v.label}</label>
+                                                                                                        </div>
+                                                                                                        {
+                                                                                                            v.type === 'date' && (
+                                                                                                                <DatePicker />
+                                                                                                            )
+                                                                                                        }
+                                                                                                        {
+                                                                                                            k === 'appliesTo' && (
+                                                                                                                <SelectMenu options={appliesToOptions} value={benefit.conditions.appliesTo ?? ''} onChange={handleChangeType} />
+                                                                                                            )
+                                                                                                        }
+                                                                                                        {
+                                                                                                            k === 'maxUsesPerMonth' || k === 'durationDays' && (
+                                                                                                                <>
+                                                                                                                    { console.log(benefit.conditions[k]) }
+                                                                                                                    <input type={v.type} value={benefit.conditions[k] ?? ''} className={style.Input} />
+                                                                                                                </>
+                                                                                                            )
+                                                                                                        }
                                                                                                     </div>
-                                                                                                    <input type={v.type} value={benefit.conditions[k] ?? ''} />
-                                                                                                </div>
-                                                                                            ))
-                                                                                        }
-
+                                                                                                ))
+                                                                                            }
+                                                                                        </div>
                                                                                     </section>
                                                                                 </div>
                                                                             </div>

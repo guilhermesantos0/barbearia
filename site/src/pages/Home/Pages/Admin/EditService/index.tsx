@@ -177,18 +177,14 @@ const EditService = () => {
                                     setPriceInput(e.target.value);
                                 }} 
                                 onBlur={(e) => {
-                                    // Parse the input and update the service data
                                     const rawValue = e.target.value.replace(/[^\d,.]/g, '');
                                     let numericValue = 0;
                                     
                                     if (rawValue.includes(',')) {
-                                        // Brazilian format: 10,50 -> 10.50
                                         numericValue = parseFloat(rawValue.replace(',', '.')) || 0;
                                     } else if (rawValue.includes('.')) {
-                                        // International format: 10.50 -> 10.50
                                         numericValue = parseFloat(rawValue) || 0;
                                     } else if (rawValue) {
-                                        // Only numbers: 1050 -> 10.50 (treating as cents)
                                         numericValue = parseFloat(rawValue) / 100;
                                     }
                                     

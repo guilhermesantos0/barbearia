@@ -114,6 +114,12 @@ const CostumerHistory = () => {
             )
         }
 
+        if (filteredService) {
+            updatedHistory = updatedHistory.filter(
+                service => service.service._id === filteredService
+            )
+        }
+
         if (period && period !=='full') {
             const now = new Date();
             const cutoffDate = new Date(now);

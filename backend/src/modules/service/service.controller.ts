@@ -1,7 +1,8 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Request, UseGuards } from '@nestjs/common';
 import { ServiceService } from './service.service';
 import { Service } from './schemas/service.schema';
 import { UpdateServiceDto } from './dto/update-service.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('/services')
 export class ServiceController {
@@ -22,14 +23,16 @@ export class ServiceController {
         return this.serviceService.findById(id);
     }
 
+    @UseGuards(AuthGuard('jwt'))
     @Put(':id')
-    async update(@Param('id') id: string, @Body() updateServiceDto: UpdateServiceDto) {
-        return this.serviceService.update(id, updateServiceDto);
+    async update(@Request() req, @Param('id') id: string, @Body() updateServiceDto: UpdateServiceDto) {
+        return this.serviceService.update(id, updateServiceDto, req.user.sub);
     }
-
+    
+    @UseGuards(AuthGuard('jwt'))
     @Patch(':id/status')
-    async updateStatus(@Param('id') id: string, @Body() UpdateServiceDto: UpdateServiceDto) {
-        return this.serviceService.updateStatus(id, UpdateServiceDto);
+    async updateStatus(@Request() req, @Param('id') id: string, @Body() UpdateServiceDto: UpdateServiceDto) {
+        return this.serviceService.updateStatus(id, UpdateServiceDto, req.user.sub);
     }
 
     @Delete(':id')

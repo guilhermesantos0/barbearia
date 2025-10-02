@@ -15,10 +15,12 @@ interface TimePickerRadixProps {
     minH?: number;
     minM?: number;
     maxH?: number;
-    maxM?: number
+    maxM?: number;
+
+    className?: string;
 }
 
-const TimePicker:React.FC<TimePickerRadixProps> = ({ value, onChange, label, defaultOptions, inModal, minH = 0, minM = 0, maxH = 24, maxM = 60 }) => {
+const TimePicker:React.FC<TimePickerRadixProps> = ({ value, onChange, label, defaultOptions, inModal, minH = 0, minM = 0, maxH = 24, maxM = 60, className }) => {
     const generateTimes = () => {
         if (defaultOptions) return defaultOptions
 
@@ -34,9 +36,6 @@ const TimePicker:React.FC<TimePickerRadixProps> = ({ value, onChange, label, def
     };
 
     const times = generateTimes();
-
-    console.log(`times: ${times}`)
-    console.log(`value: ${value}`)
 
     return (
         <div className={`${style.TimePickerContainer} ${inModal ? style.ModalContext  : ''}`}>

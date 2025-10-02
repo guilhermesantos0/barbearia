@@ -52,6 +52,8 @@
         border: 1px solid $light-blue;
         border-radius: 5px;
 
+        z-index: 1001;
+
         .CalendarHeader {
             display: flex;
             justify-content: space-between;

@@ -3,27 +3,30 @@ import style from './Plans.module.scss';
 import { useEffect, useState } from 'react';
 // @ts-ignore
 import api from '@services/api';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { IPlan } from '@types/Plan';
-import { formatPrice } from '@utils/formatPrice';
-import { icon, IconProp } from '@fortawesome/fontawesome-svg-core';
-import { SelectMenu } from '@components/SelectMenu';
-import * as Checkbox from '@radix-ui/react-checkbox';
-import { CheckIcon } from '@radix-ui/react-icons';
-import DatePicker from '@components/DatePicker';
+// @ts-ignore
+import { IPlan, IBenefit } from '@types/Plan';
+
+import AdminPlan from '@components/AdminPlan';
 
 interface ConditionValue {
     type: string,
     label: string
 }
 
-const AdminPlans = () => {
+interface BenefitConditions {
+    appliesTo?: string;
+    maxUsesPerMonth?: number;
+    expiresAt?: string;
+    durationDays?: number;
+}
 
+const AdminPlans = () => {
+    
     const { user } = useUser();
     const [isAllowed, setIsAllowed] = useState<boolean>(false);
-
-    const [expandedBenefit, setExpandedBenefit] = useState<string | null>(null);
+    const queryClient = useQueryClient();
 
     const [searchValue, setSearchValue] = useState<string>();
 
@@ -48,60 +51,11 @@ const AdminPlans = () => {
 
     useEffect(() => {
         premiumPlans?.forEach((plan) => {
-            plan.benefits.forEach((benefit) => {
+            plan.benefits.forEach((benefit: IBenefit) => {
                 console.log(`${plan.name}_${benefit.label} - ${JSON.stringify(benefit.conditions)}`)
             })
         })
     }, [premiumPlans])
-
-    /* 
-        'percentage': 'percentage' as IconProp,
-        'fixed_value': 'dollar-sign' as IconProp,
-        'free_service': 'scissors' as IconProp,
-        'free_courtesy': 'gift' as IconProp,
-        'free_extra_service': 'star' as IconProp,
-        'other_plan_benefits' : 'medal' as IconProp,
-        'free_barbershop_products': 'pump-soap' as IconProp
-    */
-
-    
-    const typeOptions = [
-        {
-            label: 'Porcentagem',
-            value: 'percentage',
-            icon: <FontAwesomeIcon icon="percentage" />
-        },
-        {
-            label: 'Valor Fixo',
-            value: 'fixed_value',
-            icon: <FontAwesomeIcon icon="dollar-sign" />
-        },
-        {
-            label: 'Serviço Grátis',
-            value: 'free_service',
-            icon: <FontAwesomeIcon icon="scissors" />
-        },
-        {
-            label: 'Cortesia',
-            value: 'free_courtesy',
-            icon: <FontAwesomeIcon icon="gift" />
-        },
-        {
-            label: 'Serviço Extra Grátis',
-            value: 'free_extra_service',
-            icon: <FontAwesomeIcon icon="star" />
-        },
-        {
-            label: 'Outros Benefícios',
-            value: 'other_plan_benefits',
-            icon: <FontAwesomeIcon icon="medal" />
-        },
-        {
-            label: 'Produtos da Barbearia',
-            value: 'free_barbershop_products',
-            icon: <FontAwesomeIcon icon="pump-soap" />
-        }
-    ];
 
     const appliesToOptions = [
         {
@@ -122,7 +76,6 @@ const AdminPlans = () => {
         }
     ]
 
-    // const conditionsArray = ['appliesTo', 'maxUsesPerMonth', 'expiresAt', 'durationDays']
     const conditionsArray: Record<string, ConditionValue> = {
         appliesTo: { type: 'string', label: 'Aplica Para:' },
         maxUsesPerMonth: { type: 'number', label: 'Usos /mês' },
@@ -130,13 +83,22 @@ const AdminPlans = () => {
         durationDays: { type: 'number', label: 'Duração (dias)' }
     };
 
-    const handleChangeType = () => {
-
+    const handleChangeType = (value: string | undefined) => {
+        console.log('Type changed to:', value);
     }
 
-    const toggleCondition = (key) => {
-        console.log(key)
-    };
+    const handleConditionChange = async (planId: string, benefitId: string, key: keyof BenefitConditions, value: any) => {
+        try {
+            const response = await api.patch(`/plans/${planId}/benefits/${benefitId}/conditions`, {
+                [key]: value
+            });
+            if (response.status === 200) {
+                queryClient.invalidateQueries(['premiumplans', user?.sub]);
+            }
+        } catch (error) {
+            console.error('Error updating condition:', error);
+        }
+    }
 
     return (
         <div className={style.Container}>
@@ -146,116 +108,13 @@ const AdminPlans = () => {
                         <h1>Planos de Assinatura</h1>
                         <div className={style.DisplayContent}>
                             <div className={style.TopOptions}>
-                                <input type="text" className={style.SearchBox} value={searchValue} onChange={(e) => setSearchValue(e.target.value)} />
+                                <input type="text" className={style.SearchBox} value={searchValue} placeholder='Pesquise por um plano...' onChange={(e) => setSearchValue(e.target.value)} />
                                 <button className={style.AddPlan}><FontAwesomeIcon icon='plus' /> Adicionar Plano</button>
                             </div>
                             <div className={style.Plans}>
                                 {
-                                    premiumPlans?.length > 0 && premiumPlans?.map((plan) => (
-                                        <div key={plan._id} className={style.Plan}>
-                                            <div className={style.TopSection}>
-                                                <FontAwesomeIcon icon='crown' className={style.Icon} />
-                                                <div className={style.MainText}>
-                                                    <h3 className={style.Title}>{plan.name}</h3>
-                                                    <h4 className={style.Subtitle}>{plan.description}</h4>
-                                                    <h4 className={style.Price}>{formatPrice(plan.price)}</h4>
-                                                </div>
-                                            </div>
-                                            <div className={style.BottomSection}>
-                                                <div className={style.BenefitsLabel}>
-                                                    <h3>Benefícios do plano:</h3>
-                                                    <button className={style.AddBenefit}><FontAwesomeIcon icon='plus' className={style.Icon} /> Adicionar Benefício</button>
-                                                </div>
-                                                <div className={style.Benefits}>
-                                                    {
-                                                        plan.benefits.length > 0 && plan.benefits.map((benefit) => {
-                                                            const isExpanded = expandedBenefit ===  benefit._id;
-
-                                                            return (
-                                                                <div key={benefit._id} className={style.Benefit} onClick={() => setExpandedBenefit(isExpanded ? null : benefit._id)}>
-                                                                    <div className={style.ExhibitionArea}>
-                                                                        <div className={style.LeftContent}>
-                                                                            <FontAwesomeIcon 
-                                                                                icon={{
-                                                                                    'percentage': 'percentage' as IconProp,
-                                                                                    'fixed_value': 'dollar-sign' as IconProp,
-                                                                                    'free_service': 'scissors' as IconProp,
-                                                                                    'free_courtesy': 'gift' as IconProp,
-                                                                                    'free_extra_service': 'star' as IconProp,
-                                                                                    'other_plan_benefits' : 'medal' as IconProp,
-                                                                                    'free_barbershop_products': 'pump-soap' as IconProp
-                                                                                }[benefit.type] || 'question'} 
-
-                                                                                className={style[benefit.type]}
-                                                                            />
-                                                                            <h4>{benefit.label}</h4>
-                                                                        </div>
-                                                                        <div className={style.RightContent}>
-                                                                            <SelectMenu freePosition className={style.SelectMenu} options={typeOptions} onChange={handleChangeType} value={benefit.type} viewPortClassName={style.ViewPortClassName} />
-                                                                            <FontAwesomeIcon icon='pencil' className={style.Edit} onClick={(e) => e.stopPropagation()} />
-                                                                        </div>
-                                                                    </div>
-                                                                    {
-                                                                        isExpanded && (
-                                                                            <div className={style.ExpandedContent} onClick={(e) => e.stopPropagation()}>
-                                                                                <div className={style.DetailsGrid}>
-                                                                                    <section className={style.DetailSection}>
-                                                                                        <h4>Condições</h4>
-                                                                                        <div className={style.Conditions}>
-                                                                                            {
-                                                                                                Object.entries(conditionsArray).map(([k, v]) => (
-                                                                                                    <div className={style.Condition}>
-                                                                                                        <div className={style.Checkbox}>
-                                                                                                            <Checkbox.Root
-                                                                                                                className={style.CheckboxRoot}
-                                                                                                                checked={!!benefit.conditions[k]}
-                                                                                                                onCheckedChange={() => toggleCondition(k)}
-                                                                                                                id={k}
-                                                                                                                name={k}
-                                                                                                            >
-                                                                                                                <Checkbox.Indicator className={style.CheckboxIndicator}>
-                                                                                                                    <CheckIcon width={16} height={16} />
-                                                                                                                </Checkbox.Indicator>
-                                                                                                            </Checkbox.Root>
-                                                                                                            
-                                                                                                            <label htmlFor={k}>{v.label}</label>
-                                                                                                        </div>
-                                                                                                        {
-                                                                                                            v.type === 'date' && (
-                                                                                                                <DatePicker />
-                                                                                                            )
-                                                                                                        }
-                                                                                                        {
-                                                                                                            k === 'appliesTo' && (
-                                                                                                                <SelectMenu options={appliesToOptions} value={benefit.conditions.appliesTo ?? ''} onChange={handleChangeType} />
-                                                                                                            )
-                                                                                                        }
-                                                                                                        {
-                                                                                                            k === 'maxUsesPerMonth' || k === 'durationDays' && (
-                                                                                                                <>
-                                                                                                                    { console.log(benefit.conditions[k]) }
-                                                                                                                    <input type={v.type} value={benefit.conditions[k] ?? ''} className={style.Input} />
-                                                                                                                </>
-                                                                                                            )
-                                                                                                        }
-                                                                                                    </div>
-                                                                                                ))
-                                                                                            }
-                                                                                        </div>
-                                                                                    </section>
-                                                                                </div>
-                                                                            </div>
-                                                                        )
-                                                                    }
-                                                                </div>
-                                                            )
-                                                        })
-                                                    }
-                                                </div>
-                                            </div>
-
-                                            
-                                        </div>
+                                    premiumPlans && premiumPlans.length > 0 && premiumPlans.map((plan) => (
+                                        <AdminPlan plan={plan} key={plan._id} />
                                     ))
                                 }
                             </div>

@@ -4,10 +4,12 @@ import { ServiceController } from './service.controller';
 import { ServiceService } from './service.service';
 
 import { Service, ServiceSChema } from './schemas/service.schema';
+import { LogsModule } from '../logs/logs.module';
 
 @Module({
     imports: [
-        MongooseModule.forFeature([{ name: Service.name, schema: ServiceSChema }])
+        MongooseModule.forFeature([{ name: Service.name, schema: ServiceSChema }]),
+        LogsModule
     ],
     controllers: [ServiceController],
     providers: [ServiceService],

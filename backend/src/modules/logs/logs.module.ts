@@ -10,6 +10,7 @@ import { CommonModule } from 'src/common/common.module';
         MongooseModule.forFeature([{ name: Log.name, schema: LogSchema }])
     ],
     controllers: [LogsController],
-    providers: [LogsService]
+    providers: [LogsService],
+    exports: [LogsService]
 })
 export class LogsModule {}

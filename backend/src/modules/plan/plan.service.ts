@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 
 import { Plan, PlanDocument } from './schemas/plan.schema';
 import { Model } from 'mongoose';
+import { UpdatePlanDto } from './dto/update-plan.dto';
 
 @Injectable()
 export class PlanService {
@@ -49,7 +50,22 @@ export class PlanService {
         return this.planModel.findByIdAndDelete(id).exec();
     }
 
-    async reset() {
-        
+    async updateStatus(id: string, data: UpdatePlanDto): Promise<Plan | null> {
+        return this.planModel.findByIdAndUpdate(id, data, { new: true }).exec();
+    }
+
+    async updateBenefitConditions(planId: string, benefitId: string, conditions: any): Promise<Plan | null> {
+        return this.planModel.findOneAndUpdate(
+            { 
+                _id: planId,
+                'benefits._id': benefitId 
+            },
+            { 
+                $set: { 
+                    'benefits.$.conditions': conditions 
+                } 
+            },
+            { new: true }
+        ).exec();
     }
 }

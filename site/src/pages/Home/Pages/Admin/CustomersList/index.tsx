@@ -103,102 +103,102 @@ const CustomersList = () => {
                                 <div className={style.HeaderCell}>Cadastrado</div>
                                 <div className={style.HeaderCell}>Ações</div>
                             </div>
-                        </div>
+                            <div className={style.TableBody}>
+                                { customers && customers.map((customer: IUser) => {
+                                    const statusInfo = calculateStatus(customer);
+                                    const isExpanded = expandedCustomer === customer._id;
 
-                        <div className={style.TableBody}>
-                            { customers && customers.map((customer: IUser) => {
-                                const statusInfo = calculateStatus(customer);
-                                const isExpanded = expandedCustomer === customer._id;
-
-                                return (
-                                    <div key={customer._id} className={style.TableRow} onClick={() => setExpandedCustomer(isExpanded ? null : customer._id)}>
-                                        <div className={style.RowContent}>
-                                            <div className={style.Cell}>
-                                                <div className={style.ProfilePic}>
-                                                    {customer.profilePic ? (
-                                                        <img src={customer.profilePic} alt={customer.name} />
-                                                    ) : (
-                                                        <FontAwesomeIcon icon="user" />
-                                                    )}
-                                                </div>
-                                            </div>
-
-                                            <div className={style.Cell}>
-                                                <span className={style.BarberName}>{customer.name}</span>
-                                            </div>
-
-                                            <div className={style.Cell}>
-                                                <span className={style.Email}>{customer.email}</span>
-                                            </div>
-
-                                            <div className={style.Cell}>
-                                                <span className={style.Phone}>{formatPhoneNumber(customer.phone)}</span>
-                                            </div>
-
-                                            <div className={style.Cell}>
-                                                <span className={`${style.Status} ${style[statusInfo.color]}`}>
-                                                    {statusInfo.status}
-                                                </span>
-                                            </div>
-
-                                            <div className={style.Cell}>
-                                                <span className={style.Email}>{formatDate(customer.createdAt)}</span>
-                                            </div>
-
-                                            <div className={style.Cell}>
-                                                <div className={style.Actions} onClick={(e) => e.stopPropagation()}>
-                                                    <SelectMenu
-                                                        options={actionOptions}
-                                                        placeholder=""
-                                                        value=""
-                                                        onChange={(value) => value && handleAction(value, customer)}
-                                                        className={style.ActionMenu}
-                                                        viewPortClassName={style.ViewPortClassName}
-                                                    />
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        {isExpanded && (
-                                            <div className={style.ExpandedContent}>
-                                                <div className={style.DetailsGrid}>
-                                                    <div className={style.DetailSection}>
-                                                        <h4>Resumo de Agendamentos ({customer.history ? customer.history.length : 0})</h4>
-                                                        <div className={style.SummaryRow}>
-                                                            <div className={style.SummaryItem}>
-                                                                <FontAwesomeIcon icon="calendar-check" />
-                                                                <span>{customer.history ? customer.history.length : 0} agendamentos</span>
-                                                            </div>
-                                                            <div className={style.SummaryItem}>
-                                                                <FontAwesomeIcon icon="coins" />
-                                                                <span>{formatPrice((customer.history || []).reduce((acc: number, s: IScheduledService) => acc + (s.service?.price || 0) - (s.discountApplied || 0), 0))}</span>
-                                                            </div>
-                                                        </div>
-                                                        {customer.history && customer.history.length > 0 ? (
-                                                            <div className={style.ServicesList}>
-                                                                {customer.history.slice(0, 5).map((appt: IScheduledService) => (
-                                                                    <div key={appt._id} className={style.IntervalItem}>
-                                                                        <span className={style.IntervalName}>
-                                                                            {formatDate(appt.date)}
-                                                                        </span>
-                                                                        <span className={style.IntervalTime}>
-                                                                            {appt.service?.name || '-'} · {appt.barber?.name || '-'} · {appt.status}
-                                                                        </span>
-                                                                    </div>
-                                                                ))}
-                                                            </div>
+                                    return (
+                                        <div key={customer._id} className={style.TableRow} onClick={() => setExpandedCustomer(isExpanded ? null : customer._id)}>
+                                            <div className={style.RowContent}>
+                                                <div className={style.Cell}>
+                                                    <div className={style.ProfilePic}>
+                                                        {customer.profilePic ? (
+                                                            <img src={customer.profilePic} alt={customer.name} />
                                                         ) : (
-                                                            <p>Nenhum agendamento</p>
+                                                            <FontAwesomeIcon icon="user" />
                                                         )}
                                                     </div>
                                                 </div>
-                                            </div>
-                                        )}
-                                    </div>
-                                )
-                            }) }
 
+                                                <div className={style.Cell}>
+                                                    <span className={style.BarberName}>{customer.name}</span>
+                                                </div>
+
+                                                <div className={style.Cell}>
+                                                    <span className={style.Email}>{customer.email}</span>
+                                                </div>
+
+                                                <div className={style.Cell}>
+                                                    <span className={style.Phone}>{formatPhoneNumber(customer.phone)}</span>
+                                                </div>
+
+                                                <div className={style.Cell}>
+                                                    <span className={`${style.Status} ${style[statusInfo.color]}`}>
+                                                        {statusInfo.status}
+                                                    </span>
+                                                </div>
+
+                                                <div className={style.Cell}>
+                                                    <span className={style.Email}>{formatDate(customer.createdAt)}</span>
+                                                </div>
+
+                                                <div className={style.Cell}>
+                                                    <div className={style.Actions} onClick={(e) => e.stopPropagation()}>
+                                                        <SelectMenu
+                                                            options={actionOptions}
+                                                            placeholder=""
+                                                            value=""
+                                                            onChange={(value) => value && handleAction(value, customer)}
+                                                            className={style.ActionMenu}
+                                                            viewPortClassName={style.ViewPortClassName}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {isExpanded && (
+                                                <div className={style.ExpandedContent}>
+                                                    <div className={style.DetailsGrid}>
+                                                        <div className={style.DetailSection}>
+                                                            <h4>Resumo de Agendamentos ({customer.history ? customer.history.length : 0})</h4>
+                                                            <div className={style.SummaryRow}>
+                                                                <div className={style.SummaryItem}>
+                                                                    <FontAwesomeIcon icon="calendar-check" />
+                                                                    <span>{customer.history ? customer.history.length : 0} agendamentos</span>
+                                                                </div>
+                                                                <div className={style.SummaryItem}>
+                                                                    <FontAwesomeIcon icon="coins" />
+                                                                    <span>{formatPrice((customer.history || []).reduce((acc: number, s: IScheduledService) => acc + (s.service?.price || 0) - (s.discountApplied || 0), 0))}</span>
+                                                                </div>
+                                                            </div>
+                                                            {customer.history && customer.history.length > 0 ? (
+                                                                <div className={style.ServicesList}>
+                                                                    {customer.history.slice(0, 5).map((appt: IScheduledService) => (
+                                                                        <div key={appt._id} className={style.IntervalItem}>
+                                                                            <span className={style.IntervalName}>
+                                                                                {formatDate(appt.date)}
+                                                                            </span>
+                                                                            <span className={style.IntervalTime}>
+                                                                                {appt.service?.name || '-'} · {appt.barber?.name || '-'} · {appt.status}
+                                                                            </span>
+                                                                        </div>
+                                                                    ))}
+                                                                </div>
+                                                            ) : (
+                                                                <p>Nenhum agendamento</p>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
+                                    )
+                                }) }
+
+                            </div>
                         </div>
+
                     </div>
                 ) : (
                     <div className={style.AccessDenied}>

@@ -10,12 +10,13 @@ interface Detail {
 }
 
 interface DetailsSectionProps {
-    details: Detail[]
+    details: Detail[],
+    className?: string
 }
 
-const DetailsSection:React.FC<DetailsSectionProps> = ({ details }) => {
+const DetailsSection:React.FC<DetailsSectionProps> = ({ details, className }) => {
     return (
-        <div className={style.Container}>
+        <div className={`${style.Container} ${className ? className : ''}`}>
             {
                 details.map((detail, idx) => (
                     <span key={idx} className={style.Detail}>

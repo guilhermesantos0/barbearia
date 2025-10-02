@@ -17,7 +17,11 @@ const BarberConfirmSchedules = () => {
         if(user) {
             const unConfirmedScheduled = await api.get(`/scheduledservices/${(user as any).sub}/unconfirmed`);
             console.log(unConfirmedScheduled.data)
-            setPendingSchedules(unConfirmedScheduled.data);
+            // Sort by appointment date (ascending - earliest first)
+            const sortedSchedules = unConfirmedScheduled.data.sort((a: IScheduledService, b: IScheduledService) => 
+                new Date(a.date).getTime() - new Date(b.date).getTime()
+            );
+            setPendingSchedules(sortedSchedules);
         }
     }
 

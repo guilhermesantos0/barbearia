@@ -1,0 +1,56 @@
+@use '@assets/scss/variables' as *;
+@use '@assets/scss/mixins' as *;
+@use 'sass:color';
+
+.Benefit {
+    background: $bg-color;
+    padding: .5rem 1.5rem;
+    border-radius: 8px;
+
+    .ExhibitionArea {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        animation: slideDown .4s ease;
+
+        .LeftContent {
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+
+            .percentage { color: $green; };
+            .fixed_value { color: $purple };
+            .free_service { color: $light-blue; };
+            .free_courtesy { color: $orange; };
+            .free_extra_service { color: $yellow; };
+            .other_plan_benefits { color: $cyan; };
+            .free_barbershop_products { color: $pink; }
+        }
+
+        .RightContent {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+
+            .SelectMenu {
+                border: 0;
+                width: 15rem;
+                background: $bg-color;
+
+                &:hover {
+                    transform: translateY(0);
+                }
+            }
+
+            .Edit {
+                transition: color .2s ease;
+
+                &:hover {
+                    cursor: pointer;
+                    color: $light-blue;
+                }
+            }
+        }
+    }
+}

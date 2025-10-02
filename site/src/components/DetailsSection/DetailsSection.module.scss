@@ -13,6 +13,9 @@
 
         .DetailLabel {
             color: $light-gray;
+            display: flex;
+            align-items: center;
+            gap: .3rem;
         }
 
         .DetailValue {

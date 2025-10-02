@@ -87,6 +87,8 @@ const AdminSchedules = () => {
             updated = updated.filter((appt) => appt.service?._id === filterService);
         }
 
+        updated.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
         return updated;
     }, [scheduledServices, filterStatus, filterCustomer, filterBarber, filterService]);
 
@@ -100,7 +102,7 @@ const AdminSchedules = () => {
                 { value: 'Confirmado', label: 'Confirmado' },
                 { value: 'Atrasado', label: 'Atrasado' },
                 { value: 'Em andamento', label: 'Em andamento' },
-                { value: 'Finalizado', label: 'Concluído' },
+                { value: 'Finalizado', label: 'Finalizado' },
                 { value: 'Cancelado', label: 'Cancelado' }
             ]
         },

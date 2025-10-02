@@ -244,12 +244,6 @@ const Times = () => {
                                                     >
                                                         {isEditing ? 'Salvar' : 'Editar'}
                                                     </button>
-                                                    <button 
-                                                        onClick={() => handleRemoveWorkingDay(day)}
-                                                        className={style.RemoveButton}
-                                                    >
-                                                        <TrashIcon />
-                                                    </button>
                                                 </>
                                             )}
                                         </div>

@@ -58,15 +58,15 @@ const CostumerSchedules = () => {
                                 userData.history.length > 0 ? (
                                     <div className={style.UserServices}>
                                         {
-                                            userData.history.map((service: IScheduledService, idx: number) => (
-                                                <>
-                                                    {
-                                                        service.status !== 'Finalizado' && (
-                                                            <ScheduledService service={service} view="Costumer" key={idx} />
-                                                        )
-                                                    }
-                                                </>
-                                            ))
+                                            // Sort by appointment date (ascending - earliest first) and filter out completed services
+                                            userData.history
+                                                .filter((service: IScheduledService) => service.status !== 'Finalizado')
+                                                .sort((a: IScheduledService, b: IScheduledService) => 
+                                                    new Date(a.date).getTime() - new Date(b.date).getTime()
+                                                )
+                                                .map((service: IScheduledService, idx: number) => (
+                                                    <ScheduledService service={service} view="Costumer" key={idx} />
+                                                ))
                                         }
                                     </div>
                                 ) : (

@@ -43,10 +43,15 @@
                 justify-content: center;
                 gap: 2rem;
 
-                width: 95%;
+                width: 90vw;
+
                 margin-top: 1rem;
-                max-height: 35rem;
+                max-height: 75vh;
                 overflow-y: auto;
+
+                @media screen and (min-width: 1441px) {
+                    grid-template-columns: repeat(auto-fill, 30rem) !important;
+                }
 
                 &::-webkit-scrollbar {
                     width: 1px; 

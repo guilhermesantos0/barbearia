@@ -35,6 +35,7 @@ type PopulatedScheduleService = Omit<ScheduledServiceDocument, 'costumer' | 'bar
     barber: UserDocument,
     service: ServiceDocument,
 }
+
 @Injectable()
 export class UserService {
     constructor(
@@ -495,6 +496,7 @@ export class UserService {
     } 
 
     async getBarberServices(barberId: string): Promise<any> {
+        
         return this.userModel
             .findById(barberId)
             .populate({

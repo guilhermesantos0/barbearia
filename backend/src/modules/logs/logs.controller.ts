@@ -16,18 +16,18 @@ export class LogsController {
         return this.logsService.getResolvedLogsByUser(id);
     }
 
-    @Post('teste')
-    async createFakeLog(@Body() body: any) {
-        return this.logsService.createLog(body)
-    }
+    // @Post('teste')
+    // async createFakeLog(@Body() body: any) {
+    //     return this.logsService.createLog(body)
+    // }
 
     @Patch(':id')
     async editLog(@Param('id') id: string, @Body() body: any) {
         return this.logsService.editLog(id, body);
     }
 
-    // @Delete(':id')
-    // async deleteLog(@Param('id') id: string) {
-    //     return this.logsService.deleteLog(id);
-    // }
+    @Delete(':id')
+    async deleteLog(@Param('id') id: string) {
+        return this.logsService.deleteLog(id);
+    }
 }

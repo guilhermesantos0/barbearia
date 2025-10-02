@@ -16,6 +16,11 @@
     width: 35rem;
     height: 10.5rem;
 
+    @media screen and (min-width: 1441px) {
+        width: 30rem;
+        padding: 1rem 1.5rem;
+    }
+
     .TopInfos {
         display: flex;
         align-items: center;
@@ -197,245 +202,88 @@
 
 
 }
-.ModalTitle {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: $white;
-    margin: 0 0 1rem 0;
-    text-align: center;
-    position: relative;
-    padding-bottom: 1rem;
-    
-    &::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 60px;
-        height: 3px;
-        background: linear-gradient(90deg, transparent, $light-blue, transparent);
-        border-radius: 2px;
-    }
-}
 
-.ModalDescription {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto auto auto auto;
-    gap: 1.5rem;
-    padding: 1.5rem;
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-
-    b {
-        color: $light-blue;
-    }
-}
-
-.FormField {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    position: relative;
-
-    &:nth-child(1) {
-        grid-column: 1 / -1;
-    }
-
-    &:nth-child(2) {
-        grid-column: 1 / -1;
-    }
-
-    &:nth-child(3) {
-        grid-column: 1;
-    }
-
-    &:nth-child(4) {
-        grid-column: 2;
-    }
-
-    &:nth-child(5) {
-        grid-column: 1 / -1;
-    }
-}
-
-.FormLabel {
-    font-size: 0.85rem;
-    font-weight: 600;
+.RemovingService {
     color: $light-blue;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 0.25rem;
-    position: relative;
-
-    &::after {
-        content: '';
-        position: absolute;
-        bottom: -2px;
-        left: 0;
-        width: 20px;
-        height: 2px;
-        background: linear-gradient(90deg, $light-blue, transparent);
-        border-radius: 1px;
-    }
-}
-
-.FormInput {
-    height: 3.5rem;
-    padding: 1rem 1.25rem;
-    background: rgba(255, 255, 255, 0.05);
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    color: $white;
-    font-size: 1rem;
-    font-weight: 500;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    backdrop-filter: blur(10px);
-
-    &:focus {
-        outline: none;
-        border-color: $light-blue;
-        background: rgba(255, 255, 255, 0.08);
-        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-        transform: translateY(-1px);
-    }
-
-    &:hover {
-        border-color: rgba(255, 255, 255, 0.2);
-        background: rgba(255, 255, 255, 0.07);
-    }
-
-    &::placeholder {
-        color: rgba(255, 255, 255, 0.4);
-        font-weight: 400;
-    }
-}
-
-.FormTextarea {
-    width: 100%;
-    height: 8rem;
-    padding: 1rem 1.25rem;
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    color: $white;
-    font-size: 1rem;
-    font-weight: 500;
-    resize: none;
-    outline: none;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    backdrop-filter: blur(10px);
-    font-family: inherit;
-
-    &:focus {
-        border-color: $light-blue;
-        background: rgba(255, 255, 255, 0.08);
-        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-        transform: translateY(-1px);
-    }
-
-    &:hover {
-        border-color: rgba(255, 255, 255, 0.2);
-        background: rgba(255, 255, 255, 0.07);
-    }
-
-    &::placeholder {
-        color: rgba(255, 255, 255, 0.4);
-        font-weight: 400;
-    }
-}
-
-.FormSelect {
-    width: 100%;
-    height: 3.5rem;
-    
-    :global(.SelectTrigger) {
-        height: 3.5rem;
-        padding: 1rem 1.25rem;
-        background: rgba(255, 255, 255, 0.05);
-        border: 2px solid rgba(255, 255, 255, 0.1);
-        border-radius: 8px;
-        color: $white;
-        font-size: 1rem;
-        font-weight: 500;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        backdrop-filter: blur(10px);
-
-        &:hover {
-            border-color: rgba(255, 255, 255, 0.2);
-            background: rgba(255, 255, 255, 0.07);
-        }
-
-        &:focus {
-            border-color: $light-blue;
-            background: rgba(255, 255, 255, 0.08);
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-            transform: translateY(-1px);
-        }
-    }
 }
 
 .Actions {
     display: flex;
     justify-content: flex-end;
     gap: 1rem;
-    margin-top: 1.5rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
+    margin-top: 2rem;
 
-.Cancel {
-    padding: 0.875rem 2rem;
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    color: $light-gray;
-    font-weight: 600;
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    backdrop-filter: blur(10px);
-    cursor: pointer;
-
-    &:hover {
-        background: rgba(255, 255, 255, 0.08);
-        border-color: rgba(255, 255, 255, 0.2);
-        color: $white;
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    .Cancel {
+        @include button-secondary;
+        padding: .75rem 0;
+        width: 9rem;
     }
 
-    &:active {
-        transform: translateY(0);
+    .Confirm {
+        @include button-primary;
+        padding: .75rem 0;
+        width: 9rem;
     }
 }
 
-.Confirm {
-    padding: 0.875rem 2rem;
-    border-radius: 8px;
-    background: linear-gradient(135deg, $light-blue 0%, #4f46e5 100%);
-    border: 2px solid transparent;
-    color: $white;
-    font-weight: 600;
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+.EditForm {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: 
+        "name name"
+        "description description"
+        "description description"
+        "price duration"
+        "category category"
+    ;
+    gap: 1rem;
 
-    &:hover {
-        background: linear-gradient(135deg, #4f46e5 0%, $light-blue 100%);
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+    .InputContainer {
+        display: flex;
+        flex-direction: column;
+        gap: .3rem;
+
+        input, textarea {
+            background-color: $gray;
+            padding: 1rem;
+            outline: none;
+            border: none;
+            border-radius: 5px;
+
+            color: $white;
+            resize: none;
+            max-height: 10rem;
+
+            font-size: 1rem;
+        }
     }
 
-    &:active {
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    .Name { grid-area: name; }
+    .Description { grid-area: description; }
+    .Price { grid-area: price; }
+    .Duration { grid-area: duration; }
+    .Category { grid-area: category; }
+}
+
+.SelectMenu {
+    width: 100%;
+}
+
+.EditActions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1rem;
+
+    .CancelButton {
+        @include button-error;
+        padding: .5rem 0;
+        width: 9rem;
+    }
+
+    .SaveButton {
+        @include button-primary;
+        padding: .5rem 0;
+        width: 9rem;
     }
 }

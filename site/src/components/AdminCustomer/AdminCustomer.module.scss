@@ -1,78 +1,6 @@
 @use '@assets/scss/variables' as *;
 @use '@assets/scss/mixins' as *;
 
-.Container {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    background: $bg-color;
-    overflow: hidden;
-}
-
-.PageContent {
-    flex: 1;
-    padding: .5rem 2rem;
-    overflow-y: auto;
-
-    &::-webkit-scrollbar {
-        width: 0;
-    }
-}
-
-.TopArea {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    padding-right: 2rem;
-
-    .AddBarber {
-        @include button-primary;
-        padding: .5rem .75rem;
-    }
-}
-
-.TableContainer {
-    margin-top: 2rem;
-
-    // overflow: hidden;
-
-    width: 90vw;
-
-    height: 37rem;
-}
-
-.TableHeader {
-    display: grid;
-    grid-template-columns: 80px 1fr 1fr 150px 120px 120px 120px;
-    gap: 1rem;
-    padding: 1.5rem 2rem;
-    background: rgba(255, 255, 255, 0.05);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-
-    width: 100%;
-
-    border-radius: 8px 8px 0 0;
-}
-
-.ViewPortClassName {
-    width: 8rem;
-}
-
-.HeaderCell {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: $light-blue;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    display: flex;
-    align-items: center;
-}
-
-.TableBody {
-    display: flex;
-    flex-direction: column;
-}
-
 .TableRow {
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     transition: background-color 0.2s ease;
@@ -197,7 +125,7 @@
 .ExpandedContent {
     backdrop-filter: blur(10px);
     border-top: 1px solid rgba(47, 128, 237, 0.3);
-    padding: 2.5rem;
+    padding: 2rem;
     margin: 0 1rem;
     border-radius: 0 0 12px 12px;
     box-shadow: 
@@ -207,27 +135,27 @@
     position: relative;
     overflow: hidden;
 
-    &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 1px;
-        background: linear-gradient(90deg, transparent, $light-blue, transparent);
-    }
+    // &::before {
+    //     content: '';
+    //     position: absolute;
+    //     top: 0;
+    //     left: 0;
+    //     right: 0;
+    //     height: 1px;
+    //     background: linear-gradient(90deg, transparent, $light-blue, transparent);
+    // }
 
-    &::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: radial-gradient(circle at 20% 20%, rgba(47, 128, 237, 0.1) 0%, transparent 50%),
-                    radial-gradient(circle at 80% 80%, rgba(47, 128, 237, 0.05) 0%, transparent 50%);
-        pointer-events: none;
-    }
+    // &::after {
+    //     content: '';
+    //     position: absolute;
+    //     top: 0;
+    //     left: 0;
+    //     width: 100%;
+    //     height: 100%;
+    //     background: radial-gradient(circle at 20% 20%, rgba(47, 128, 237, 0.1) 0%, transparent 50%),
+    //                 radial-gradient(circle at 80% 80%, rgba(47, 128, 237, 0.05) 0%, transparent 50%);
+    //     pointer-events: none;
+    // }
 }
 
 @keyframes slideDown {
@@ -260,6 +188,11 @@
     position: relative;
     overflow: hidden;
 
+    .Header {
+        display: flex;
+        justify-content: space-between;
+    }
+
     &::before {
         content: '';
         position: absolute;
@@ -283,9 +216,6 @@
         }
     }
 
-    &:last-child {
-        grid-column: 1 / -1;
-    }
 
     h4 {
         font-size: 1rem;
@@ -315,6 +245,23 @@
         margin: 0;
         line-height: 1.4;
     }
+}
+
+.SummaryRow {
+    display: flex;
+    gap: 1rem;
+    margin: 0 0 1rem 0;
+}
+
+.SummaryItem {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .5rem .75rem;
+    border: 1px solid rgba(47, 128, 237, 0.2);
+    background: rgba(47, 128, 237, 0.08);
+    border-radius: 8px;
+    color: $light-blue;
 }
 
 .IntervalsList {
@@ -417,79 +364,79 @@
     }
 }
 
-.AccessDenied {
+.ProfilePicContainer {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    height: 100vh;
-    gap: 2rem;
-    color: $light-gray;
+    gap: .5rem;
 
-    .Icon {
+    img {
+        width: 10rem;
+        height: 10rem;
+
+        border-radius: 50%;
+    }
+}
+
+.UploadPhoto {
+    width: 10rem;
+    height: 2.3rem;
+
+    @include button-tertiary;
+    border-radius: 5px;
+}
+
+.EditForm {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: 
+        "name name"
+        "phone gender"
+        "bornDate premium";
+    gap: .5rem;
+       
+    .InputContainer {
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+
+        input {
+            height: 3rem;
+            background: $gray;
+            border: 0;
+            border-radius: 5px;
+
+            outline: none;
+            padding: .5rem;
+            color: $white;
+
+            font-size: 1.1rem;
+        }
+    }
+}
+
+.ButtonWrapper {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+
+    .ResetPassword {
+        @include button-secondary;
+        padding: .5rem;
+
+        border-color: $red;
         color: $red;
     }
 
-    p {
-        font-size: 1.2rem;
-        font-weight: 500;
-        margin: 0;
+    .Save {
+        @include button-primary;
+        width: 10rem;
     }
 }
 
-// Responsive Design
-@media (max-width: 1200px) {
-    .TableHeader,
-    .RowContent {
-        grid-template-columns: 60px 1fr 1fr 120px 100px 100px 100px;
-        gap: 0.75rem;
-        padding: 1rem 1.5rem;
-    }
 
-    .ProfilePic {
-        width: 40px;
-        height: 40px;
-    }
-}
-
-@media (max-width: 768px) {
-    .PageContent {
-        padding: 1rem;
-    }
-
-    .TableHeader,
-    .RowContent {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-        padding: 1rem;
-    }
-
-    .HeaderCell {
-        display: none;
-    }
-
-    .Cell {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.25rem;
-
-        &::before {
-            content: attr(data-label);
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: $light-blue;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-    }
-
-    .DetailsGrid {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-    }
-
-    .Actions {
-        flex-direction: column;
-        gap: 0.75rem;
-    }
-}
+.Name { grid-area: name; }
+.Phone { grid-area: phone; }
+.Gender { grid-area: gender; }
+.bornDate { grid-area: bornDate; }
+.Subscription { grid-area: premium; }

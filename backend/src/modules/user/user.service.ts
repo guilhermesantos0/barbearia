@@ -21,6 +21,7 @@ import { PlanService } from '../plan/plan.service';
 import { Benefit } from '../plan/schemas/plan.schema';
 import { isIn } from 'class-validator';
 import { ScheduledServiceDocument } from '../scheduledservice/schemas/scheduledservice.schema';
+import { Subscription } from '../subscription/schemas/subscription.schema';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -419,10 +420,20 @@ export class UserService {
         return barberUsers;
     }
 
-    async getCustomersFull(): Promise<User[] | null> {
+    async getCustomersFull(): Promise<(User & { subscription: Subscription | null }) | null> {
         const customerUsers = await this.userModel.find({ role: 0 }).populate({ path: 'history', populate: [{ path: 'service' }, { path: 'barber' }] }).exec();
 
-        return customerUsers;
+        const updatedUsers = await Promise.all(
+            customerUsers.map(async customer => {
+                const userPlan = await this.getPlan(customer._id);
+                return { ...customer.toObject(), subscription: userPlan }
+            })
+        )
+
+        console.log(updatedUsers)
+
+        // @ts-ignore
+        return updatedUsers;
     }
 
     async getAvailableSlots(barberId: string, dateString: Date, serviceDuration: number) {

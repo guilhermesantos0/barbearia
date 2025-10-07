@@ -9,11 +9,13 @@ import {
 
 import { CreateScheduledServiceDto } from './dto/create-scheduledservice.dto';
 import { Dayjs } from 'dayjs';
+import { LogsService } from '../logs/logs.service';
 
 @Injectable()
 export class ScheduledServiceService {
     constructor(
-        @InjectModel(ScheduledService.name) private readonly scheduledServiceModel: Model<ScheduledServiceDocument>
+        @InjectModel(ScheduledService.name) private readonly scheduledServiceModel: Model<ScheduledServiceDocument>,
+        private readonly logsService: LogsService
     ) {}
 
     async create(data: CreateScheduledServiceDto): Promise<ScheduledService> {
@@ -70,8 +72,36 @@ export class ScheduledServiceService {
         return services;
     }
 
-    async update(id: string, data: Partial<ScheduledService>): Promise<ScheduledService | null> {
-        return this.scheduledServiceModel.findByIdAndUpdate(id, data, { new: true }).exec();
+    async update(id: string, data: Partial<ScheduledService>, userId: string): Promise<ScheduledService | null> {
+        const originalAppointment = await this.scheduledServiceModel.findById(id).lean().exec();
+
+        if (!originalAppointment) {
+            return null;
+        }
+
+        const updatedAppointment = await this.scheduledServiceModel.findByIdAndUpdate(id, data, { new: true }).exec();
+
+        if (updatedAppointment) {
+            const editedData: Partial<ScheduledService> = {};
+
+            Object.keys(data).forEach(key => {
+                if (data[key] !== originalAppointment[key]) {
+                    editedData[key] = { old: originalAppointment[key], new: data[key] }
+                }
+            });
+
+            if (Object.keys(editedData).length > 0) {
+                await this.logsService.createLog({
+                    userId: userId,
+                    target: id,
+                    targetType: 'ScheduledService',
+                    action: 'SCHEDULED_SERVICE_UPDATE',
+                    data: editedData
+                })
+            }
+        }
+
+        return updatedAppointment;
     }
 
     async updatePatch(id: string, data: Partial<ScheduledService>): Promise<ScheduledService | null> {

@@ -31,6 +31,10 @@ export class PlanService {
             .exec()
     }
 
+    async findActivePlans(): Promise<Plan[]> {
+        return this.planModel.find({ 'active': true })
+    }
+
     async findById(id: string): Promise<Plan | null> {
         return this.planModel.findById(id).exec();
     }

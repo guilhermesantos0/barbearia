@@ -4,10 +4,15 @@ import { IUser } from '@types/User';
 import api from '../services/api';
 import { useNavigate } from 'react-router-dom';
 
+interface CookieUser {
+    sub: string,
+    role: string,
+    email: string
+}
 
 type UserContextType = {
-    user: IUser | null;
-    setUser: (user: IUser | null) => void;
+    user: CookieUser | null;
+    setUser: (user: CookieUser | null) => void;
     logout: () => void;
 };
 
@@ -15,7 +20,7 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     const navigate = useNavigate();
-    const [user, setUser] = useState<IUser | null>(null);
+    const [user, setUser] = useState<CookieUser | null>(null);
 
     const logout = async () => {
         setUser(null);

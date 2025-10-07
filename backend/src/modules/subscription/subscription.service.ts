@@ -33,6 +33,10 @@ export class SubscriptionService {
         }).populate('planId').populate('userId');
     }
 
+    async getActiveSubscriptions() {
+        return this.subscriptionModel.find({ status: 'active' }).populate('planId')
+    }
+
     async update(id: string, updateSubscriptionDto: UpdateSubscriptionDto): Promise<Subscription> {
         const updated = await this.subscriptionModel.findByIdAndUpdate(id, updateSubscriptionDto, { new: true });
         if (!updated) {

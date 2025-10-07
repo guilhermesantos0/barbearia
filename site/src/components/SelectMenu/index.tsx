@@ -8,7 +8,8 @@ import { ReactNode, useState } from 'react';
 type Option = {
     value: string;
     label: string;
-    icon?: ReactNode
+    icon?: ReactNode,
+    red?: boolean
 };
 
 interface SelectMenuProps {
@@ -98,9 +99,9 @@ export const SelectMenu: React.FC<SelectMenuProps> = ({
                             <Select.Item
                                 key={option.value}
                                 value={option.value}
-                                className={style.SelectItem}
+                                className={`${style.SelectItem} ${option.red ? style.RedText : ''}`}
                             >
-                                <Select.ItemText> {option.icon ? option.icon : null} {option.label}</Select.ItemText>
+                                <Select.ItemText > {option.icon ? option.icon : null} {option.label}</Select.ItemText>
                                 <Select.ItemIndicator
                                     className={style.SelectItemIndicator}
                                 >

@@ -22,6 +22,11 @@ export class SubscriptionController {
         return this.subscriptionService.findById(id);
     }
 
+    @Get('active')
+    async findActiveSubscriptions() {
+        return this.subscriptionService.getActiveSubscriptions();
+    }
+
     @Put(':id')
     update(@Param('id') id: string, @Body() updateSubscriptionDto: UpdateSubscriptionDto) {
         return this.subscriptionService.update(id, updateSubscriptionDto)

@@ -1,7 +1,7 @@
 declare module '@contexts/*';
 declare module '@components/*';
-
-declare module '@types/*' {
-  const content: any
-  export = content
-}
+declare module '@assets/*';
+declare module '@utils/*';
+declare module '@store/*';
+declare module '@services/*';
+declare module '@types/*';

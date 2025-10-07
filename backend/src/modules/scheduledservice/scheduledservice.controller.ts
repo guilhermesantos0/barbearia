@@ -6,7 +6,9 @@ import {
     Param,
     Patch,
     Post,
-    Put
+    Put,
+    Request,
+    UseGuards
 } from '@nestjs/common';
 
 import { ScheduledServiceService } from './scheduledservice.service';
@@ -15,6 +17,7 @@ import { ScheduledService } from './schemas/scheduledservice.schema';
 import { UserService } from '../user/user.service';
 import { UpdateScheduledServiceDto } from './dto/update-scheduledservice.dto';
 import { Permissions } from 'src/common/decorators/permissions.decorator';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('/scheduledservices')
 export class ScheduledServiceController {
@@ -53,9 +56,10 @@ export class ScheduledServiceController {
         return this.scheduledService.findUnconfirmedByBarber(barberId);
     }
 
+    @UseGuards(AuthGuard('jwt'))
     @Put(':id')
-    async update(@Param('id') id: string, @Body() updateData: Partial<ScheduledService>) {
-        return this.scheduledService.update(id, updateData);
+    async update(@Request() req, @Param('id') id: string, @Body() updateData: Partial<ScheduledService>) {
+        return this.scheduledService.update(id, updateData, req.user.sub);
     }
 
     @Delete(':id')

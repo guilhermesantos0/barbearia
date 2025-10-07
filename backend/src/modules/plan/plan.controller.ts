@@ -19,6 +19,11 @@ export class PlanController {
         return this.planService.findAll();
     }
 
+    @Get('active')
+    async findActivePlans() {
+        return this.planService.findActivePlans();
+    }
+
     @Get(':id')
     async findOne(@Param('id') id: string) {
         return this.planService.findById(id);

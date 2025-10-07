@@ -48,12 +48,17 @@ const AdminScheduledService: React.FC<AdminScheduledServiceProps> = ({ appointme
         barberId: string;
         status: 'Pendente' | 'Confirmado' | 'Cancelado' | 'Atrasado' | 'Em andamento' | 'Finalizado';
         discountApplied: number;
-    }>({
-        date: new Date(appointment.date),
-        barberId: appointment.barber._id,
-        status: appointment.status,
-        discountApplied: appointment.discountApplied
+    }>(() => {
+        const appointmentDate = new Date(appointment.date);
+        
+        return {
+            date: appointmentDate,
+            barberId: appointment.barber._id,
+            status: appointment.status,
+            discountApplied: appointment.discountApplied
+        };
     });
+
     const [availableTimes, setAvailableTimes] = useState<string[]>([]);
     const [barbers, setBarbers] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -91,7 +96,30 @@ const AdminScheduledService: React.FC<AdminScheduledServiceProps> = ({ appointme
             loadBarbers();
             loadAvailableTimes();
         }
-    }, [isEditModalOpen, editingData.barberId, editingData.date]);
+    }, [isEditModalOpen, editingData.barberId]);
+
+    useEffect(() => {
+        if (isEditModalOpen && editingData.barberId) {
+            loadAvailableTimes();
+        }
+    }, [editingData.date]);
+
+    useEffect(() => {
+        if (isEditModalOpen) {
+            const appointmentDate = new Date(appointment.date);
+            setEditingData(prev => {
+                if (prev.date.getTime() !== appointmentDate.getTime()) {
+                    return {
+                        date: appointmentDate,
+                        barberId: appointment.barber._id,
+                        status: appointment.status,
+                        discountApplied: appointment.discountApplied
+                    };
+                }
+                return prev;
+            });
+        }
+    }, [isEditModalOpen]);
 
     const loadBarbers = async () => {
         try {
@@ -108,7 +136,7 @@ const AdminScheduledService: React.FC<AdminScheduledServiceProps> = ({ appointme
             const onlyServiceDate = format(editingData.date, 'yyyy-MM-dd');
             const barberTimesResult = await api.get(`/users/barbers/${editingData.barberId}/available-slots?date=${onlyServiceDate}&serviceDuration=${appointment.service.duration}`);
             
-            const currentTime = format(new Date(appointment.date), 'HH:mm');
+            const currentTime = format(editingData.date, 'HH:mm');
             const createAvailableTimes = [...barberTimesResult.data, currentTime]
                 .map(t => {
                     const [h, m] = t.split(":").map(Number);
@@ -125,7 +153,9 @@ const AdminScheduledService: React.FC<AdminScheduledServiceProps> = ({ appointme
     };
 
     const handleDateChange = async (newDate: Date) => {
-        setEditingData(prev => ({ ...prev, date: newDate }));
+        setEditingData(prev => {
+            return { ...prev, date: newDate };
+        });
     };
 
     const handleBarberChange = async (barberId: string | undefined) => {
@@ -147,7 +177,7 @@ const AdminScheduledService: React.FC<AdminScheduledServiceProps> = ({ appointme
     const handleSaveChanges = async () => {
         setIsLoading(true);
         try {
-            const [hours, minutes] = format(new Date(appointment.date), 'HH:mm').split(':');
+            const [hours, minutes] = format(editingData.date, 'HH:mm').split(':');
             const newDateTime = new Date(editingData.date);
             newDateTime.setHours(parseInt(hours), parseInt(minutes), 0, 0);
 
@@ -403,13 +433,12 @@ const AdminScheduledService: React.FC<AdminScheduledServiceProps> = ({ appointme
                             <TimePicker 
                                 label="" 
                                 defaultOptions={availableTimes} 
-                                value={format(new Date(editingData.date), 'HH:mm')} 
+                                value={format(editingData.date, 'HH:mm')} 
                                 onChange={(time) => {
                                     if (time) {
                                         const [hours, minutes] = time.split(':');
                                         const newDate = new Date(editingData.date);
                                         newDate.setHours(parseInt(hours), parseInt(minutes), 0, 0);
-                                        console.log(newDate)
                                         setEditingData(prev => ({ ...prev, date: newDate }));
                                     }
                                 }} 

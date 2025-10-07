@@ -39,7 +39,7 @@ export const BarberShopProvider = ({ children }: { children: React.ReactNode }) 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await api.get("/barbershop");
+                const res = await api.get("/barbershops");
                 setBarberShop(res.data);
 
             } catch (err) {

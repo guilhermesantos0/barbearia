@@ -16,11 +16,19 @@ import { formatPhoneNumber } from '@utils/formatPhoneNumber';
 import { formatDate } from '@utils/formatDate';
 // @ts-ignore
 import { formatPrice } from '@utils/formatPrice';
+import { ISubscription } from '@types/Subscription';
+import AdminCustomer from '@components/AdminCustomer';
+import { IPlan } from '@types/Plan';
+
+interface Plan {
+    value: string,
+    label: string
+}
 
 const CustomersList = () => {
     const { user } = useUser();
     const [isAllowed, setIsAllowed] = useState<boolean>(false);
-    const [expandedCustomer, setExpandedCustomer] = useState<string | null>(null);
+    const [availablePlans, setAvailablePlans] = useState<Plan[]>([]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -32,7 +40,7 @@ const CustomersList = () => {
     }, [user]);
 
     const { data: customers } = useQuery({
-        queryKey: ['allCustomers', user?._id],
+        queryKey: ['allCustomers', user?.sub],
         queryFn: async () => {
             const customersResult = await api.get('/users/customers/admin');
             return customersResult.data;
@@ -40,51 +48,27 @@ const CustomersList = () => {
         enabled: isAllowed
     });
 
-    const calculateStatus = (customer: IUser) => {
-        if (!customer.history || customer.history.length === 0) {
-            return { status: 'Inativo', color: 'red' };
-        }
+    const { data: plans } = useQuery({
+        queryKey: ['allPlans', user?.sub],
+        queryFn: async () => {
+            const plansResult = await api.get('/plans/active');
+            return plansResult.data
+        },
+        enabled: isAllowed
+    });
 
-        const lastService = customer.history.reduce((latest, current) =>
-            new Date(current.date) > new Date(latest.date) ? current : latest
-        );
+    useEffect(() => {
+        if (!plans || plans.length === 0) return
 
-        const lastServiceDate = new Date(lastService.date);
-        const now = new Date();
-        const daysDiff = Math.floor((now.getTime() - lastServiceDate.getTime()) / (1000 * 60 * 60 * 24));
+        console.log(plans)
 
-        if (daysDiff <= 14) {
-            return { status: 'Ativo', color: 'green' };
-        } else if (daysDiff <= 30) {
-            return { status: 'Moderado', color: 'yellow' };
-        } else {
-            return { status: 'Inativo', color: 'red' };
-        }
-    };
+        const planOptions = plans.map((plan: IPlan) => ({
+            value: plan._id,
+            label: plan.name
+        }));
 
-    const actionOptions = [
-        { value: 'edit', label: 'Editar', icon: <FontAwesomeIcon icon='pencil' /> },
-        { value: 'disable', label: 'Desativar', icon: <FontAwesomeIcon icon='xmark-circle' /> },
-        { value: 'delete', label: 'Excluir', icon: <FontAwesomeIcon icon='trash' /> },
-        { value: 'profile', label: 'Ver Perfil', icon: <FontAwesomeIcon icon='eye' /> }
-    ];
-
-    const handleAction = (action: string, customer: IUser) => {
-        switch (action) {
-            case 'edit':
-                console.log('Edit customer:', customer._id);
-                break;
-            case 'disable':
-                console.log('Disable customer:', customer._id);
-                break;
-            case 'delete':
-                console.log('Delete customer:', customer._id);
-                break;
-            case 'profile':
-                console.log('View profile:', customer._id);
-                break;
-        }
-    };
+        setAvailablePlans(planOptions)
+    }, [plans])
 
     return (
         <div className={style.Container}>
@@ -104,97 +88,18 @@ const CustomersList = () => {
                                 <div className={style.HeaderCell}>Ações</div>
                             </div>
                             <div className={style.TableBody}>
-                                { customers && customers.map((customer: IUser) => {
+                                {/* { customers && customers.map((customer: IUser) => {
                                     const statusInfo = calculateStatus(customer);
                                     const isExpanded = expandedCustomer === customer._id;
 
-                                    return (
-                                        <div key={customer._id} className={style.TableRow} onClick={() => setExpandedCustomer(isExpanded ? null : customer._id)}>
-                                            <div className={style.RowContent}>
-                                                <div className={style.Cell}>
-                                                    <div className={style.ProfilePic}>
-                                                        {customer.profilePic ? (
-                                                            <img src={customer.profilePic} alt={customer.name} />
-                                                        ) : (
-                                                            <FontAwesomeIcon icon="user" />
-                                                        )}
-                                                    </div>
-                                                </div>
+                                    
+                                }) } */}
 
-                                                <div className={style.Cell}>
-                                                    <span className={style.BarberName}>{customer.name}</span>
-                                                </div>
-
-                                                <div className={style.Cell}>
-                                                    <span className={style.Email}>{customer.email}</span>
-                                                </div>
-
-                                                <div className={style.Cell}>
-                                                    <span className={style.Phone}>{formatPhoneNumber(customer.phone)}</span>
-                                                </div>
-
-                                                <div className={style.Cell}>
-                                                    <span className={`${style.Status} ${style[statusInfo.color]}`}>
-                                                        {statusInfo.status}
-                                                    </span>
-                                                </div>
-
-                                                <div className={style.Cell}>
-                                                    <span className={style.Email}>{formatDate(customer.createdAt)}</span>
-                                                </div>
-
-                                                <div className={style.Cell}>
-                                                    <div className={style.Actions} onClick={(e) => e.stopPropagation()}>
-                                                        <SelectMenu
-                                                            options={actionOptions}
-                                                            placeholder=""
-                                                            value=""
-                                                            onChange={(value) => value && handleAction(value, customer)}
-                                                            className={style.ActionMenu}
-                                                            viewPortClassName={style.ViewPortClassName}
-                                                        />
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            {isExpanded && (
-                                                <div className={style.ExpandedContent}>
-                                                    <div className={style.DetailsGrid}>
-                                                        <div className={style.DetailSection}>
-                                                            <h4>Resumo de Agendamentos ({customer.history ? customer.history.length : 0})</h4>
-                                                            <div className={style.SummaryRow}>
-                                                                <div className={style.SummaryItem}>
-                                                                    <FontAwesomeIcon icon="calendar-check" />
-                                                                    <span>{customer.history ? customer.history.length : 0} agendamentos</span>
-                                                                </div>
-                                                                <div className={style.SummaryItem}>
-                                                                    <FontAwesomeIcon icon="coins" />
-                                                                    <span>{formatPrice((customer.history || []).reduce((acc: number, s: IScheduledService) => acc + (s.service?.price || 0) - (s.discountApplied || 0), 0))}</span>
-                                                                </div>
-                                                            </div>
-                                                            {customer.history && customer.history.length > 0 ? (
-                                                                <div className={style.ServicesList}>
-                                                                    {customer.history.slice(0, 5).map((appt: IScheduledService) => (
-                                                                        <div key={appt._id} className={style.IntervalItem}>
-                                                                            <span className={style.IntervalName}>
-                                                                                {formatDate(appt.date)}
-                                                                            </span>
-                                                                            <span className={style.IntervalTime}>
-                                                                                {appt.service?.name || '-'} · {appt.barber?.name || '-'} · {appt.status}
-                                                                            </span>
-                                                                        </div>
-                                                                    ))}
-                                                                </div>
-                                                            ) : (
-                                                                <p>Nenhum agendamento</p>
-                                                            )}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            )}
-                                        </div>
-                                    )
-                                }) }
+                                {
+                                    customers && customers.map((customer: IUser, idx: number) => (
+                                        <AdminCustomer key={idx} customer={customer} plans={availablePlans} />
+                                    ))
+                                }
 
                             </div>
                         </div>

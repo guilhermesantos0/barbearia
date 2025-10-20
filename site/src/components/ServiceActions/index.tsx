@@ -69,7 +69,6 @@ const ServiceActions:React.FC<ServiceActionsProps> = ({ service, trigger }) => {
     const handleChangeDate = async(newDate: Date | string) => {
         const barberTimesResult = await api.get(`/users/barbers/${user?.sub}/available-slots?date=${newDate}&serviceDuration=${service.service.duration}`);
         setAvailableTimes(barberTimesResult.data);
-        console.log(newDate);
     }
 
     const initialDate = new Date(service.date);

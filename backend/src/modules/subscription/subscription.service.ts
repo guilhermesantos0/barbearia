@@ -45,6 +45,11 @@ export class SubscriptionService {
         return updated;
     }
 
+    async updateUserPlan(userId: string, planId: string): Promise<Subscription | null> {
+        const updated = await this.subscriptionModel.findOneAndUpdate({ userId: userId, planId: planId });
+        return updated;
+    }
+
     async remove(id: string) {
         return this.subscriptionModel.findByIdAndDelete(id)
     }

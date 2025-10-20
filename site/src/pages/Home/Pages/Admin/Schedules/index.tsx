@@ -6,7 +6,7 @@ import api from '@services/api';
 import { IScheduledService } from '@types/ScheduledService';
 import { SelectMenu } from '@components/SelectMenu';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import AdminScheduledService from '@components/AdminScheduledService';
+import AdminScheduledService from '@components/Admin/AdminScheduledService';
 
 const AdminSchedules = () => {
     const { user } = useUser();

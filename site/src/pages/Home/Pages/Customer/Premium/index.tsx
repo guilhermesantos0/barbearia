@@ -48,7 +48,6 @@ const CostumerPlan = () => {
                 setUser(userResult.data);
 
                 const userHistoryResult = await api.get('/users/history');
-                console.log(userHistoryResult)
                 setUserHistory(userHistoryResult.data.history)
 
                 const planResult = await api.get('/plans');

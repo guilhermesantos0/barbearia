@@ -16,6 +16,14 @@ export class BarbershopService {
         return barberShop.save();
     }
 
+    async getTimes(): Promise<any> {
+        const barbershop = await this.barbershopModel.findOne().exec();
+        if (!barbershop) {
+            throw new NotFoundException('BarberShop not found');
+        }
+        return { start: barbershop.openTime, end: barbershop.closeTime, openDays: barbershop.openDays };
+    }
+
     async getInfo(): Promise<Barbershop | null> {
         return this.barbershopModel.findOne().exec();
     }

@@ -20,13 +20,20 @@ export class CreateBarbershopDto {
     logoUrl?: string;
 
     @IsOptional()
+    @IsString()
+    openTime?: string;
+
+    @IsOptional()
+    @IsString()
+    closeTime?: string;
+
+    @IsOptional()
     @IsArray()
-    workingHours?: {
-        day: string;
-        open?: string;
-        close?: string;
-        breaks?: { start: string; end: string }[];
-    }[];
+    openDays?: string[];
+
+    @IsOptional()
+    @IsArray()
+    breaks?: { start: string; end: string }[];
 
     @IsOptional()
     @IsArray()

@@ -1,14 +1,14 @@
-import { IService } from '../../types/Service';
+import { IService } from '@types/Service';
 import style from './AdminService.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 import MustacheIcon from '@assets/icons/mustache.svg?react';
 import { ReactNode, useState } from 'react';
-import { fomratTimeDuration } from '../../utils/formatTimeDuration';
-import { formatPrice } from '../../utils/formatPrice';
+import { fomratTimeDuration } from '@utils/formatTimeDuration';
+import { formatPrice } from '@utils/formatPrice';
 import { toast } from 'react-toastify';
-import api from '../../services/api';
+import api from '@services/api';
 import { useNavigate } from 'react-router-dom';
 
 import { Switch } from '@radix-ui/react-switch';

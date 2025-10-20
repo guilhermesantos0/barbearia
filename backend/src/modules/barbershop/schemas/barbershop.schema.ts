@@ -26,28 +26,28 @@ export class Barbershop {
     @Prop()
     logoUrl?: string;
 
+    @Prop()
+    openTime?: string;
+
+    @Prop()
+    closeTime?: string;
+
+    @Prop({
+        type: [String],
+        default: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'],
+    })
+    openDays: string[];
+
     @Prop({
         type: [
             {
-                day: { type: String, required: true },
-                open: { type: String },
-                close: { type: String },
-                breaks: [
-                    {
-                        start: { type: String },
-                        end: { type: String },
-                    },
-                ],
+                start: { type: String },
+                end: { type: String },
             },
         ],
         default: [],
     })
-    workingHours: {
-        day: string;
-        open?: string;
-        close?: string;
-        breaks?: { start: string; end: string }[];
-    }[];
+    breaks: { start: string; end: string }[];
 
     @Prop({
         type: [String],

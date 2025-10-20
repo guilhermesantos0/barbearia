@@ -9,7 +9,6 @@ import { formatPrice } from '@utils/formatPrice';
 import { IScheduledService } from '@types/ScheduledService';
 import Modal from '@components/Modal';
 import Camera from '@assets/icons/camera.svg?react';
-import { ISubscription } from '@types/Subscription';
 import DatePicker from '@components/DatePicker';
 import api from '@services/api';
 import { toast } from 'react-toastify';
@@ -114,17 +113,19 @@ const AdminCustomer: React.FC<AdminCustomerProps> = ({ customer, plans }) => {
             let updatedSubscription = false;
 
             // @ts-ignore
-            if (customer.subscription.planId._id !== editingData.subscription) { updtedSubscription = true }
+            if (customer.subscription?.planId?._id !== editingData.subscription) { updtedSubscription = true }
 
             const updateResult = await api.patch(`/users/${customer._id}?updatedSubscription=${updatedSubscription}`);
             
             if (updateResult.status === 200) {
                 toast.success(`${customer.name} atualizado com sucesso!`)
             } else {
+                
                 toast.error('Houve um erro ao atualizar o usuário!')
             }
-        } catch {
-            toast.error('Houve um erro ao atualizaro o usuário!')
+        } catch (error) {
+            console.error(error)
+            toast.error('Houve um erro ao atualizar o usuário!')
         }
     }
 
@@ -239,7 +240,7 @@ const AdminCustomer: React.FC<AdminCustomerProps> = ({ customer, plans }) => {
                 )}
             </div>
 
-            <Modal open={isEditModalOpen} onOpenChange={setIsEditModalOpen} trigger={<></>} >
+            <Modal open={isEditModalOpen} onOpenChange={setIsEditModalOpen} trigger={<></>} close >
                 <h3>Editar {customer.name}</h3>
                 <div className={style.ProfilePicContainer}>
                     {customer.profilePic ? (
@@ -302,7 +303,7 @@ const AdminCustomer: React.FC<AdminCustomerProps> = ({ customer, plans }) => {
 
                 <div className={style.ButtonWrapper}>
                     <button className={style.ResetPassword}><FontAwesomeIcon icon='lock' /> Resetar Senha</button>
-                    <button className={style.Save}><FontAwesomeIcon icon='save' /> Salvar</button>
+                    <button className={style.Save} onClick={handleSave}><FontAwesomeIcon icon='save' /> Salvar</button>
                 </div>
 
             </Modal>

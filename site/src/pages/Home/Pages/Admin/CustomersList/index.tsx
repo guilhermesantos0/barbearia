@@ -9,15 +9,14 @@ import { IUser } from '@types/User';
 // @ts-ignore
 import { IScheduledService } from '@types/ScheduledService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { SelectMenu } from '@components/SelectMenu';
 // @ts-ignore
 import { formatPhoneNumber } from '@utils/formatPhoneNumber';
 // @ts-ignore
 import { formatDate } from '@utils/formatDate';
 // @ts-ignore
 import { formatPrice } from '@utils/formatPrice';
-import { ISubscription } from '@types/Subscription';
-import AdminCustomer from '@components/AdminCustomer';
+import AdminCustomer from '@components/Admin/AdminCustomer';
+// @ts-ignore
 import { IPlan } from '@types/Plan';
 
 interface Plan {
@@ -29,6 +28,7 @@ const CustomersList = () => {
     const { user } = useUser();
     const [isAllowed, setIsAllowed] = useState<boolean>(false);
     const [availablePlans, setAvailablePlans] = useState<Plan[]>([]);
+    const [searchTerm, setSearchTerm] = useState<string>('');
 
     useEffect(() => {
         const fetchData = async () => {
@@ -60,7 +60,6 @@ const CustomersList = () => {
     useEffect(() => {
         if (!plans || plans.length === 0) return
 
-        console.log(plans)
 
         const planOptions = plans.map((plan: IPlan) => ({
             value: plan._id,
@@ -70,12 +69,28 @@ const CustomersList = () => {
         setAvailablePlans(planOptions)
     }, [plans])
 
+    const filteredCustomers = customers?.filter((customer: IUser) => 
+        customer.name.toLowerCase().includes(searchTerm.toLowerCase())
+    ) || [];
+
     return (
         <div className={style.Container}>
             {
                 isAllowed ? (
                     <div className={style.PageContent}>
-                        <h1 className={style.Title}>Lista de Clientes</h1>
+                        <div className={style.AboveTable}>
+                            <h1 className={style.Title}>Lista de Clientes</h1>
+
+                            <div className={style.SearchContainer}>
+                                <input
+                                    type="text"
+                                    placeholder="Buscar por nome..."
+                                    value={searchTerm}
+                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                    className={style.SearchInput}
+                                />
+                            </div>
+                        </div>
 
                         <div className={style.TableContainer}>
                             <div className={style.TableHeader}>
@@ -96,7 +111,7 @@ const CustomersList = () => {
                                 }) } */}
 
                                 {
-                                    customers && customers.map((customer: IUser, idx: number) => (
+                                    filteredCustomers && filteredCustomers.map((customer: IUser, idx: number) => (
                                         <AdminCustomer key={idx} customer={customer} plans={availablePlans} />
                                     ))
                                 }

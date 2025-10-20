@@ -18,10 +18,17 @@ export class ServiceController {
         return this.serviceService.findAll();
     }
 
+    @Get('active')
+    async findActive() {
+        return this.serviceService.findActive();
+    }
+
     @Get(':id')
     async findOne(@Param('id') id: string) {
         return this.serviceService.findById(id);
     }
+
+    
 
     @UseGuards(AuthGuard('jwt'))
     @Put(':id')

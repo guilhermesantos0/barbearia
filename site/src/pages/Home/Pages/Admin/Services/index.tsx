@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import api from '@services/api';
 import { useQuery } from '@tanstack/react-query';
 import { IService } from '@types/Service';
-import AdminService from '@components/AdminService';
+import AdminService from '@components/Admin/AdminService';
 import { SelectMenu } from '@components/SelectMenu';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 

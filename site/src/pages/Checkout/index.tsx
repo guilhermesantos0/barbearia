@@ -58,9 +58,7 @@ const Checkout = () => {
                 discountApplied: discount
             }
     
-            console.log(scheduledServicePayload)
             const createdAppointment = await api.post('/scheduledservices', scheduledServicePayload);
-            console.log(createdAppointment);
     
             navigate('/agendar-servico/pagamento/sucesso', { state: {
                 "type": 'service',

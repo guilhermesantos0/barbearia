@@ -14,9 +14,37 @@
     padding: .5rem 2rem;
     overflow-y: hidden;
 
+    width: 90vw;
+
     &::-webkit-scrollbar {
         width: 0;
     }
+}
+
+.AboveTable {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.SearchContainer {
+    margin: 1.5rem 0;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.SearchInput {
+    height: 2.5rem;
+    width: 15rem;
+    padding: .5rem;
+
+    background: $gray;
+    border: 0;
+    outline: 0;
+    border-radius: 5px;
+
+    color: $white;
 }
 
 .TableContainer {
@@ -107,6 +135,11 @@
 @media (max-width: 768px) {
     .PageContent {
         padding: 1rem;
+    }
+
+    .SearchInput {
+        width: 100%;
+        max-width: 300px;
     }
 
     .TableHeader,

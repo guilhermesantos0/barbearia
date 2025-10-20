@@ -9,12 +9,10 @@ interface BarberShop {
     phone?: string;
     email?: string;
     logoUrl?: string;
-    workingHours: {
-        day: string;
-        open?: string;
-        close?: string;
-        breaks?: { start: string; end: string }[];
-    }[];
+    openTime?: string;
+    closeTime?: string;
+    openDays: string[];
+    breaks: { start: string; end: string }[];
     paymentMethods: string[];
     socialMedia: Record<string, string>;
     cancellationPolicy?: string;

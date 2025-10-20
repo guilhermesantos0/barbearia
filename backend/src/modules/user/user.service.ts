@@ -430,8 +430,6 @@ export class UserService {
             })
         )
 
-        console.log(updatedUsers)
-
         // @ts-ignore
         return updatedUsers;
     }
@@ -577,7 +575,6 @@ export class UserService {
             userBenefits = [...userBenefits, ...otherPlanBenefits]
         }
         
-        console.log(userBenefits)
 
         const freeService = userBenefits.find(
             // @ts-ignore
@@ -619,6 +616,17 @@ export class UserService {
             throw new NotFoundException('Usuário não encontrado para atualização');
         }
         return updated;
+    }
+
+    async updateUser(id: string, updateUserDto: UpdateUserDto, updatedSubscription?: boolean): Promise<User | null> {
+        if (updatedSubscription) {
+            const newPlanId = updateUserDto.subscription;
+            this.subscriptionService.updateUserPlan(id, newPlanId);
+        }
+        delete updateUserDto.subscription
+
+        const updated = await this.userModel.findByIdAndUpdate(id, updateUserDto);
+        return updated
     }
 
     async remove(id: string): Promise<void> {

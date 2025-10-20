@@ -24,7 +24,6 @@ const EditService = () => {
     const navigate = useNavigate();
     const queryClient = useQueryClient();
 
-    console.log(serviceId);
 
     const [serviceData, setServiceData] = useState<IService>({
         _id: '',

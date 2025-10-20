@@ -36,7 +36,6 @@ const CostumerEditProfile = () => {
                 subscription: userSubscriptionResult.data
             };
 
-            console.log(user)
 
             setUserData(user);
             setOriginalUserData(user);

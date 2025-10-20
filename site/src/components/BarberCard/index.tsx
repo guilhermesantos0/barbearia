@@ -24,7 +24,6 @@ const BarberCard: React.FC<BarberCardProps> = ({ barber, selected }) => {
     useEffect(() => {
         const fetchData = async () => {
             const isAvailableTodayResult = await api.get(`/users/barbers/${barber._id}/available-today`)
-            console.log(isAvailableTodayResult.data)
             setAvailableToday(isAvailableTodayResult.data);
         }
 

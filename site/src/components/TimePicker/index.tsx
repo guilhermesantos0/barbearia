@@ -24,9 +24,13 @@ const TimePicker:React.FC<TimePickerRadixProps> = ({ value, onChange, label, def
     const generateTimes = () => {
         if (defaultOptions) return defaultOptions
 
+        console.log(maxH)
+
         const times: string[] = [];
-        for (let h = minH; h < maxH; h++) {
+        for (let h = minH; h <= maxH ; h++) {
             for (let m = minM; m < maxM; m += 30) {
+                if (h === maxH && m > 0) break;
+
                 const hour = h.toString().padStart(2, '0');
                 const minute = m.toString().padStart(2, '0');
                 times.push(`${hour}:${minute}`);
@@ -38,7 +42,7 @@ const TimePicker:React.FC<TimePickerRadixProps> = ({ value, onChange, label, def
     const times = generateTimes();
 
     return (
-        <div className={`${style.TimePickerContainer} ${inModal ? style.ModalContext  : ''}`}>
+        <div className={`${style.TimePickerContainer} ${inModal ? style.ModalContext  : ''} ${className ? className : ''}`}>
             {label && <label className={style.TimeLabel}>{label}</label>}
             <Select.Root value={value} onValueChange={onChange}>
                 <Select.Trigger className={style.Trigger}>
@@ -52,7 +56,7 @@ const TimePicker:React.FC<TimePickerRadixProps> = ({ value, onChange, label, def
                 className={style.Content}
                 align={inModal ? 'start' : undefined}
                 side={inModal ? 'bottom' : undefined}
-                position='popper' 
+                position='popper'
                 avoidCollisions={inModal ? false : undefined}
                 sideOffset={4}>
                     <Select.ScrollUpButton />

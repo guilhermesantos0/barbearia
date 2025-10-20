@@ -17,11 +17,17 @@ export class BarbershopController {
     getBarberShop(): Promise<Barbershop | null> {
         return this.barberShopService.getInfo();
     }
+    
+    @Get("times")
+    getTimes() {
+        return this.barberShopService.getTimes();
+    }
 
     @Get(":id")
     findOne(@Param("id") id: string) {
         return this.barberShopService.findOne(id);
     }
+
 
     @Patch(":id")
     update(@Param("id") id: string, @Body() updateBarberShopDto: UpdateBarbershopDto) {

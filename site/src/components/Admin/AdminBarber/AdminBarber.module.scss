@@ -346,6 +346,10 @@
     }
 }
 
+.ModalContainer {
+    padding: 1rem 2rem;
+}
+
 .ModalContent {
     display: flex;
     width: fit-content;
@@ -462,6 +466,12 @@
         gap: 1rem;
         overflow: auto;
         
+        .AddInterval {
+            width: 15rem;
+            height: 2.5rem;
+            @include button-primary;
+            border-radius: 5px;
+        }
     }
 }
 
@@ -493,7 +503,7 @@
             border: none;
             cursor: pointer;
             color: $red;
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             transition: color 0.2s;
 
             &:hover {
@@ -568,4 +578,22 @@
     .Time { grid-area: times; }
     .Services { grid-area: services; }
     .Intervals { grid-area: intervals; }
+}
+
+.ModalActions {
+    display: flex;
+    gap: 1rem;
+
+    .ButtonCancel, .ButtonSave {
+        width: 8rem;
+        height: 2.5rem
+    }
+
+    .ButtonCancel {
+        @include button-error;
+    }
+
+    .ButtonSave {
+        @include button-primary;
+    }
 }

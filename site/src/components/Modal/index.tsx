@@ -13,9 +13,10 @@ interface ModalProps {
     open?: boolean;
     onOpenChange?: (open: boolean) => void;
     overflowYShow?: boolean;
+    className?: string;
 }
 
-const Modal:React.FC<ModalProps> = ({ trigger, children, close, open, onOpenChange, overflowYShow }) => {
+const Modal:React.FC<ModalProps> = ({ trigger, children, close, open, onOpenChange, overflowYShow, className }) => {
     return (
         <Dialog.Root open={open} onOpenChange={onOpenChange}>
             <Dialog.Trigger asChild>
@@ -23,7 +24,7 @@ const Modal:React.FC<ModalProps> = ({ trigger, children, close, open, onOpenChan
             </Dialog.Trigger>
             <Dialog.Portal>
                 <Dialog.Overlay className={style.Overlay} />
-                <Dialog.Content className={`${style.Container} ${overflowYShow ? style.OverflowYShow : ''}`}>
+                <Dialog.Content className={`${style.Container} ${overflowYShow ? style.OverflowYShow : ''} ${className ? className : ''}`}>
                     {
                         close && (
                             <Dialog.Close className={style.Close}>

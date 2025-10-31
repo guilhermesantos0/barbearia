@@ -5,6 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { SelectMenu } from '@components/SelectMenu';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { useQueryClient } from '@tanstack/react-query';
+import Modal from '@components/Modal';
+import { useState } from 'react';
 
 interface AdminBenefitProps {
     benefit: IBenefit
@@ -13,6 +15,7 @@ interface AdminBenefitProps {
 const AdminBenefit: React.FC<AdminBenefitProps> = ({ benefit }) => {
 
     const queryClient = useQueryClient();
+    const [isModalOpen, setIsModalOpen] = useState(false);
     
     const handleChangeType = async () => {
 
@@ -69,22 +72,48 @@ const AdminBenefit: React.FC<AdminBenefitProps> = ({ benefit }) => {
         }
     ];
 
+    const [editingData, setEditingData] = useState<{
+        label: string,
+        type: string,
+        value: number,
+        conditions: Object,
+        unlimited: boolean
+    }>({
+        label: benefit.label,
+        type: benefit.type,
+        value: benefit.value,
+        conditions: benefit.conditions,
+        unlimited: benefit.unlimited
+    })
+
     return (
-        <div className={style.Benefit}>
-            <div className={style.ExhibitionArea}>
-                <div className={style.LeftContent}>
-                    <FontAwesomeIcon 
-                        icon={getBenefitIcon(benefit.type)} 
-                        className={style[benefit.type as keyof typeof style]}
-                    />
-                    <h4>{benefit.label}</h4>
-                </div>
-                <div className={style.RightContent}>
-                    <SelectMenu freePosition className={style.SelectMenu} options={typeOptions} onChange={handleChangeType} value={benefit.type} viewPortClassName={style.ViewPortClassName} />
-                    <FontAwesomeIcon icon='pencil' className={style.Edit} onClick={(e) => e.stopPropagation()} />
+        <>
+            <div className={style.Benefit}>
+                <div className={style.ExhibitionArea}>
+                    <div className={style.LeftContent}>
+                        <FontAwesomeIcon 
+                            icon={getBenefitIcon(benefit.type)} 
+                            className={style[benefit.type as keyof typeof style]}
+                        />
+                        <h4>{benefit.label}</h4>
+                    </div>
+                    <div className={style.RightContent}>
+                        <SelectMenu freePosition className={style.SelectMenu} options={typeOptions} onChange={handleChangeType} value={benefit.type} viewPortClassName={style.ViewPortClassName} />
+                        <FontAwesomeIcon icon='pencil' className={style.Edit} onClick={() => setIsModalOpen(true)} />
+                    </div>
                 </div>
             </div>
-        </div>
+            <Modal open={isModalOpen} onOpenChange={setIsModalOpen} trigger={<></>} close>
+                <div className={style.ModalContent}>
+                    <h3>Editar Benefício</h3>
+                    <div className={style.ModalForm}>
+                        <div className={style.ModalFormGroup}>
+                            <label htmlFor="benefitName">Nome do Benefício</label>
+                        </div>
+                    </div>
+                </div>
+            </Modal>
+        </>
     )
 }
 

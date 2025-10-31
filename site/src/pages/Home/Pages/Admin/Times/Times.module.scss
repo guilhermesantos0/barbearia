@@ -5,6 +5,7 @@
     display: flex;
     flex-direction: column;
     height: 100vh;
+    width: 90vw;
     overflow: hidden;
 }
 
@@ -159,6 +160,10 @@
 
 .CardContent {
     padding: 2rem;
+
+    &.TimeSettingsContent {
+        padding: 1rem;
+    }
 }
 
 .TimeSettingsGrid {
@@ -169,7 +174,9 @@
 .TimeInputGroup {
     display: flex;
     flex-direction: column;
+    height: 4rem;
     gap: 0.75rem;
+    padding: 0;
 
     label {
         color: $white;
@@ -186,30 +193,11 @@
     font-size: 1rem;
 }
 
-.TimeInput {
-    padding: 0.75rem 1rem;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 5px;
-    font-size: 1rem;
-    font-weight: 600;
-    background: $gray;
-    color: $white;
-    transition: border-color 0.3s ease;
-
-    &:hover {
-        border-color: rgba(255, 255, 255, 0.2);
-    }
-
-    &:focus {
-        outline: none;
-        border-color: $light-blue;
-    }
-}
-
 .DaysGrid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
+    width: 100%;
 }
 
 .DayCard {
@@ -224,41 +212,27 @@
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
-
-    &::before {
-        content: '';
-        position: absolute;
-        left: 0;
-        top: 0;
-        bottom: 0;
-        width: 3px;
-        background: $light-blue;
-        transform: scaleY(0);
-        transition: transform 0.3s ease;
-    }
+    min-width: 0;
 
     &:hover {
         background: rgba(255, 255, 255, 0.06);
         border-color: rgba(47, 128, 237, 0.3);
         transform: translateX(4px);
-        
-        &::before {
-            transform: scaleY(1);
-        }
     }
 
-    &.DayCardSelected {
-        background: rgba(47, 128, 237, 0.15);
-        border-color: rgba(47, 128, 237, 0.4);
+    // &.DayCardSelected {
+    //     background: rgba(47, 128, 237, 0.15);
+    //     border-color: rgba(47, 128, 237, 0.4);
+    //     transform: translateX(4px);
 
-        &::before {
-            transform: scaleY(1);
-        }
+    //     &::before {
+    //         transform: scaleY(1);
+    //     }
 
-        .DayShort {
-            color: $white;
-        }
-    }
+    //     .DayShort {
+    //         color: $white;
+    //     }
+    // }
 }
 
 .DayCardContent {
@@ -318,41 +292,6 @@
     justify-content: center;
 }
 
-// Save Section
-.SaveSection {
-    position: sticky;
-    bottom: 0;
-    padding: 1.5rem 0;
-    margin-top: auto;
-}
-
-.SaveButton {
-    @include button-primary;
-    width: 100%;
-    padding: 1rem;
-    font-size: 1rem;
-    font-weight: 600;
-    border-radius: 5px;
-    background: $green;
-    transition: all 0.3s ease;
-
-    &:hover:not(:disabled) {
-        background: darken($green, 5%);
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(39, 174, 96, 0.4);
-    }
-
-    &:active:not(:disabled) {
-        transform: translateY(0);
-    }
-
-    &:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-    }
-}
-
-// Calendar Styles
 .CalendarHeader {
     display: flex;
     justify-content: space-between;
@@ -415,6 +354,7 @@
     transition: all 0.3s ease;
     position: relative;
     min-height: 70px;
+    height: 70px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -422,6 +362,7 @@
     border-right: 1px solid rgba(255, 255, 255, 0.05);
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     color: $white;
+    overflow: hidden;
 
     &:nth-child(7n) {
         border-right: none;
@@ -489,17 +430,6 @@
     font-weight: 600;
 }
 
-.ClosedLabel {
-    font-size: 0.6rem;
-    color: $light-gray;
-    font-weight: 600;
-    margin-top: 4px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    background: rgba(128, 128, 128, 0.3);
-    padding: 2px 6px;
-    border-radius: 4px;
-}
 
 .RemoveHolidayButton {
     position: absolute;
@@ -570,41 +500,40 @@
     }
 }
 
-// Actions Card (Bottom Right)
 .Card:last-child {
     .CardContent {
         display: flex;
         gap: 1rem;
         padding: 1.5rem;
         
-        button {
-            @include button-tertiary;
-            flex: 1;
-            padding: 0.75rem 1rem;
-            border-radius: 5px;
-            font-size: 0.9rem;
-            font-weight: 600;
+        // button {
+        //     @include button-tertiary;
+        //     flex: 1;
+        //     padding: 0.75rem 1rem;
+        //     border-radius: 5px;
+        //     font-size: 0.9rem;
+        //     font-weight: 600;
             
-            &:first-child {
-                background: transparent;
-                border-color: $red;
-                color: $red;
+        //     &:first-child {
+        //         background: transparent;
+        //         border-color: $red;
+        //         color: $red;
                 
-                &:hover:not(:disabled) {
-                    background: rgba(235, 87, 87, 0.1);
-                }
-            }
+        //         &:hover:not(:disabled) {
+        //             background: rgba(235, 87, 87, 0.1);
+        //         }
+        //     }
             
-            &:last-child {
-                @include button-primary;
-                background: $green;
-                border: none;
+        //     // &:last-child {
+        //     //     @include button-primary;
+        //     //     background: $green;
+        //     //     border: none;
                 
-                &:hover:not(:disabled) {
-                    background: darken($green, 5%);
-                }
-            }
-        }
+        //     //     &:hover:not(:disabled) {
+        //     //         background: darken($green, 5%);
+        //     //     }
+        //     // }
+        // }
     }
 }
 
@@ -778,6 +707,33 @@
     font-size: 3rem;
     color: $red;
     opacity: 0.5;
+}
+
+.DiscardButton {
+    @include button-secondary;
+    padding: 0.75rem 1rem;
+    border-radius: 5px;
+    flex: 1;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.SaveButton {
+    @include button-primary;
+    padding: 0.75rem 1.5rem;
+    border-radius: 5px;
+    flex: 1;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.SaveSection {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+
+    background: transparent;
+    border: none;
 }
 
 @media (max-width: 1200px) {

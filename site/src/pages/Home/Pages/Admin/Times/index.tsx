@@ -238,7 +238,7 @@ const Times = () => {
                                 </div>
                             </div>
                             
-                            <div className={style.CardContent}>
+                            <div className={`${style.CardContent} ${style.TimeSettingsContent}`}>
                                 <div className={style.TimeSettingsGrid}>
                                     <div className={style.TimeInputGroup}>
                                         <label htmlFor="openTime">
@@ -250,6 +250,7 @@ const Times = () => {
                                             onChange={(val) => handleTimeChange('open', val)}
                                             maxH={Number(closeTime.split(':')[0])}
                                             inModal={true}
+                                            className={style.TimePicker}
                                         />
                                     </div>
                                     <div className={style.TimeInputGroup}>
@@ -279,51 +280,35 @@ const Times = () => {
                             
                             <div className={style.CardContent}>
                                 <div className={style.DaysGrid}>
-                                    {daysOfWeek.map((day) => {
-                                        const isSelected = openDays.includes(day.value);
-                                        return (
-                                            <div 
-                                                key={day.value} 
-                                                className={`${style.DayCard} ${isSelected ? style.DayCardSelected : ''}`}
-                                                onClick={() => handleDayToggle(day.value)}
-                                            >
-                                                <div className={style.DayCardContent}>
-                                                    <span className={style.DayEmoji}>{day.icon}</span>
-                                                    <div className={style.DayInfo}>
-                                                        <span className={style.DayShort}>{day.short}</span>
-                                                        <span className={style.DayFull}>{day.label}</span>
-                                                    </div>
-                                                </div>
-                                                <div className={style.DayCheckbox}>
-                                                    <Checkbox.Root
-                                                        className={style.CheckboxRoot}
-                                                        checked={isSelected}
-                                                        onCheckedChange={() => handleDayToggle(day.value)}
-                                                    >
-                                                        <Checkbox.Indicator className={style.CheckboxIndicator}>
-                                                            <CheckIcon width={16} height={16} />
-                                                        </Checkbox.Indicator>
-                                                    </Checkbox.Root>
+                                    {daysOfWeek.map((day) => (
+                                        <div 
+                                            key={day.value} 
+                                            className={`${style.DayCard}`}
+                                            onClick={() => handleDayToggle(day.value)}
+                                        >
+                                            <div className={style.DayCardContent}>
+                                                <div className={style.DayInfo}>
+                                                    <span className={style.DayShort}>{day.short}</span>
+                                                    <span className={style.DayFull}>{day.label}</span>
                                                 </div>
                                             </div>
-                                        );
-                                    })}
+
+                                            <div className={style.DayCheckbox}>
+                                                <Checkbox.Root
+                                                    className={style.CheckboxRoot}
+                                                    checked={openDays.includes(day.value)}
+                                                    onCheckedChange={() => handleDayToggle(day.value)}
+                                                >
+                                                    <Checkbox.Indicator className={style.CheckboxIndicator}>
+                                                        <CheckIcon width={16} height={16} />
+                                                    </Checkbox.Indicator>
+                                                </Checkbox.Root>
+                                            </div>
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
                         </div>
-
-                        {hasChanges && (
-                            <div className={style.SaveSection}>
-                                <button 
-                                    onClick={handleSaveSchedule}
-                                    className={style.SaveButton}
-                                    disabled={updateScheduleMutation.isPending}
-                                >
-                                    <FontAwesomeIcon icon="save" />
-                                    {updateScheduleMutation.isPending ? 'Salvando...' : 'Salvar Alterações'}
-                                </button>
-                            </div>
-                        )}
                     </div>
 
                     <div className={style.RightColumn}>
@@ -402,9 +387,6 @@ const Times = () => {
                                                             <TrashIcon />
                                                         </button>
                                                     )}
-                                                    {isClosedDay && !isHolidayDate && (
-                                                        <span className={style.ClosedLabel}>Fechado</span>
-                                                    )}
                                                 </div>
                                             );
                                         })}
@@ -427,9 +409,9 @@ const Times = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className={style.Card}>
-                            <button><FontAwesomeIcon icon="times" /> Descartar Alterações</button>
-                            <button><FontAwesomeIcon icon="save" /> Salvar Alterações</button>
+                        <div className={`${style.Card} ${style.SaveSection}`}>
+                            <button className={style.DiscardButton}><FontAwesomeIcon icon="times" /> Descartar Alterações</button>
+                            <button className={style.SaveButton} onClick={handleSaveSchedule}><FontAwesomeIcon icon="save" /> Salvar Alterações</button>
                         </div>
                     </div>
                 </div>

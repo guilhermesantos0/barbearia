@@ -26,6 +26,14 @@ const AdminBarber: React.FC<AdminBarberProps> = ({ barber, services, roles, time
     const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
 
 
+    console.log(barber.work?.services);
+    console.log(services)
+
+    barber.work?.services.forEach(service => {
+        const serviceData = services.find(s => s._id === service._id);
+        console.log(serviceData);
+    });
+
     const [editingData, setEditingData] = useState<{
         name: string,
         gender: string,
@@ -102,6 +110,22 @@ const AdminBarber: React.FC<AdminBarberProps> = ({ barber, services, roles, time
     const handleAction = (action: string) => {
         switch (action) {
             case 'edit':
+                // Reset editing data with current barber data
+                setEditingData({
+                    name: barber.name,
+                    gender: barber.gender || 'Prefiro não informar',
+                    profilePic: barber.profilePic,
+                    role: typeof barber.role === 'number' ? barber.role : 0,
+                    work: {
+                        days: barber.work?.days || [],
+                        time: {
+                            start: barber.work?.time?.start || '08:00',
+                            end: barber.work?.time?.end || '18:00',
+                            intervals: barber.work?.time?.intervals || []
+                        },
+                        services: barber.work?.services || []
+                    }
+                });
                 setIsEditModalOpen(true);
                 break;
             case 'disable':
@@ -128,13 +152,6 @@ const AdminBarber: React.FC<AdminBarberProps> = ({ barber, services, roles, time
         setEditingData(prev => ({ ...prev, role: parseInt(newRole) }));
     };
 
-    const handleEditWorkDays = (newDays: string[]) => {
-        setEditingData(prev => ({ 
-            ...prev, 
-            work: { ...prev.work, days: newDays }
-        }));
-    };
-
     const handleEditWorkTime = (field: 'start' | 'end', value: string) => {
         setEditingData(prev => ({
             ...prev,
@@ -152,13 +169,6 @@ const AdminBarber: React.FC<AdminBarberProps> = ({ barber, services, roles, time
                 ...prev.work,
                 time: { ...prev.work.time, intervals: newIntervals }
             }
-        }));
-    };
-
-    const handleEditServices = (newServices: string[]) => {
-        setEditingData(prev => ({
-            ...prev,
-            work: { ...prev.work, services: newServices }
         }));
     };
 
@@ -227,7 +237,7 @@ const AdminBarber: React.FC<AdminBarberProps> = ({ barber, services, roles, time
         if (!editingData) return;
 
         //@ts-ignore
-        setUserData((prev) => {
+        setEditingData((prev) => {
             if (!prev) return prev;
 
             const currentServices = prev.work?.services || [];
@@ -357,7 +367,7 @@ const AdminBarber: React.FC<AdminBarberProps> = ({ barber, services, roles, time
                 )}
             </div>
 
-            <Modal open={isEditModalOpen} onOpenChange={setIsEditModalOpen} trigger={<></>} close >
+            <Modal open={isEditModalOpen} onOpenChange={setIsEditModalOpen} trigger={<></>} close className={style.ModalContainer}>
                 <h3>Editar {barber.name}</h3>
                 
                 <div className={style.ModalContent}>
@@ -482,7 +492,7 @@ const AdminBarber: React.FC<AdminBarberProps> = ({ barber, services, roles, time
                                         <Checkbox.Root
                                             className={style.CheckboxRoot}
                                             id={`service-${service._id}`}
-                                            checked={editingData.work?.services?.includes(service._id)}
+                                            checked={editingData.work?.services?.map(s => s._id).includes(service._id)}
                                             onCheckedChange={() => handleServiceToggle(service._id)}
                                         >
                                             <Checkbox.Indicator className={style.CheckboxIndicator}>

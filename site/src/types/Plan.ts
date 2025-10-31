@@ -4,6 +4,7 @@ export interface IBenefit {
     key: string,
     label: string,
     type: string,
+    unlimited: boolean,
     value: number,
     conditions: Object
 }
